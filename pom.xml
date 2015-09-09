@@ -33,6 +33,20 @@
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
+
+		<plugin>
+    <groupId>org.javalite</groupId>
+    <artifactId>activejdbc-instrumentation</artifactId>
+    <version>1.4.11</version>
+    <executions>
+        <execution>
+            <phase>process-classes</phase>
+            <goals>
+                <goal>instrument</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>	
 		</plugins>
 	</build>
 
@@ -43,6 +57,11 @@
 			<version>4.0.1</version>
 		</dependency>
 		<dependency>
+			<groupId>org.javalite</groupId>
+			<artifactId>activejdbc</artifactId>
+			<version>1.4.11</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
@@ -51,11 +70,6 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.36</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jinq</groupId>
-			<artifactId>jinq-jpa</artifactId>
-			<version>1.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
