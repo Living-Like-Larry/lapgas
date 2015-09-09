@@ -12,9 +12,9 @@ import org.junit.Test;
 
 /**
  * 
- * @author Moch Deden
  * sanity checker class to make sure you can go further with this project
  * make sure you make it green before you go along with us :)
+ * @author Moch Deden (http://github.com/selesdepselesnul)
  *
  */
 public class JavaLiteTest {
