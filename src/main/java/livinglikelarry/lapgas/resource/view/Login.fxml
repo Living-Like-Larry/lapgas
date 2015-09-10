@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.PasswordField?>
+
+
+
+<!-- author : Ricky (http://github.com/ricky49) -->
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+	prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="livinglikelarry.lapgas.controller.LoginController">
+	<children>
+		<Accordion layoutX="86.0" layoutY="155.0" prefHeight="245.0"
+			prefWidth="600.0" AnchorPane.bottomAnchor="0.0"
+			AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+			AnchorPane.topAnchor="155.0">
+			<panes>
+				<TitledPane animated="false" text="Login Admin">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
+							prefWidth="200.0">
+							<children>
+								<PasswordField  layoutX="79.0" layoutY="72.0" prefHeight="25.0"
+									prefWidth="307.0" promptText="password" fx:id="passwordTextField" />
+								<Button layoutX="425.0" layoutY="72.0" mnemonicParsing="false"
+									text="login" onAction="#handleLoginButton" />
+							</children>
+						</AnchorPane>
+					</content>
+				</TitledPane>
+				<TitledPane animated="false" text="Absensi Asleb">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
+							prefWidth="200.0">
+							<children>
+								<TextField layoutX="75.0" layoutY="97.0" prefHeight="25.0"
+									prefWidth="287.0" promptText="NPM" />
+								<Button layoutX="384.0" layoutY="97.0" mnemonicParsing="false"
+									text="Hadir cyyyn !" />
+								<Text layoutX="187.0" layoutY="146.0" strokeType="OUTSIDE"
+									strokeWidth="0.0" text="Sipp cyyyyn" />
+							</children>
+						</AnchorPane>
+					</content>
+				</TitledPane>
+			</panes>
+		</Accordion>
+		<ImageView fitHeight="150.0" fitWidth="200.0" layoutX="174.0"
+			layoutY="5.0" pickOnBounds="true" preserveRatio="true" />
+	</children>
+</AnchorPane>

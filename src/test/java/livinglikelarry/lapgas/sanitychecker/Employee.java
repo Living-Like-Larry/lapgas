@@ -1,4 +1,4 @@
-package selesdepselesnul.lapgas.sanitychecker;
+package livinglikelarry.lapgas.sanitychecker;
 
 import org.javalite.activejdbc.Model;
 

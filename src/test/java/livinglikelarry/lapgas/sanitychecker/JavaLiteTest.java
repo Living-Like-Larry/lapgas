@@ -1,4 +1,4 @@
-package selesdepselesnul.lapgas.sanitychecker;
+package livinglikelarry.lapgas.sanitychecker;
 
 import static org.junit.Assert.*;
 
@@ -31,7 +31,7 @@ public class JavaLiteTest {
 		 * jdbc.username = larry
 		 * jdbc.password = livinlikelarry
 		 */
-		String propertyUri = "selesdepselesnul/lapgas/sanitychecker/sql.properties";
+		String propertyUri = "livinglikelarry/lapgas/sanitychecker/sql.properties";
 		info.load(ClassLoader.getSystemResourceAsStream(propertyUri));
 		Base.open("com.mysql.jdbc.Driver", info.getProperty("jdbc.url"), info.getProperty("jdbc.username"),
 				info.getProperty("jdbc.password"));
