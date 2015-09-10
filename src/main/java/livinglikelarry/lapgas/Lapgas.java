@@ -2,6 +2,7 @@ package livinglikelarry.lapgas;
 
 import java.io.IOException;
 
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,6 +12,7 @@ import livinglikelarry.lapgas.controller.LoginController;
 
 /**
  * Main class for lapgas
+ * 
  * @author Moch Deden (http://github.com/selesdepselesnul)
  *
  */
@@ -21,7 +23,7 @@ public class Lapgas extends Application {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.load(Configurator.view("Login"));
-			LoginController loginController = (LoginController)fxmlLoader.getController();
+			LoginController loginController = (LoginController) fxmlLoader.getController();
 			Scene scene = new Scene((AnchorPane) fxmlLoader.getRoot());
 			primaryStage.setScene(scene);
 			loginController.setStage(primaryStage);
@@ -34,4 +36,5 @@ public class Lapgas extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 }

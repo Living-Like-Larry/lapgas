@@ -10,6 +10,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import livinglikelarry.lapgas.Configurator;
+
 /**
  * 
  * sanity checker class to make sure you can go further with this project
@@ -33,8 +35,8 @@ public class JavaLiteTest {
 		 */
 		String propertyUri = "livinglikelarry/lapgas/sanitychecker/sql.properties";
 		info.load(ClassLoader.getSystemResourceAsStream(propertyUri));
-		Base.open("com.mysql.jdbc.Driver", info.getProperty("jdbc.url"), info.getProperty("jdbc.username"),
-				info.getProperty("jdbc.password"));
+		Base.open(Configurator.properties("main.driver"), Configurator.properties("main.url") + Configurator.properties("main.dbname"), 
+				Configurator.properties("main.username"), Configurator.properties("main.password"));
 		Base.exec("CREATE DATABASE IF NOT EXISTS javalite");
 		Base.exec("USE javalite");
 		Base.exec("CREATE TABLE employees (id INT PRIMARY KEY)");

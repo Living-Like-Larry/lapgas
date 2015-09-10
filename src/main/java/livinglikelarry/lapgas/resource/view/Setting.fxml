@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="306.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Admin">
+               <content>
+                  <AnchorPane prefHeight="155.0" prefWidth="430.0">
+                     <children>
+                        <TextField disable="true" layoutX="14.0" layoutY="45.0" />
+                        <Button layoutX="186.0" layoutY="45.0" mnemonicParsing="false" text="Ganti" />
+                     </children>
+                  </AnchorPane>
+               </content></Tab>
+          <Tab text="Scanner">
+               <content>
+                  <AnchorPane prefHeight="163.0" prefWidth="300.0">
+                     <children>
+                        <TextField disable="true" layoutX="14.0" layoutY="53.0" />
+                        <Button layoutX="186.0" layoutY="53.0" mnemonicParsing="false" text="Ganti" />
+                     </children>
+                  </AnchorPane>
+               </content></Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</GridPane>

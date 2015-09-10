@@ -3,6 +3,8 @@ package livinglikelarry.lapgas.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.javalite.activejdbc.Base;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,6 +22,7 @@ import livinglikelarry.lapgas.model.AdminSql;
 /**
  * 
  * Controller for LoginView
+ * 
  * @author Moch Deden (http://github.com/selesdepselesnul)
  *
  */
@@ -31,11 +34,11 @@ public class LoginController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		Configurator.initAdminAuth();
 	}
 
 	@FXML
 	public void handleLoginButton() {
+		initAdminAuth();
 		Admin admin = AdminSql.findFirst("id = ?", "1");
 		AdminAuth adminAuth = new AdminAuth(admin, this.passwordTextField.getText());
 		adminAuth.onSuccess(x -> {
@@ -45,6 +48,7 @@ public class LoginController implements Initializable {
 				Stage stage = new Stage();
 				stage.setScene(new Scene(root));
 				primaryStage.close();
+				Base.close();
 				stage.show();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -55,10 +59,20 @@ public class LoginController implements Initializable {
 			alert.setContentText("Sepertinya password yang anda masukan salah");
 			alert.showAndWait();
 		});
+		Base.close();
 	}
 
 	public void setStage(Stage primaryStage) {
 		this.primaryStage = primaryStage;
+	}
+
+	private void initAdminAuth() {
+		Base.open(Configurator.properties("admin.driver"), Configurator.properties("admin.url") + Configurator.properties("admin.dbname"),
+				Configurator.properties("admin.username"), Configurator.properties("admin.password"));
+		if (Base.exec("SELECT name FROM sqlite_master WHERE name='admins'") == 0) {
+			Base.exec(Configurator.table("admins"));
+			new AdminSql().set("password", "livinglikelarry").saveIt();
+		}
 	}
 
 }

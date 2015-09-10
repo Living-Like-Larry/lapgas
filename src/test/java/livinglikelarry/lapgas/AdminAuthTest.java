@@ -19,24 +19,24 @@ public class AdminAuthTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		Base.open("org.sqlite.JDBC", "jdbc:sqlite:admin.db", "", "");
+		Base.open(Configurator.properties("admin.driver"), Configurator.properties("admin.url") + Configurator.properties("admin.dbname"),
+				Configurator.properties("admin.username"), Configurator.properties("admin.password"));
 		Base.exec("CREATE TABLE IF NOT EXISTS admins (id INTEGER PRIMARY KEY AUTOINCREMENT, password TEXT)");
 		admin = new AdminSql();
 		admin.setPassword("livinglikelarry");
 		adminAuth = new AdminAuth(admin, "livinglikelarry");
 	}
 
-
 	@Test
 	public void testLoginSucces() {
 		assertEquals(adminAuth, adminAuth.onSuccess(x -> assertEquals("livinglikelarry", x.getPassword())));
 	}
-	
+
 	@Test
 	public void testLoginFail() {
-		assertEquals(adminAuth,adminAuth.onFailed(x -> assertEquals(admin, x)));
+		assertEquals(adminAuth, adminAuth.onFailed(x -> assertEquals(admin, x)));
 	}
-	
+
 	@AfterClass
 	public static void setUpAfterClass() {
 		Base.exec("DROP TABLE admins");
