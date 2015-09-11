@@ -2,7 +2,6 @@ package livinglikelarry.lapgas;
 
 import java.io.IOException;
 
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

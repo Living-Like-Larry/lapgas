@@ -3,7 +3,6 @@ package livinglikelarry.lapgas.sanitychecker;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import org.javalite.activejdbc.Base;
 import org.junit.AfterClass;
@@ -23,7 +22,6 @@ public class JavaLiteTest {
 
 	@BeforeClass
 	public static void init() throws IOException {
-		Properties info = new Properties();
 		/**
 		 * you need to make sql.properties file in this current package and make
 		 * sure you make value pair of jdbc.url for url of your database,
@@ -33,8 +31,6 @@ public class JavaLiteTest {
 		 * jdbc.username = larry
 		 * jdbc.password = livinlikelarry
 		 */
-		String propertyUri = "livinglikelarry/lapgas/sanitychecker/sql.properties";
-		info.load(ClassLoader.getSystemResourceAsStream(propertyUri));
 		Base.open(Configurator.properties("main.driver"), Configurator.properties("main.url") + Configurator.properties("main.dbname"), 
 				Configurator.properties("main.username"), Configurator.properties("main.password"));
 		Base.exec("CREATE DATABASE IF NOT EXISTS javalite");

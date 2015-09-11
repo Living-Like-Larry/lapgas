@@ -22,6 +22,7 @@ public final class Configurator {
 	private static final String TABLE_BASE_PATH = "livinglikelarry/lapgas/resource/table/";
 	private static final String CONFIG_DIR = ".lapgas-config/";
 	private static final String SQL_CONFIG = CONFIG_DIR + "sql.config";
+	public static final String PIC_PATH = CONFIG_DIR + "pic/";
 	private static Properties properties;
 
 	static {
@@ -70,6 +71,19 @@ public final class Configurator {
 
 	
 	private static void initMainAppConfig() throws IOException {
+		makePropertiesConfig();
+		makePictureConfig();
+	}
+
+
+	private static void makePictureConfig() throws IOException {
+		if (Files.notExists(Paths.get(PIC_PATH))) {
+			Files.createDirectory(Paths.get(PIC_PATH));
+		}
+	}
+
+
+	private static void makePropertiesConfig() throws IOException {
 		properties = new Properties();
 		if (Files.notExists(Paths.get(CONFIG_DIR))) {
 			Files.createDirectories(Paths.get(CONFIG_DIR));

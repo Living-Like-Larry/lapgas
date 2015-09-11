@@ -45,8 +45,10 @@ public class LoginController implements Initializable {
 			try {
 				FXMLLoader fxmlLoader = new FXMLLoader();
 				GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Main"));
+				MainController mainController = (MainController) fxmlLoader.getController();
 				Stage stage = new Stage();
 				stage.setScene(new Scene(root));
+				mainController.setStage(stage);
 				primaryStage.close();
 				Base.close();
 				stage.show();
@@ -65,9 +67,9 @@ public class LoginController implements Initializable {
 	public void setStage(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 	}
-
 	private void initAdminAuth() {
-		Base.open(Configurator.properties("admin.driver"), Configurator.properties("admin.url") + Configurator.properties("admin.dbname"),
+		Base.open(Configurator.properties("admin.driver"),
+				Configurator.properties("admin.url") + Configurator.properties("admin.dbname"),
 				Configurator.properties("admin.username"), Configurator.properties("admin.password"));
 		if (Base.exec("SELECT name FROM sqlite_master WHERE name='admins'") == 0) {
 			Base.exec(Configurator.table("admins"));
