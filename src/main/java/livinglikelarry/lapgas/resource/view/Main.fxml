@@ -11,7 +11,7 @@
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
 	minWidth="-Infinity" prefHeight="314.0" prefWidth="618.0"
 	xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="livinglikelarry.lapgas.controller.MainController">
+	fx:controller="livinglikelarry.lapgas.controller.main.MainController">
 	<columnConstraints>
 		<ColumnConstraints hgrow="ALWAYS" minWidth="10.0"
 			prefWidth="100.0" />
@@ -50,7 +50,7 @@
 							</rowConstraints>
 							<children>
 								<TextField fx:id="npmPaymentTabTextField" promptText="npm"
-	GridPane.columnIndex="1" onKeyReleased="#handleNpmTyping" />
+									GridPane.columnIndex="1" onKeyReleased="#handleNpmTyping" />
 								<GridPane prefHeight="121.0" prefWidth="600.0"
 									GridPane.columnIndex="1" GridPane.rowIndex="1">
 									<columnConstraints>

@@ -1,18 +1,11 @@
-package livinglikelarry.lapgas.controller;
+package livinglikelarry.lapgas.controller.main;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.apache.commons.io.FilenameUtils;
-
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -24,32 +17,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import livinglikelarry.lapgas.Configurator;
+import livinglikelarry.lapgas.MockingPaymentTabUtil;
+import livinglikelarry.lapgas.model.Courses;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author Moch Deden (http://github.com/selesdepselesnul)
+ *
+ */
 public class MainController implements Initializable {
-
-	// model inner class for courses tableview
-	public class Courses {
-		private SimpleStringProperty course;
-
-		public Courses(String course) {
-			this.course = new SimpleStringProperty(course);
-		}
-
-		public final SimpleStringProperty courseProperty() {
-			return this.course;
-		}
-
-		public final String getCourse() {
-			return this.courseProperty().get();
-		}
-
-		public final void setCourse(final java.lang.String course) {
-			this.courseProperty().set(course);
-		}
-
-	}
 
 	@FXML
 	private TableView<Courses> coursesPaymentTabTableView;
@@ -68,12 +45,16 @@ public class MainController implements Initializable {
 
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
+	private PaymentTabUtil paymentTabUtil;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.coursePaymentTabTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
-		this.coursesPaymentTabTableView.getColumns().add(this.coursePaymentTabTableColumn);
+		this.coursesPaymentTabTableView.getColumns().setAll(this.coursePaymentTabTableColumn);
 		this.coursesPaymentTabComboBox.getItems().setAll("test test", "fsafsaf");
+
+		paymentTabUtil = new MockingPaymentTabUtil();
+
 	}
 
 	@FXML
@@ -81,7 +62,7 @@ public class MainController implements Initializable {
 		final String UNLA_IF_STUD_NUM_PATTERN = "4115505\\d{7}";
 		String studentNumber = this.npmPaymentTabTextField.getText();
 		if (studentNumber.matches(UNLA_IF_STUD_NUM_PATTERN)) {
-			List<String> courses = PaymentTabUtil.getCourses(studentNumber);
+			List<String> courses = paymentTabUtil.getCourses(studentNumber);
 			if (courses != null) {
 				this.coursesPaymentTabComboBox.getItems().clear();
 				this.coursesPaymentTabComboBox.getItems().setAll(courses);
@@ -95,9 +76,11 @@ public class MainController implements Initializable {
 		try {
 			if (this.npmPaymentTabTextField.getText() != null && this.coursesPaymentTabTableView.getItems().size() != 0
 					&& this.choosenPaymentReceiptFile != null) {
-				long id = saveToDatabase(this.npmPaymentTabTextField.getText(),
+				this.paymentTabUtil.saveToDatabase(this.npmPaymentTabTextField.getText(),
 						this.coursesPaymentTabTableView.getItems());
-				savePaymentReceiptToFS(this.choosenPaymentReceiptFile, id);
+				this.paymentTabUtil.savePaymentReceiptToFS(this.choosenPaymentReceiptFile,
+						this.npmPaymentTabTextField.getText(),
+						this.paymentTabUtil.getCourses(this.npmPaymentTabTextField.getText()));
 				this.coursesPaymentTabTableView.getItems().clear();
 				this.npmPaymentTabTextField.clear();
 				this.paymentReceiptPathTextField.clear();
@@ -114,10 +97,6 @@ public class MainController implements Initializable {
 
 	}
 
-	private long saveToDatabase(String npm, ObservableList<Courses> courses) {
-		return 0;
-	}
-
 	@FXML
 	public void handleChoosingImageButton() {
 		FileChooser fileChooser = new FileChooser();
@@ -126,15 +105,6 @@ public class MainController implements Initializable {
 		choosenPaymentReceiptFile = fileChooser.showOpenDialog(this.stage);
 		if (choosenPaymentReceiptFile != null) {
 			this.paymentReceiptPathTextField.setText(choosenPaymentReceiptFile.toString());
-		}
-	}
-
-	private void savePaymentReceiptToFS(File choosenFile, long id) throws IOException {
-		if (choosenFile != null) {
-			Path choosenPath = choosenFile.toPath();
-			Path newPathName = Paths.get(id + "." + FilenameUtils.getExtension(choosenPath.toString()));
-			Path targetPath = Paths.get(Configurator.PIC_PATH + newPathName);
-			Files.copy(choosenPath, targetPath);
 		}
 	}
 
