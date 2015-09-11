@@ -50,7 +50,7 @@
 							</rowConstraints>
 							<children>
 								<TextField fx:id="npmPaymentTabTextField" promptText="npm"
-									GridPane.columnIndex="1" />
+	GridPane.columnIndex="1" onKeyReleased="#handleNpmTyping" />
 								<GridPane prefHeight="121.0" prefWidth="600.0"
 									GridPane.columnIndex="1" GridPane.rowIndex="1">
 									<columnConstraints>
@@ -91,8 +91,8 @@
 									<children>
 										<Button mnemonicParsing="false" onAction="#handleChoosingImageButton"
 											text="..." />
-										<TextField prefHeight="25.0" prefWidth="444.0"
-											GridPane.columnIndex="1" />
+										<TextField fx:id="paymentReceiptPathTextField"
+											prefHeight="25.0" prefWidth="444.0" GridPane.columnIndex="1" />
 									</children>
 								</GridPane>
 							</children>
