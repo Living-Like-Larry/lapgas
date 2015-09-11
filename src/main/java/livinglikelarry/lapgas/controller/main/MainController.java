@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -42,7 +43,19 @@ public class MainController implements Initializable {
 
 	@FXML
 	private TextField paymentReceiptPathTextField;
-
+	
+	@FXML
+	private Button reportModeButton;
+	
+	@FXML
+	private ComboBox<String> classReportTabComboBox;
+	
+	@FXML
+	private ComboBox<String> coursesReportTabComboBox;
+	
+	@FXML
+	private ComboBox<Integer> semesterReportTabComboBox;
+	
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
@@ -52,6 +65,8 @@ public class MainController implements Initializable {
 		this.coursePaymentTabTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
 		this.coursesPaymentTabTableView.getColumns().setAll(this.coursePaymentTabTableColumn);
 		this.coursesPaymentTabComboBox.getItems().setAll("test test", "fsafsaf");
+		
+		this.semesterReportTabComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
 
 		paymentTabUtil = new MockingPaymentTabUtil();
 
@@ -120,6 +135,10 @@ public class MainController implements Initializable {
 			this.coursesPaymentTabComboBox.getItems().remove(selectedCourse);
 		}
 
+	}
+	
+	@FXML
+	public void handleReportButton() {
 	}
 
 }
