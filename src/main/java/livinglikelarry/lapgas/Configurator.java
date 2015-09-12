@@ -45,7 +45,6 @@ public final class Configurator {
 		return ClassLoader.getSystemResourceAsStream(VIEW_BASE_PATH + view + VIEW_EXT);
 	}
 
-
 	/**
 	 * 
 	 * load a table
@@ -53,15 +52,19 @@ public final class Configurator {
 	 * @param table
 	 *            name of the table
 	 * @return sql schema for that table
+	 * @throws IOException
 	 */
-	public static String table(String table) {
+	public static String table(String table) throws IOException {
 		BufferedReader buff = new BufferedReader(
 				new InputStreamReader(ClassLoader.getSystemResourceAsStream(TABLE_BASE_PATH + table + ".sql")));
-		return buff.lines().collect(Collectors.joining());
+		String query = buff.lines().collect(Collectors.joining());
+		buff.close();
+		return query;
 	}
 
 	/**
 	 * loading whole system properties
+	 * 
 	 * @param key
 	 * @return value of properties
 	 */
@@ -69,19 +72,16 @@ public final class Configurator {
 		return properties.getProperty(key);
 	}
 
-	
 	private static void initMainAppConfig() throws IOException {
 		makePropertiesConfig();
 		makePictureConfig();
 	}
-
 
 	private static void makePictureConfig() throws IOException {
 		if (Files.notExists(Paths.get(PIC_PATH))) {
 			Files.createDirectory(Paths.get(PIC_PATH));
 		}
 	}
-
 
 	private static void makePropertiesConfig() throws IOException {
 		properties = new Properties();

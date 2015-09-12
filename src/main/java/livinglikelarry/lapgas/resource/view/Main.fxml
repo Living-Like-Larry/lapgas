@@ -169,7 +169,7 @@
 									prefHeight="192.0" vgrow="ALWAYS" />
 							</rowConstraints>
 							<children>
-								<TextField id="text-field" disable="true"
+								<TextField id="studentNumReportTabTextField" disable="true"
 									GridPane.columnIndex="1">
 									<GridPane.margin>
 										<Insets left="10.0" top="10.0" />
@@ -223,7 +223,8 @@
 									</children>
 								</GridPane>
 								<Button mnemonicParsing="false" text="Laporkan"
-									GridPane.columnIndex="1" GridPane.rowIndex="1">
+									GridPane.columnIndex="1" GridPane.rowIndex="1"
+									onAction="#handleReportButton">
 									<GridPane.margin>
 										<Insets left="140.0" />
 									</GridPane.margin>

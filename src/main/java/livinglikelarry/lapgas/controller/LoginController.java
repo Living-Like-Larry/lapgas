@@ -1,5 +1,6 @@
 package livinglikelarry.lapgas.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -39,36 +40,43 @@ public class LoginController implements Initializable {
 
 	@FXML
 	public void handleLoginButton() {
-		initAdminAuth();
-		Admin admin = AdminSql.findFirst("id = ?", "1");
-		AdminAuth adminAuth = new AdminAuth(admin, this.passwordTextField.getText());
-		adminAuth.onSuccess(x -> {
-			try {
-				FXMLLoader fxmlLoader = new FXMLLoader();
-				GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Main"));
-				MainController mainController = (MainController) fxmlLoader.getController();
-				Stage stage = new Stage();
-				stage.setScene(new Scene(root));
-				mainController.setStage(stage);
-				primaryStage.close();
-				Base.close();
-				stage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}).onFailed(x -> {
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Autentikasi gagal");
-			alert.setContentText("Sepertinya password yang anda masukan salah");
-			alert.showAndWait();
-		});
-		Base.close();
+		try {
+			initAdminAuth();
+
+			Admin admin = AdminSql.findFirst("id = ?", "1");
+			AdminAuth adminAuth = new AdminAuth(admin, this.passwordTextField.getText());
+			adminAuth.onSuccess(x -> {
+				try {
+					Base.close();
+					FXMLLoader fxmlLoader = new FXMLLoader();
+					GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Main"));
+					MainController mainController = (MainController) fxmlLoader.getController();
+					Stage stage = new Stage();
+					stage.setScene(new Scene(root));
+					mainController.setStage(stage);
+					primaryStage.close();
+					stage.show();
+					Base.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}).onFailed(x -> {
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Autentikasi gagal");
+				alert.setContentText("Sepertinya password yang anda masukan salah");
+				alert.showAndWait();
+			});
+			Base.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	public void setStage(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 	}
-	private void initAdminAuth() {
+
+	private void initAdminAuth() throws IOException {
 		Base.open(Configurator.properties("admin.driver"),
 				Configurator.properties("admin.url") + Configurator.properties("admin.dbname"),
 				Configurator.properties("admin.username"), Configurator.properties("admin.password"));

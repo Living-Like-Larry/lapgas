@@ -3,8 +3,12 @@ package livinglikelarry.lapgas.controller.main;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import org.javalite.activejdbc.Base;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,7 +22,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import livinglikelarry.lapgas.MockingPaymentTabUtil;
+import livinglikelarry.lapgas.Configurator;
+import livinglikelarry.lapgas.SqlPaymentTabUtil;
 import livinglikelarry.lapgas.model.Courses;
 import javafx.stage.Stage;
 
@@ -43,32 +48,59 @@ public class MainController implements Initializable {
 
 	@FXML
 	private TextField paymentReceiptPathTextField;
-	
+
 	@FXML
 	private Button reportModeButton;
-	
+
 	@FXML
 	private ComboBox<String> classReportTabComboBox;
-	
+
 	@FXML
 	private ComboBox<String> coursesReportTabComboBox;
-	
+
 	@FXML
 	private ComboBox<Integer> semesterReportTabComboBox;
-	
+
+	@FXML
+	private TextField studentNumReportTabTextField;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		this.coursePaymentTabTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
-		this.coursesPaymentTabTableView.getColumns().setAll(this.coursePaymentTabTableColumn);
-		this.coursesPaymentTabComboBox.getItems().setAll("test test", "fsafsaf");
-		
-		this.semesterReportTabComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
 
-		paymentTabUtil = new MockingPaymentTabUtil();
+		try {
+			Base.open(Configurator.properties("main.driver"), Configurator.properties("main.url"),
+					Configurator.properties("main.username"), Configurator.properties("main.password"));
+
+			ResultSet resultSet = Base.connection().createStatement().executeQuery("SHOW DATABASES");
+			boolean isFound = false;
+			while (resultSet.next()) {
+				if (resultSet.getString("Database").equalsIgnoreCase("lapgas")) {
+					isFound = true;
+					break;
+				}
+			}
+			if (!isFound) {
+				Base.exec("CREATE DATABASE lapgas");
+				Base.exec("USE lapgas");
+				Base.exec(Configurator.table("courses"));
+				Base.exec(Configurator.table("student_payments"));
+				Base.exec(Configurator.table("lab_assistant_attendances"));
+			}
+
+			this.coursePaymentTabTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
+			this.coursesPaymentTabTableView.getColumns().setAll(this.coursePaymentTabTableColumn);
+			this.coursesPaymentTabComboBox.getItems().setAll("test test", "fsafsaf");
+
+			this.semesterReportTabComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
+
+			paymentTabUtil = new SqlPaymentTabUtil();
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -91,6 +123,7 @@ public class MainController implements Initializable {
 		try {
 			if (this.npmPaymentTabTextField.getText() != null && this.coursesPaymentTabTableView.getItems().size() != 0
 					&& this.choosenPaymentReceiptFile != null) {
+
 				this.paymentTabUtil.saveToDatabase(this.npmPaymentTabTextField.getText(),
 						this.coursesPaymentTabTableView.getItems());
 				this.paymentTabUtil.savePaymentReceiptToFS(this.choosenPaymentReceiptFile,
@@ -99,6 +132,7 @@ public class MainController implements Initializable {
 				this.coursesPaymentTabTableView.getItems().clear();
 				this.npmPaymentTabTextField.clear();
 				this.paymentReceiptPathTextField.clear();
+
 			} else {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Kesalahan !");
@@ -134,11 +168,20 @@ public class MainController implements Initializable {
 			this.coursesPaymentTabTableView.getItems().add(new Courses(selectedCourse));
 			this.coursesPaymentTabComboBox.getItems().remove(selectedCourse);
 		}
-
 	}
-	
+
 	@FXML
 	public void handleReportButton() {
+		ReportTabUtil reportTabUtil = new MockingReportTabUtil();
+
+		String course = this.coursesReportTabComboBox.getValue();
+		String studentClass = this.classReportTabComboBox.getValue();
+		int semester = this.semesterReportTabComboBox.getValue();
+		if (this.reportModeButton.getText().equalsIgnoreCase("semua")) {
+			reportTabUtil.reportAll(course, studentClass, semester);
+		} else {
+			reportTabUtil.reportBasedOn(this.studentNumReportTabTextField.getText(), course, studentClass, semester);
+		}
 	}
 
 }
