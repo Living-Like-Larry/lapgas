@@ -3,8 +3,8 @@ package livinglikelarry.lapgas.controller.main;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +12,9 @@ import org.apache.commons.io.FilenameUtils;
 
 import javafx.collections.ObservableList;
 import livinglikelarry.lapgas.Configurator;
+import livinglikelarry.lapgas.model.Course;
 import livinglikelarry.lapgas.model.CoursesTableModel;
+import livinglikelarry.lapgas.model.StudentPayment;
 
 /**
  * 
@@ -21,7 +23,7 @@ import livinglikelarry.lapgas.model.CoursesTableModel;
  * @author Moch Deden (http://github.com/selesdepselesnul)
  *
  */
-public interface PaymentTabUtil {
+public class PaymentTabUtil {
 
 	/**
 	 * 
@@ -29,30 +31,53 @@ public interface PaymentTabUtil {
 	 * @return List of String with value of courses taken by particular
 	 *         studentNumber
 	 */
-	public List<String> getCourses(String studentNumber);
+	public List<String> getCourses(String studentNumber) {
+		List<StudentPayment> studentPaymentList = StudentPayment.where("student_number = ? ", studentNumber);
+		List<String> takenCourseNumberList = studentPaymentList.stream().map(x -> (String) x.get("course_number"))
+				.collect(Collectors.toList());
+		List<String> takenCourseList = new ArrayList<>();
+		takenCourseNumberList.forEach(x -> {
+			takenCourseList.add((String) Course.findById(x).get("name"));
+		});
+		List<String> courseList = Course.findAll().stream().map(x -> (String) x.get("name"))
+				.collect(Collectors.toList());
+		courseList.removeAll(takenCourseList);
+		return courseList;
+	}
 
 	/**
 	 * 
-	 * @param choosenPaymentReceiptFile
 	 * @param studentNumber
+	 * @param observableList
 	 * @throws IOException
 	 */
-	public default String savePaymentReceiptToFS(File choosenPaymentReceiptFile, String studentNumber,
-			List<String> courses) throws IOException {
+	public String save(String studentNumber, ObservableList<CoursesTableModel> courseList,
+			File choosenPaymentReceiptFile) throws IOException {
+		List<String> courseNumber = new ArrayList<>();
+		courseList.forEach(x -> {
+			String course = (String) x.getCourse();
+			courseNumber.add((String) Course.findFirst("name = ? ", course).get("course_number"));
+		});
+		courseNumber.forEach(x -> {
 
-		String newPathNameStr = choosenPaymentReceiptFile.toString();
-		if (choosenPaymentReceiptFile != null) {
-			String coursesJoined = courses.stream().collect(Collectors.joining("#"));
-			Path choosenPath = choosenPaymentReceiptFile.toPath();
-			Path newPathName = Paths.get(
-					studentNumber + "#" + coursesJoined + "." + FilenameUtils.getExtension(choosenPath.toString()));
-			Path targetPath = Paths.get(Configurator.PIC_PATH + newPathName);
-			Files.copy(choosenPath, targetPath);
-			newPathNameStr = targetPath.toString();
-		}
-		return newPathNameStr;
+			try {
+				final StudentPayment studentPayment = new StudentPayment();
+				studentPayment.set("student_number", studentNumber).set("course_number", x).saveIt();
+				String paymentReceipt;
+				paymentReceipt = saveToFS(choosenPaymentReceiptFile, (long) studentPayment.getId());
+				studentPayment.set("payment_receipt", paymentReceipt).saveIt();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		});
+		return studentNumber;
 	}
 
-	public long saveToDatabase(String studentNumber, ObservableList<CoursesTableModel> courses);
-
+	private String saveToFS(File choosenPaymentReceiptFile, long id) throws IOException {
+		final String fileExtension = FilenameUtils.getExtension(choosenPaymentReceiptFile.toString());
+		String newPathString = Configurator.PIC_PATH + id + "." + fileExtension;
+		Files.copy(choosenPaymentReceiptFile.toPath(), Paths.get(newPathString));
+		return newPathString;
+	}
 }

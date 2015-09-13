@@ -1,12 +1,10 @@
 package livinglikelarry.lapgas.controller.main;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.DB;
 
 import javafx.fxml.FXML;
@@ -22,9 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import livinglikelarry.lapgas.Configurator;
-import livinglikelarry.lapgas.SqlPaymentTabUtil;
 import livinglikelarry.lapgas.model.CoursesTableModel;
-import livinglikelarry.lapgas.model.StudentPayment;
 import javafx.stage.Stage;
 
 /**
@@ -73,11 +69,9 @@ public class MainController implements Initializable {
 
 		this.coursePaymentTabTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
 		this.coursesPaymentTabTableView.getColumns().setAll(this.coursePaymentTabTableColumn);
-		this.coursesPaymentTabComboBox.getItems().setAll("test test", "fsafsaf");
-
 		this.semesterReportTabComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
 
-		paymentTabUtil = new SqlPaymentTabUtil();
+		paymentTabUtil = new PaymentTabUtil();
 	}
 
 	@FXML
@@ -85,48 +79,47 @@ public class MainController implements Initializable {
 
 		final String UNLA_IF_STUD_NUM_PATTERN = "4115505\\d{7}";
 		String studentNumber = this.npmPaymentTabTextField.getText();
-		System.out.println(studentNumber);
 		if (studentNumber.matches(UNLA_IF_STUD_NUM_PATTERN)) {
-			DB lapgasDB = new DB("lapgas");
-			lapgasDB.open(Configurator.properties("main.driver"), Configurator.properties("main.url") + "lapgas",
-					Configurator.properties("main.username"), Configurator.properties("main.password"));
-			System.out.println("matches");
-	
-			// db.close();
-			List<String> courses = paymentTabUtil.getCourses(studentNumber);
-			lapgasDB.close();
-			if (courses != null) {
-				this.coursesPaymentTabComboBox.getItems().clear();
-				this.coursesPaymentTabComboBox.getItems().setAll(courses);
-			}
+			doDBACtion(() -> {
+				List<String> courses = paymentTabUtil.getCourses(studentNumber);
+				coursesPaymentTabComboBox.getItems().clear();
+				coursesPaymentTabComboBox.getItems().setAll(courses);
+			});
 		}
+	}
+
+	private void doDBACtion(Runnable actionRunnable) {
+		DB lapgasDB = new DB("lapgas");
+		lapgasDB.open(Configurator.properties("main.driver"), Configurator.properties("main.url") + "lapgas",
+				Configurator.properties("main.username"), Configurator.properties("main.password"));
+		actionRunnable.run();
+		lapgasDB.close();
 	}
 
 	@FXML
 	public void handleSubmitPaymentButton() {
 
-		try {
-			if (this.npmPaymentTabTextField.getText() != null && this.coursesPaymentTabTableView.getItems().size() != 0
-					&& this.choosenPaymentReceiptFile != null) {
+		if (this.npmPaymentTabTextField.getText() != null && this.coursesPaymentTabTableView.getItems().size() != 0
+				&& this.choosenPaymentReceiptFile != null) {
 
-				this.paymentTabUtil.saveToDatabase(this.npmPaymentTabTextField.getText(),
-						this.coursesPaymentTabTableView.getItems());
-				this.paymentTabUtil.savePaymentReceiptToFS(this.choosenPaymentReceiptFile,
-						this.npmPaymentTabTextField.getText(),
-						this.paymentTabUtil.getCourses(this.npmPaymentTabTextField.getText()));
-				this.coursesPaymentTabTableView.getItems().clear();
-				this.npmPaymentTabTextField.clear();
-				this.paymentReceiptPathTextField.clear();
+			doDBACtion(() -> {
+				try {
+					this.paymentTabUtil.save(this.npmPaymentTabTextField.getText(),
+							this.coursesPaymentTabTableView.getItems(), this.choosenPaymentReceiptFile);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+			this.coursesPaymentTabTableView.getItems().clear();
+			this.npmPaymentTabTextField.clear();
+			this.paymentReceiptPathTextField.clear();
 
-			} else {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Kesalahan !");
-				alert.setHeaderText("Ada Kolom Kosong !");
-				alert.setContentText("Perhatian ! Tidak boleh ada satupun kolom yang di kosongkan !");
-				alert.showAndWait();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		} else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Kesalahan !");
+			alert.setHeaderText("Ada Kolom Kosong !");
+			alert.setContentText("Perhatian ! Tidak boleh ada satupun kolom yang di kosongkan !");
+			alert.showAndWait();
 		}
 
 	}
@@ -157,7 +150,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleReportButton() {
-		ReportTabUtil reportTabUtil = new MockingReportTabUtil();
+		ReportTabUtil reportTabUtil = new ReportTabUtil();
 
 		String course = this.coursesReportTabComboBox.getValue();
 		String studentClass = this.classReportTabComboBox.getValue();

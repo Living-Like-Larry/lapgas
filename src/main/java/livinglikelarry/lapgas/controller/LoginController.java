@@ -3,7 +3,6 @@ package livinglikelarry.lapgas.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.DB;
 
 import javafx.fxml.FXML;

@@ -1,9 +1,11 @@
 package livinglikelarry.lapgas.controller.main;
 
-public interface ReportTabUtil {
+public class ReportTabUtil {
 
-	void reportAll(String value, String value2, int value3);
+	public void reportAll(String course, String studentClass, int semester) {
+	}
 
-	void reportBasedOn(String studentNum, String course, String studentClass, int semester);
+	public void reportBasedOn(String studentNumber, String course, String studentClass, int semester) {
+	}
 
 }
