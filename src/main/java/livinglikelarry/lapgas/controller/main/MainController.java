@@ -3,12 +3,11 @@ package livinglikelarry.lapgas.controller.main;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.DB;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,7 +23,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import livinglikelarry.lapgas.Configurator;
 import livinglikelarry.lapgas.SqlPaymentTabUtil;
-import livinglikelarry.lapgas.model.Courses;
+import livinglikelarry.lapgas.model.CoursesTableModel;
+import livinglikelarry.lapgas.model.StudentPayment;
 import javafx.stage.Stage;
 
 /**
@@ -35,10 +35,10 @@ import javafx.stage.Stage;
 public class MainController implements Initializable {
 
 	@FXML
-	private TableView<Courses> coursesPaymentTabTableView;
+	private TableView<CoursesTableModel> coursesPaymentTabTableView;
 
 	@FXML
-	private TableColumn<Courses, String> coursePaymentTabTableColumn;
+	private TableColumn<CoursesTableModel, String> coursePaymentTabTableColumn;
 
 	@FXML
 	private TextField npmPaymentTabTextField;
@@ -71,45 +71,30 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		try {
-			Base.open(Configurator.properties("main.driver"), Configurator.properties("main.url"),
-					Configurator.properties("main.username"), Configurator.properties("main.password"));
+		this.coursePaymentTabTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
+		this.coursesPaymentTabTableView.getColumns().setAll(this.coursePaymentTabTableColumn);
+		this.coursesPaymentTabComboBox.getItems().setAll("test test", "fsafsaf");
 
-			ResultSet resultSet = Base.connection().createStatement().executeQuery("SHOW DATABASES");
-			boolean isFound = false;
-			while (resultSet.next()) {
-				if (resultSet.getString("Database").equalsIgnoreCase("lapgas")) {
-					isFound = true;
-					break;
-				}
-			}
-			if (!isFound) {
-				Base.exec("CREATE DATABASE lapgas");
-				Base.exec("USE lapgas");
-				Base.exec(Configurator.table("courses"));
-				Base.exec(Configurator.table("student_payments"));
-				Base.exec(Configurator.table("lab_assistant_attendances"));
-			}
+		this.semesterReportTabComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
 
-			this.coursePaymentTabTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
-			this.coursesPaymentTabTableView.getColumns().setAll(this.coursePaymentTabTableColumn);
-			this.coursesPaymentTabComboBox.getItems().setAll("test test", "fsafsaf");
-
-			this.semesterReportTabComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
-
-			paymentTabUtil = new SqlPaymentTabUtil();
-		} catch (IOException | SQLException e) {
-			e.printStackTrace();
-		}
-
+		paymentTabUtil = new SqlPaymentTabUtil();
 	}
 
 	@FXML
-	public void handleNpmTyping() {
+	public void handleTypingNpm() {
+
 		final String UNLA_IF_STUD_NUM_PATTERN = "4115505\\d{7}";
 		String studentNumber = this.npmPaymentTabTextField.getText();
+		System.out.println(studentNumber);
 		if (studentNumber.matches(UNLA_IF_STUD_NUM_PATTERN)) {
+			DB lapgasDB = new DB("lapgas");
+			lapgasDB.open(Configurator.properties("main.driver"), Configurator.properties("main.url") + "lapgas",
+					Configurator.properties("main.username"), Configurator.properties("main.password"));
+			System.out.println("matches");
+	
+			// db.close();
 			List<String> courses = paymentTabUtil.getCourses(studentNumber);
+			lapgasDB.close();
 			if (courses != null) {
 				this.coursesPaymentTabComboBox.getItems().clear();
 				this.coursesPaymentTabComboBox.getItems().setAll(courses);
@@ -165,7 +150,7 @@ public class MainController implements Initializable {
 	public void handleChoosingCoursesComboBox() {
 		String selectedCourse = this.coursesPaymentTabComboBox.getSelectionModel().getSelectedItem();
 		if (selectedCourse != null) {
-			this.coursesPaymentTabTableView.getItems().add(new Courses(selectedCourse));
+			this.coursesPaymentTabTableView.getItems().add(new CoursesTableModel(selectedCourse));
 			this.coursesPaymentTabComboBox.getItems().remove(selectedCourse);
 		}
 	}

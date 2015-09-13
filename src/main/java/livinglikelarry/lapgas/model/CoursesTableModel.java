@@ -2,11 +2,10 @@ package livinglikelarry.lapgas.model;
 
 import javafx.beans.property.SimpleStringProperty;
 
-// model inner class for courses tableview
-public class Courses {
+public class CoursesTableModel {
 	private SimpleStringProperty course;
 
-	public Courses(String course) {
+	public CoursesTableModel(String course) {
 		this.course = new SimpleStringProperty(course);
 	}
 

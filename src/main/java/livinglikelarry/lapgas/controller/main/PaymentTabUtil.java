@@ -12,7 +12,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import javafx.collections.ObservableList;
 import livinglikelarry.lapgas.Configurator;
-import livinglikelarry.lapgas.model.Courses;
+import livinglikelarry.lapgas.model.CoursesTableModel;
 
 /**
  * 
@@ -53,6 +53,6 @@ public interface PaymentTabUtil {
 		return newPathNameStr;
 	}
 
-	public long saveToDatabase(String studentNumber, ObservableList<Courses> courses);
+	public long saveToDatabase(String studentNumber, ObservableList<CoursesTableModel> courses);
 
 }

@@ -1,6 +1,6 @@
 CREATE TABLE courses (
-    id CHAR(7),
-    courses TEXT,
+    course_number CHAR(7),
+    name TEXT,
     semester TINYINT,
-    PRIMARY KEY(id)
+    PRIMARY KEY(course_number)
 );

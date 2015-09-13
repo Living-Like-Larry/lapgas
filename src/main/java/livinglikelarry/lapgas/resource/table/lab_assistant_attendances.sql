@@ -1,6 +1,7 @@
 CREATE TABLE lab_assistant_attendances (
-    npm CHAR(14),
-    dateAtt TEXT,
-    attedances TEXT,
-    PRIMARY KEY(npm)
+    id BIGINT AUTO_INCREMENT,
+    student_number CHAR(14),
+    created_at TIMESTAMP,
+    is_attended BOOLEAN,
+    PRIMARY KEY(id)
 );
