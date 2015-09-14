@@ -2,6 +2,7 @@ package livinglikelarry.lapgas.controller.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -45,26 +46,28 @@ public class PaymentTabUtil {
 		return courseList;
 	}
 
-	/**
-	 * 
-	 * @param studentNumber
-	 * @param observableList
-	 * @throws IOException
-	 */
-	public String save(String studentNumber, ObservableList<CoursesTableModel> courseList,
-			File choosenPaymentReceiptFile) throws IOException {
-		List<String> courseNumber = new ArrayList<>();
-		courseList.forEach(x -> {
+	private String saveToFS(File choosenPaymentReceiptFile, long id) throws IOException {
+		final String fileExtension = FilenameUtils.getExtension(choosenPaymentReceiptFile.toString());
+		String newPathString = Configurator.PIC_PATH + id + "." + fileExtension;
+		Files.copy(choosenPaymentReceiptFile.toPath(), Paths.get(newPathString));
+		return newPathString;
+	}
+
+	public String save(String studentNumber, String studentClass, BigDecimal paymentValue,
+			ObservableList<CoursesTableModel> courseNames, File paymentReceiptFile) {
+		List<String> courseNumberList = new ArrayList<>();
+		courseNames.forEach(x -> {
 			String course = (String) x.getCourse();
-			courseNumber.add((String) Course.findFirst("name = ? ", course).get("course_number"));
+			courseNumberList.add((String) Course.findFirst("name = ? ", course).get("course_number"));
 		});
-		courseNumber.forEach(x -> {
+		courseNumberList.forEach(x -> {
 
 			try {
 				final StudentPayment studentPayment = new StudentPayment();
-				studentPayment.set("student_number", studentNumber).set("course_number", x).saveIt();
-				String paymentReceipt;
-				paymentReceipt = saveToFS(choosenPaymentReceiptFile, (long) studentPayment.getId());
+				studentPayment.set("student_number", studentNumber).set("course_number", x).set("class", studentClass)
+						.set("payment_value", paymentValue).saveIt();
+				String paymentReceipt = saveToFS(paymentReceiptFile, (long) studentPayment.getId());
+				System.out.println(paymentReceipt);
 				studentPayment.set("payment_receipt", paymentReceipt).saveIt();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -72,12 +75,6 @@ public class PaymentTabUtil {
 
 		});
 		return studentNumber;
-	}
 
-	private String saveToFS(File choosenPaymentReceiptFile, long id) throws IOException {
-		final String fileExtension = FilenameUtils.getExtension(choosenPaymentReceiptFile.toString());
-		String newPathString = Configurator.PIC_PATH + id + "." + fileExtension;
-		Files.copy(choosenPaymentReceiptFile.toPath(), Paths.get(newPathString));
-		return newPathString;
 	}
 }

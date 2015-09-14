@@ -9,6 +9,8 @@ import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+import org.javalite.activejdbc.DB;
+
 /**
  * Class that is represented as a wide configurator for lapgas system
  * 
@@ -90,6 +92,14 @@ public final class Configurator {
 			Files.createFile(Paths.get(SQL_CONFIG));
 		}
 		properties.load(Files.newInputStream(Paths.get(SQL_CONFIG)));
+	}
+
+	public static void doDBACtion(Runnable actionRunnable) {
+		DB lapgasDB = new DB("lapgas");
+		lapgasDB.open(Configurator.properties("main.driver"), Configurator.properties("main.url") + "lapgas",
+				Configurator.properties("main.username"), Configurator.properties("main.password"));
+		actionRunnable.run();
+		lapgasDB.close();
 	}
 
 }

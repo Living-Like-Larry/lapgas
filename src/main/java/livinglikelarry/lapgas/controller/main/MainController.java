@@ -1,14 +1,19 @@
 package livinglikelarry.lapgas.controller.main;
 
 import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
-import org.javalite.activejdbc.DB;
-
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -17,9 +22,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import livinglikelarry.lapgas.Configurator;
+import livinglikelarry.lapgas.model.Course;
 import livinglikelarry.lapgas.model.CoursesTableModel;
 import javafx.stage.Stage;
 
@@ -60,6 +67,12 @@ public class MainController implements Initializable {
 	@FXML
 	private TextField studentNumReportTabTextField;
 
+	@FXML
+	private TextField classTabPaymentTextField;
+
+	@FXML
+	private TextField paymentValueTabPaymentTextField;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
@@ -68,10 +81,31 @@ public class MainController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		this.coursePaymentTabTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
-		this.coursesPaymentTabTableView.getColumns().setAll(this.coursePaymentTabTableColumn);
+		this.coursesPaymentTabTableView.getColumns().setAll(Arrays.asList(this.coursePaymentTabTableColumn));
 		this.semesterReportTabComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
+		loadAllCourseNames();
 
 		paymentTabUtil = new PaymentTabUtil();
+	}
+
+	private void loadAllCourseNames() {
+		Configurator.doDBACtion(() -> {
+			this.coursesPaymentTabComboBox.getItems()
+					.setAll(Course.findAll().stream().map(x -> (String) x.get("name")).collect(Collectors.toList()));
+		});
+	}
+
+	@FXML
+	public void handleSettingMenu() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Setting"));
+			Stage stage = new Stage();
+			stage.setScene(new Scene(root));
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -80,40 +114,54 @@ public class MainController implements Initializable {
 		final String UNLA_IF_STUD_NUM_PATTERN = "4115505\\d{7}";
 		String studentNumber = this.npmPaymentTabTextField.getText();
 		if (studentNumber.matches(UNLA_IF_STUD_NUM_PATTERN)) {
-			doDBACtion(() -> {
+			Configurator.doDBACtion(() -> {
 				List<String> courses = paymentTabUtil.getCourses(studentNumber);
-				coursesPaymentTabComboBox.getItems().clear();
-				coursesPaymentTabComboBox.getItems().setAll(courses);
+				if (courses != null) {
+					coursesPaymentTabComboBox.getItems().clear();
+					coursesPaymentTabComboBox.getItems().setAll(courses);
+				}
 			});
 		}
-	}
-
-	private void doDBACtion(Runnable actionRunnable) {
-		DB lapgasDB = new DB("lapgas");
-		lapgasDB.open(Configurator.properties("main.driver"), Configurator.properties("main.url") + "lapgas",
-				Configurator.properties("main.username"), Configurator.properties("main.password"));
-		actionRunnable.run();
-		lapgasDB.close();
 	}
 
 	@FXML
 	public void handleSubmitPaymentButton() {
 
-		if (this.npmPaymentTabTextField.getText() != null && this.coursesPaymentTabTableView.getItems().size() != 0
-				&& this.choosenPaymentReceiptFile != null) {
-
-			doDBACtion(() -> {
-				try {
-					this.paymentTabUtil.save(this.npmPaymentTabTextField.getText(),
-							this.coursesPaymentTabTableView.getItems(), this.choosenPaymentReceiptFile);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
-			this.coursesPaymentTabTableView.getItems().clear();
-			this.npmPaymentTabTextField.clear();
-			this.paymentReceiptPathTextField.clear();
-
+		final String studentNumber = this.npmPaymentTabTextField.getText();
+		final ObservableList<CoursesTableModel> courseNames = this.coursesPaymentTabTableView.getItems();
+		final File paymentReceipt = this.choosenPaymentReceiptFile;
+		final String studentClass = this.classTabPaymentTextField.getText();
+		final String paymentValue = this.paymentValueTabPaymentTextField.getText();
+		if (studentNumber != null && courseNames.size() != 0 && paymentReceipt != null && studentClass != null
+				&& paymentValue != null) {
+			if (paymentValue.matches("\\d+")) {
+				Configurator.doDBACtion(() -> {
+					try {
+						this.paymentTabUtil.save(studentNumber, studentClass, new BigDecimal(paymentValue), courseNames,
+								paymentReceipt);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Disimpan");
+				alert.setHeaderText("Data di simpan");
+				alert.setContentText("Data pembayaran berhasil di simpan");
+				alert.showAndWait();
+				this.classTabPaymentTextField.clear();
+				this.coursesPaymentTabTableView.getItems().clear();
+				this.paymentReceiptPathTextField.clear();
+				this.paymentValueTabPaymentTextField.clear();
+				this.npmPaymentTabTextField.clear();
+				this.coursesPaymentTabComboBox.getSelectionModel().clearSelection();
+				this.loadAllCourseNames();
+			} else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Kesalahan !");
+				alert.setHeaderText("Nilai pembayaran tidak valid!");
+				alert.setContentText("Perhatian ! Harap isikan kolom pembayaran dengan data yang valid !");
+				alert.showAndWait();
+			}
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Kesalahan !");
@@ -141,7 +189,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleChoosingCoursesComboBox() {
-		String selectedCourse = this.coursesPaymentTabComboBox.getSelectionModel().getSelectedItem();
+		String selectedCourse = this.coursesPaymentTabComboBox.getValue();
 		if (selectedCourse != null) {
 			this.coursesPaymentTabTableView.getItems().add(new CoursesTableModel(selectedCourse));
 			this.coursesPaymentTabComboBox.getItems().remove(selectedCourse);
