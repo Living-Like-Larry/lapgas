@@ -3,6 +3,7 @@ package livinglikelarry.lapgas.controller;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -47,8 +48,17 @@ public class SettingController implements Initializable {
 
 		this.courseTableView.getColumns()
 				.setAll(Arrays.asList(this.courseNumberTableColumn, this.courseTableColumn, this.semesterTableColumn));
+		loadAllCourses();
 
-		this.courseTableView.getItems().add(new CoursesTableModel("1234567", "Nuclear", 1));
+	}
+
+	private void loadAllCourses() {
+		Configurator
+				.doDBACtion(() -> this.courseTableView.getItems()
+						.setAll(Course.findAll()
+								.stream().map(x -> new CoursesTableModel((String) x.get("course_number"),
+										(String) x.get("name"), (int) x.get("semester")))
+						.collect(Collectors.toList())));
 	}
 
 	@FXML
@@ -65,6 +75,7 @@ public class SettingController implements Initializable {
 			this.courseNumberTextField.clear();
 			this.courseTextField.clear();
 			this.semesterComboBox.getSelectionModel().clearSelection();
+			loadAllCourses();
 		}
 	}
 }
