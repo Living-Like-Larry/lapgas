@@ -120,7 +120,7 @@
 								<TableView prefHeight="156.0" prefWidth="372.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
 									<columns>
 										<TableColumn prefWidth="150.0" text="npm" />
-										<TableColumn prefWidth="221.0" text="nama" />
+										<TableColumn prefWidth="221.0" text="jumlah" />
 									</columns>
 								</TableView>
 								<GridPane GridPane.columnIndex="1">
