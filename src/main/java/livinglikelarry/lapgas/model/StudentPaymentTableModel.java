@@ -14,10 +14,12 @@ public class StudentPaymentTableModel {
 	private BigDecimal paymentValue;
 	private String paymentReceiptFilePath;
 	private SimpleStringProperty studentGrade;
+	private long id;
 
-	public StudentPaymentTableModel(String studentNumber, String courseNumber, String studentClass, Timestamp timestamp,
+	public StudentPaymentTableModel(long id, String studentNumber, String courseNumber, String studentClass, Timestamp timestamp,
 			BigDecimal paymentValue, String paymentReceiptFilePath, String grade) {
 
+		this.setId(id);
 		this.studentNumber = new SimpleStringProperty(studentNumber);
 		this.courseNumber = new SimpleStringProperty(courseNumber);
 		this.studentClass = new SimpleStringProperty(studentClass);
@@ -101,6 +103,14 @@ public class StudentPaymentTableModel {
 
 	public final void setStudentGrade(final String studentGrade) {
 		this.studentGradeProperty().set(studentGrade);
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 }

@@ -10,6 +10,6 @@
 	fx:controller="livinglikelarry.lapgas.controller.StudentGradingController">
 	<children>
 		<ComboBox fx:id="gradeComboBox" layoutY="2.0" prefHeight="36.0"
-			prefWidth="81.0" />
+			prefWidth="81.0" onAction="#handleUpdatingGrade"/>
 	</children>
 </AnchorPane>

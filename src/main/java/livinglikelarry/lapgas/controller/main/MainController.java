@@ -122,15 +122,15 @@ public class MainController implements Initializable {
 				.setAll(Arrays.asList(this.studentNumberTableColumn, this.studentClassTableColumn,
 						this.paymentDateTimeTableColumn, this.courseNumberTableColumn, this.studentGradeTableColumn));
 
-		loadAllStudentPayment();
+		loadAllStudentPayment(this.studentPaymentTableView);
 
 		paymentTabUtil = new PaymentTabUtil();
 	}
 
-	private void loadAllStudentPayment() {
+	private void loadAllStudentPayment(TableView<StudentPaymentTableModel> studentPaymentTableView) {
 		Configurator.doDBACtion(() -> {
-			this.studentPaymentTableView.getItems().setAll(StudentPayment.findAll().stream()
-					.map(x -> new StudentPaymentTableModel((String) x.get("student_number"),
+			studentPaymentTableView.getItems().setAll(StudentPayment.findAll().stream()
+					.map(x -> new StudentPaymentTableModel((long) x.getId(), (String) x.get("student_number"),
 							(String) x.get("course_number"), (String) x.get("class"), (Timestamp) x.get("created_at"),
 							new BigDecimal((long) x.get("payment_value")), (String) x.get("payment_receipt"),
 							(String) x.get("grade")))
@@ -234,7 +234,7 @@ public class MainController implements Initializable {
 				this.npmPaymentTabTextField.clear();
 				this.coursesPaymentTabComboBox.getSelectionModel().clearSelection();
 				this.loadAllCourseNames(this.coursesPaymentTabComboBox);
-				this.loadAllStudentPayment();
+				this.loadAllStudentPayment(this.studentPaymentTableView);
 			} else {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Kesalahan !");
@@ -296,8 +296,10 @@ public class MainController implements Initializable {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			AnchorPane root = (AnchorPane) fxmlLoader.load(Configurator.view("StudentGrading"));
 			StudentGradingController studentGradingController = (StudentGradingController) fxmlLoader.getController();
-			studentGradingController
-					.setGrade(this.studentPaymentTableView.getSelectionModel().getSelectedItem().getStudentGrade());
+			final StudentPaymentTableModel selectedStudentPayment = this.studentPaymentTableView.getSelectionModel()
+					.getSelectedItem();
+			studentGradingController.setGrade(selectedStudentPayment.getId(), selectedStudentPayment.getStudentGrade());
+			studentGradingController.setStudentPaymentTableView(this.studentPaymentTableView, this::loadAllStudentPayment);
 			Stage stage = new Stage();
 			stage.setScene(new Scene(root));
 			stage.show();
