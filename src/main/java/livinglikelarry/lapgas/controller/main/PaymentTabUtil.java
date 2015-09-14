@@ -65,9 +65,8 @@ public class PaymentTabUtil {
 			try {
 				final StudentPayment studentPayment = new StudentPayment();
 				studentPayment.set("student_number", studentNumber).set("course_number", x).set("class", studentClass)
-						.set("payment_value", paymentValue).saveIt();
+						.set("payment_value", paymentValue).set("grade", "T").saveIt();
 				String paymentReceipt = saveToFS(paymentReceiptFile, (long) studentPayment.getId());
-				System.out.println(paymentReceipt);
 				studentPayment.set("payment_receipt", paymentReceipt).saveIt();
 			} catch (Exception e) {
 				e.printStackTrace();

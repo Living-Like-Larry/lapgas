@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,12 +23,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import livinglikelarry.lapgas.Configurator;
+import livinglikelarry.lapgas.controller.StudentGradingController;
+import livinglikelarry.lapgas.controller.StudentPaymentController;
 import livinglikelarry.lapgas.model.Course;
 import livinglikelarry.lapgas.model.CoursesTableModel;
+import livinglikelarry.lapgas.model.StudentPayment;
+import livinglikelarry.lapgas.model.StudentPaymentTableModel;
 import javafx.stage.Stage;
 
 /**
@@ -73,6 +79,27 @@ public class MainController implements Initializable {
 	@FXML
 	private TextField paymentValueTabPaymentTextField;
 
+	@FXML
+	private TextField studentPatternTabStudentTextField;
+
+	@FXML
+	private TableView<StudentPaymentTableModel> studentPaymentTableView;
+
+	@FXML
+	private TableColumn<StudentPaymentTableModel, String> courseNumberTableColumn;
+
+	@FXML
+	private TableColumn<StudentPaymentTableModel, String> studentNumberTableColumn;
+
+	@FXML
+	private TableColumn<StudentPaymentTableModel, Timestamp> paymentDateTimeTableColumn;
+
+	@FXML
+	private TableColumn<StudentPaymentTableModel, String> studentClassTableColumn;
+
+	@FXML
+	private TableColumn<StudentPaymentTableModel, String> studentGradeTableColumn;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
@@ -85,7 +112,29 @@ public class MainController implements Initializable {
 		this.semesterReportTabComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
 		loadAllCourseNames();
 
+		this.studentNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
+		this.studentClassTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentClass"));
+		this.paymentDateTimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("paymentDateTime"));
+		this.courseNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseNumber"));
+		this.studentGradeTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentGrade"));
+		this.studentPaymentTableView.getColumns()
+				.setAll(Arrays.asList(this.studentNumberTableColumn, this.studentClassTableColumn,
+						this.paymentDateTimeTableColumn, this.courseNumberTableColumn, this.studentGradeTableColumn));
+
+		loadAllStudentPayment();
+
 		paymentTabUtil = new PaymentTabUtil();
+	}
+
+	private void loadAllStudentPayment() {
+		Configurator.doDBACtion(() -> {
+			this.studentPaymentTableView.getItems().setAll(StudentPayment.findAll().stream()
+					.map(x -> new StudentPaymentTableModel((String) x.get("student_number"),
+							(String) x.get("course_number"), (String) x.get("class"), (Timestamp) x.get("created_at"),
+							new BigDecimal((long) x.get("payment_value")), (String) x.get("payment_receipt"),
+							(String) x.get("grade")))
+					.collect(Collectors.toList()));
+		});
 	}
 
 	private void loadAllCourseNames() {
@@ -93,6 +142,24 @@ public class MainController implements Initializable {
 			this.coursesPaymentTabComboBox.getItems()
 					.setAll(Course.findAll().stream().map(x -> (String) x.get("name")).collect(Collectors.toList()));
 		});
+	}
+
+	@FXML
+	public void handleDisplayingPaymentReceipt() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			GridPane root = (GridPane) fxmlLoader.load(Configurator.view("StudentPayment"));
+			StudentPaymentController studentPaymentController = (StudentPaymentController) fxmlLoader.getController();
+			StudentPaymentTableModel studentPayment = this.studentPaymentTableView.getSelectionModel()
+					.getSelectedItem();
+			studentPaymentController.setPaymentReceipt(studentPayment.getPaymentReceiptFilePath());
+			studentPaymentController.setPaymentValue(studentPayment.getPaymentValue());
+			Stage stage = new Stage();
+			stage.setScene(new Scene(root));
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -105,6 +172,16 @@ public class MainController implements Initializable {
 			stage.showAndWait();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	public void handleTypingPatternStudentTab() {
+		String pattern = this.studentPatternTabStudentTextField.getText();
+		if (pattern != null) {
+			Configurator.doDBACtion(() -> {
+				StudentPayment.findAll().stream();
+			});
 		}
 	}
 
@@ -126,7 +203,6 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleSubmitPaymentButton() {
-
 		final String studentNumber = this.npmPaymentTabTextField.getText();
 		final ObservableList<CoursesTableModel> courseNames = this.coursesPaymentTabTableView.getItems();
 		final File paymentReceipt = this.choosenPaymentReceiptFile;
@@ -155,6 +231,7 @@ public class MainController implements Initializable {
 				this.npmPaymentTabTextField.clear();
 				this.coursesPaymentTabComboBox.getSelectionModel().clearSelection();
 				this.loadAllCourseNames();
+				this.loadAllStudentPayment();
 			} else {
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Kesalahan !");
@@ -210,4 +287,19 @@ public class MainController implements Initializable {
 		}
 	}
 
+	@FXML
+	public void handleUpdatingGrade() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			AnchorPane root = (AnchorPane) fxmlLoader.load(Configurator.view("StudentGrading"));
+			StudentGradingController studentGradingController = (StudentGradingController) fxmlLoader.getController();
+			studentGradingController
+					.setGrade(this.studentPaymentTableView.getSelectionModel().getSelectedItem().getStudentGrade());
+			Stage stage = new Stage();
+			stage.setScene(new Scene(root));
+			stage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
