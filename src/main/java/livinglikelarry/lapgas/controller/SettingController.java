@@ -3,6 +3,7 @@ package livinglikelarry.lapgas.controller;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javafx.fxml.FXML;
@@ -37,6 +38,10 @@ public class SettingController implements Initializable {
 
 	@FXML
 	private ComboBox<Integer> semesterComboBox;
+
+	private ComboBox<String> coursesPaymentComboBox;
+
+	private Consumer<ComboBox<String>> coursePaymentComboBoxConsumer;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -76,6 +81,14 @@ public class SettingController implements Initializable {
 			this.courseTextField.clear();
 			this.semesterComboBox.getSelectionModel().clearSelection();
 			loadAllCourses();
+			this.coursePaymentComboBoxConsumer.accept(this.coursesPaymentComboBox);
 		}
 	}
+
+	public void setCoursesComboBox(ComboBox<String> coursesPaymentComboBox,
+			Consumer<ComboBox<String>> coursePaymentComboBoxConsumer) {
+		this.coursesPaymentComboBox = coursesPaymentComboBox;
+		this.coursePaymentComboBoxConsumer = coursePaymentComboBoxConsumer;
+	}
+
 }

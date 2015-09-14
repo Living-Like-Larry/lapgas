@@ -28,6 +28,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import livinglikelarry.lapgas.Configurator;
+import livinglikelarry.lapgas.controller.SettingController;
 import livinglikelarry.lapgas.controller.StudentGradingController;
 import livinglikelarry.lapgas.controller.StudentPaymentController;
 import livinglikelarry.lapgas.model.Course;
@@ -110,7 +111,7 @@ public class MainController implements Initializable {
 		this.coursePaymentTabTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
 		this.coursesPaymentTabTableView.getColumns().setAll(Arrays.asList(this.coursePaymentTabTableColumn));
 		this.semesterReportTabComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
-		loadAllCourseNames();
+		loadAllCourseNames(this.coursesPaymentTabComboBox);
 
 		this.studentNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
 		this.studentClassTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentClass"));
@@ -137,9 +138,9 @@ public class MainController implements Initializable {
 		});
 	}
 
-	private void loadAllCourseNames() {
+	private void loadAllCourseNames(ComboBox<String> coursesPaymentComboBox) {
 		Configurator.doDBACtion(() -> {
-			this.coursesPaymentTabComboBox.getItems()
+			coursesPaymentComboBox.getItems()
 					.setAll(Course.findAll().stream().map(x -> (String) x.get("name")).collect(Collectors.toList()));
 		});
 	}
@@ -167,6 +168,8 @@ public class MainController implements Initializable {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Setting"));
+			SettingController settingController = (SettingController) fxmlLoader.getController();
+			settingController.setCoursesComboBox(this.coursesPaymentTabComboBox, this::loadAllCourseNames);
 			Stage stage = new Stage();
 			stage.setScene(new Scene(root));
 			stage.showAndWait();
@@ -230,7 +233,7 @@ public class MainController implements Initializable {
 				this.paymentValueTabPaymentTextField.clear();
 				this.npmPaymentTabTextField.clear();
 				this.coursesPaymentTabComboBox.getSelectionModel().clearSelection();
-				this.loadAllCourseNames();
+				this.loadAllCourseNames(this.coursesPaymentTabComboBox);
 				this.loadAllStudentPayment();
 			} else {
 				Alert alert = new Alert(AlertType.ERROR);
