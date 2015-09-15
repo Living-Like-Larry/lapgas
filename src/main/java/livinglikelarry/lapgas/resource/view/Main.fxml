@@ -8,45 +8,65 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.TextField?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="336.0" prefWidth="859.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="livinglikelarry.lapgas.controller.main.MainController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+	minWidth="-Infinity" prefHeight="336.0" prefWidth="859.0"
+	xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="livinglikelarry.lapgas.controller.main.MainController">
 	<columnConstraints>
-		<ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+		<ColumnConstraints hgrow="ALWAYS" minWidth="10.0"
+			prefWidth="100.0" />
 	</columnConstraints>
 
 	<rowConstraints>
-		<RowConstraints maxHeight="40.0" minHeight="9.0" prefHeight="40.0" vgrow="NEVER" />
-		<RowConstraints maxHeight="302.0" minHeight="10.0" prefHeight="276.0" vgrow="ALWAYS" />
+		<RowConstraints maxHeight="40.0" minHeight="9.0"
+			prefHeight="40.0" vgrow="NEVER" />
+		<RowConstraints maxHeight="302.0" minHeight="10.0"
+			prefHeight="276.0" vgrow="ALWAYS" />
 	</rowConstraints>
 	<children>
-		<TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
+		<TabPane prefHeight="200.0" prefWidth="200.0"
+			tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
 			<tabs>
 				<Tab text="Pembayaran">
 					<content>
 						<GridPane prefHeight="293.0" prefWidth="622.0">
 							<columnConstraints>
-								<ColumnConstraints hgrow="SOMETIMES" maxWidth="156.0" minWidth="10.0" prefWidth="27.0" />
-								<ColumnConstraints hgrow="SOMETIMES" maxWidth="712.0" minWidth="10.0" prefWidth="712.0" />
-								<ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="0.0" prefWidth="42.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="156.0"
+									minWidth="10.0" prefWidth="27.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="712.0"
+									minWidth="10.0" prefWidth="712.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0"
+									minWidth="0.0" prefWidth="42.0" />
 							</columnConstraints>
 							<rowConstraints>
-								<RowConstraints maxHeight="232.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
-								<RowConstraints maxHeight="263.0" minHeight="10.0" prefHeight="128.0" vgrow="SOMETIMES" />
-								<RowConstraints maxHeight="263.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
-								<RowConstraints maxHeight="263.0" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="232.0" minHeight="10.0"
+									prefHeight="45.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="263.0" minHeight="10.0"
+									prefHeight="128.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="263.0" minHeight="10.0"
+									prefHeight="32.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="263.0" minHeight="10.0"
+									prefHeight="63.0" vgrow="SOMETIMES" />
 							</rowConstraints>
 							<children>
-								<GridPane prefHeight="121.0" prefWidth="600.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+								<GridPane prefHeight="121.0" prefWidth="600.0"
+									GridPane.columnIndex="1" GridPane.rowIndex="1">
 									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-										<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											minWidth="10.0" prefWidth="100.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											minWidth="10.0" prefWidth="100.0" />
 									</columnConstraints>
 									<rowConstraints>
-										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0"
+											vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
-										<TableView fx:id="coursesPaymentTabTableView" prefHeight="121.0" prefWidth="231.0" GridPane.columnIndex="1">
+										<TableView fx:id="coursesPaymentTabTableView"
+											prefHeight="121.0" prefWidth="231.0" GridPane.columnIndex="1">
 											<columns>
-												<TableColumn fx:id="coursePaymentTabTableColumn" prefWidth="299.0" text="Pelajaran" />
+												<TableColumn fx:id="coursePaymentTabTableColumn"
+													prefWidth="299.0" text="Pelajaran" />
 											</columns>
 											<GridPane.margin>
 												<Insets bottom="8.0" />
@@ -54,20 +74,29 @@
 										</TableView>
 										<GridPane>
 											<columnConstraints>
-												<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+												<ColumnConstraints hgrow="SOMETIMES"
+													minWidth="10.0" prefWidth="100.0" />
 											</columnConstraints>
 											<rowConstraints>
-												<RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
-												<RowConstraints maxHeight="56.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-												<RowConstraints maxHeight="45.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="35.0" minHeight="10.0"
+													prefHeight="25.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="56.0" minHeight="10.0"
+													prefHeight="50.0" vgrow="SOMETIMES" />
+												<RowConstraints maxHeight="45.0" minHeight="10.0"
+													prefHeight="41.0" vgrow="SOMETIMES" />
 											</rowConstraints>
 											<children>
-												<ComboBox fx:id="coursesPaymentTabComboBox" editable="true" onAction="#handleChoosingCoursesComboBox" prefHeight="26.0" prefWidth="347.0" promptText="Mata Kuliah" GridPane.rowIndex="2">
+												<ComboBox fx:id="coursesPaymentTabComboBox"
+													editable="true" onAction="#handleChoosingCoursesComboBox"
+													prefHeight="26.0" prefWidth="347.0" promptText="Mata Kuliah"
+													GridPane.rowIndex="2">
 													<GridPane.margin>
 														<Insets right="10.0" />
 													</GridPane.margin>
 												</ComboBox>
-												<TextField fx:id="paymentValueTabPaymentTextField" prefHeight="26.0" prefWidth="147.0" promptText="jumlah" GridPane.rowIndex="1">
+												<TextField fx:id="paymentValueTabPaymentTextField"
+													prefHeight="26.0" prefWidth="147.0" promptText="jumlah"
+													GridPane.rowIndex="1">
 													<opaqueInsets>
 														<Insets />
 													</opaqueInsets>
@@ -75,7 +104,8 @@
 														<Insets right="10.0" />
 													</GridPane.margin>
 												</TextField>
-												<TextField fx:id="classTabPaymentTextField" promptText="kelas">
+												<TextField fx:id="classTabPaymentTextField"
+													promptText="kelas">
 													<GridPane.margin>
 														<Insets right="10.0" />
 													</GridPane.margin>
@@ -84,21 +114,29 @@
 										</GridPane>
 									</children>
 								</GridPane>
-								<Button mnemonicParsing="false" onAction="#handleSubmitPaymentButton" text="Simpan" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+								<Button mnemonicParsing="false" onAction="#handleSubmitPaymentButton"
+									text="Simpan" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 								<GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
 									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="233.0" minWidth="10.0" prefWidth="40.0" />
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="672.0" minWidth="10.0" prefWidth="672.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="233.0" minWidth="10.0" prefWidth="40.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="672.0" minWidth="10.0" prefWidth="672.0" />
 									</columnConstraints>
 									<rowConstraints>
-										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0"
+											vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
-										<Button mnemonicParsing="false" onAction="#handleChoosingImageButton" prefHeight="26.0" prefWidth="93.0" text="..." />
-										<TextField fx:id="paymentReceiptPathTextField" prefHeight="25.0" prefWidth="444.0" GridPane.columnIndex="1" />
+										<Button mnemonicParsing="false" onAction="#handleChoosingImageButton"
+											prefHeight="26.0" prefWidth="93.0" text="..." />
+										<TextField fx:id="paymentReceiptPathTextField"
+											prefHeight="25.0" prefWidth="444.0" GridPane.columnIndex="1" />
 									</children>
 								</GridPane>
-								<TextField fx:id="npmPaymentTabTextField" onKeyReleased="#handleTypingNpm" promptText="npm" GridPane.columnIndex="1" />
+								<TextField fx:id="npmPaymentTabTextField"
+									onKeyReleased="#handleTypingNpm" promptText="npm"
+									GridPane.columnIndex="1" />
 							</children>
 						</GridPane>
 					</content>
@@ -107,67 +145,100 @@
 					<content>
 						<GridPane>
 							<columnConstraints>
-								<ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0" minWidth="1.0" prefWidth="1.0" />
-								<ColumnConstraints hgrow="SOMETIMES" maxWidth="847.0" minWidth="10.0" prefWidth="847.0" />
-								<ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="0.0" prefWidth="0.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0"
+									minWidth="1.0" prefWidth="1.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="847.0"
+									minWidth="10.0" prefWidth="847.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0"
+									minWidth="0.0" prefWidth="0.0" />
 							</columnConstraints>
 							<rowConstraints>
-								<RowConstraints maxHeight="94.0" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
-								<RowConstraints maxHeight="194.0" minHeight="10.0" prefHeight="139.0" vgrow="SOMETIMES" />
-								<RowConstraints maxHeight="194.0" minHeight="0.0" prefHeight="31.0" vgrow="SOMETIMES" />
-								<RowConstraints maxHeight="124.0" minHeight="2.0" prefHeight="40.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="94.0" minHeight="10.0"
+									prefHeight="55.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="194.0" minHeight="10.0"
+									prefHeight="139.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="194.0" minHeight="0.0"
+									prefHeight="31.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="124.0" minHeight="2.0"
+									prefHeight="40.0" vgrow="SOMETIMES" />
 							</rowConstraints>
 							<children>
-								<TableView fx:id="studentPaymentTableView" prefHeight="138.0" prefWidth="829.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+								<TableView fx:id="studentPaymentTableView" prefHeight="138.0"
+									prefWidth="829.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
 									<columns>
-										<TableColumn fx:id="studentNumberTableColumn" prefWidth="150.0" text="NPM" />
-										<TableColumn fx:id="courseNumberTableColumn" prefWidth="230.0" text="Kode MK" />
-										<TableColumn fx:id="studentClassTableColumn" prefWidth="206.0" text="kelas" />
-										<TableColumn fx:id="paymentDateTimeTableColumn" prefWidth="146.0" text="waktu bayar" />
-										<TableColumn fx:id="studentGradeTableColumn" minWidth="0.0" prefWidth="114.0" text="nilai" />
+										<TableColumn fx:id="studentNumberTableColumn"
+											prefWidth="150.0" text="NPM" />
+										<TableColumn fx:id="courseNumberTableColumn"
+											prefWidth="230.0" text="Kode MK" />
+										<TableColumn fx:id="studentClassTableColumn"
+											prefWidth="206.0" text="kelas" />
+										<TableColumn fx:id="paymentDateTimeTableColumn"
+											prefWidth="146.0" text="waktu bayar" />
+										<TableColumn fx:id="studentGradeTableColumn"
+											minWidth="0.0" prefWidth="114.0" text="nilai" />
 									</columns>
 									<contextMenu>
 										<ContextMenu>
 											<items>
-												<MenuItem mnemonicParsing="false" onAction="#handleDisplayingPaymentReceipt" text="lihat struk" />
-												<MenuItem mnemonicParsing="false" onAction="#handleUpdatingGrade" text="perbaharui nilai" />
+												<MenuItem mnemonicParsing="false"
+													onAction="#handleDisplayingPaymentReceipt" text="lihat struk" />
+												<MenuItem mnemonicParsing="false" onAction="#handleUpdatingGrade"
+													text="perbaharui nilai" />
 											</items>
 										</ContextMenu>
 									</contextMenu>
 								</TableView>
 								<GridPane GridPane.columnIndex="1">
 									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											minWidth="10.0" prefWidth="100.0" />
 									</columnConstraints>
 									<rowConstraints>
-										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0"
+											vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
-										<TextField fx:id="studentNumberFilteredTabStudent" onKeyReleased="#handleFilteringByStudentNumber" promptText="npm" />
+										<TextField fx:id="studentNumberFilteredTabStudent"
+											onKeyReleased="#handleFilteringByStudentNumber" promptText="npm" />
 									</children>
 								</GridPane>
 								<GridPane GridPane.columnIndex="1" GridPane.rowIndex="3">
 									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="211.0" minWidth="10.0" prefWidth="174.0" />
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="232.0" minWidth="10.0" prefWidth="205.0" />
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="264.0" minWidth="10.0" prefWidth="219.0" />
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="267.0" minWidth="10.0" prefWidth="140.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="211.0" minWidth="10.0" prefWidth="174.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="232.0" minWidth="10.0" prefWidth="205.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="264.0" minWidth="10.0" prefWidth="219.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="267.0" minWidth="10.0" prefWidth="140.0" />
 									</columnConstraints>
 									<rowConstraints>
-										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0"
+											vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
-										<ComboBox fx:id="filteredCourseNameComboBox" onAction="#handleFilteringByCourseName" prefHeight="26.0" prefWidth="157.0" promptText="Matakuliah" />
-										<ComboBox fx:id="studentClassTabStudentComboBox" onAction="#handleFilteringByClass" prefHeight="26.0" prefWidth="180.0" promptText="Kelas" GridPane.columnIndex="1" />
-										<ComboBox fx:id="filteredStudentPaymentBySemesterComboBox" onAction="#handleFilteringBySemester" prefHeight="26.0" prefWidth="161.0" promptText="semester" GridPane.columnIndex="3">
+										<ComboBox fx:id="filteredCourseNameComboBox"
+											onAction="#handleFilteringByCourseName" prefHeight="26.0"
+											prefWidth="157.0" promptText="Matakuliah" />
+										<ComboBox fx:id="studentClassTabStudentComboBox"
+											onAction="#handleFilteringByClass" prefHeight="26.0"
+											prefWidth="180.0" promptText="Kelas" GridPane.columnIndex="1" />
+										<ComboBox fx:id="filteredStudentPaymentBySemesterComboBox"
+											onAction="#handleFilteringBySemester" prefHeight="26.0"
+											prefWidth="161.0" promptText="semester" GridPane.columnIndex="3">
 											<GridPane.margin>
 												<Insets />
 											</GridPane.margin>
 										</ComboBox>
-										<DatePicker fx:id="filteredStudentPaymentDatePicker" onAction="#handleFilteringByDate" prefHeight="26.0" prefWidth="184.0" GridPane.columnIndex="2" />
+										<DatePicker fx:id="filteredStudentPaymentDatePicker"
+											onAction="#handleFilteringByDate" prefHeight="26.0"
+											prefWidth="184.0" GridPane.columnIndex="2" />
 									</children>
 								</GridPane>
-								<Button mnemonicParsing="false" onAction="#handleReportingButton" prefHeight="26.0" prefWidth="158.0" text="Lapor" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+								<Button mnemonicParsing="false" onAction="#handleReportingButton"
+									prefHeight="26.0" prefWidth="158.0" text="Lapor"
+									GridPane.columnIndex="1" GridPane.rowIndex="2" />
 							</children>
 						</GridPane>
 					</content>
@@ -176,49 +247,65 @@
 					<content>
 						<GridPane prefHeight="282.0" prefWidth="789.0">
 							<columnConstraints>
-								<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+								<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+									prefWidth="100.0" />
 							</columnConstraints>
 							<rowConstraints>
-								<RowConstraints maxHeight="174.0" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-								<RowConstraints maxHeight="203.0" minHeight="10.0" prefHeight="178.0" vgrow="SOMETIMES" />
-								<RowConstraints maxHeight="197.0" minHeight="0.0" prefHeight="47.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="174.0" minHeight="10.0"
+									prefHeight="35.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="203.0" minHeight="10.0"
+									prefHeight="178.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="197.0" minHeight="0.0"
+									prefHeight="47.0" vgrow="SOMETIMES" />
 							</rowConstraints>
 							<children>
-								<TableView fx:id="labAssistantAttendanceTableView" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+								<TableView fx:id="labAssistantAttendanceTableView"
+									prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
 									<columns>
-										<TableColumn fx:id="studentNumberLabAssistantTableColumn" prefWidth="431.0" text="npm" />
-										<TableColumn fx:id="studentAttendanceLabAsstTableColumn" prefWidth="363.0" text="waktu kehadiran" />
+										<TableColumn fx:id="studentNumberLabAssistantTableColumn"
+											prefWidth="431.0" text="npm" />
+										<TableColumn fx:id="studentAttendanceLabAsstTableColumn"
+											prefWidth="363.0" text="waktu kehadiran" />
 									</columns>
 									<GridPane.margin>
 										<Insets left="10.0" right="10.0" />
 									</GridPane.margin>
 								</TableView>
-								<Button mnemonicParsing="false" prefHeight="26.0" prefWidth="157.0" text="Lapor" GridPane.rowIndex="2">
+								<Button mnemonicParsing="false" prefHeight="26.0"
+									prefWidth="157.0" text="Lapor" GridPane.rowIndex="2">
 									<GridPane.margin>
 										<Insets left="10.0" />
 									</GridPane.margin>
 								</Button>
 								<GridPane>
 									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="552.0" minWidth="10.0" prefWidth="552.0" />
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="391.0" minWidth="10.0" prefWidth="181.0" />
-										<ColumnConstraints hgrow="SOMETIMES" maxWidth="391.0" minWidth="10.0" prefWidth="186.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="552.0" minWidth="10.0" prefWidth="552.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="391.0" minWidth="10.0" prefWidth="181.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="391.0" minWidth="10.0" prefWidth="186.0" />
 									</columnConstraints>
 									<rowConstraints>
-										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0"
+											vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
-										<TextField fx:id="studentNumberAsstTabTextField" onKeyReleased="#handleTypingNpmOnLabAsstTab" promptText="npm">
+										<TextField fx:id="studentNumberAsstTabTextField"
+											onKeyReleased="#handleTypingNpmOnLabAsstTab" promptText="npm">
 											<GridPane.margin>
 												<Insets left="10.0" right="10.0" />
 											</GridPane.margin>
 										</TextField>
-										<DatePicker prefHeight="26.0" prefWidth="388.0" GridPane.columnIndex="2">
+										<DatePicker fx:id="labAsstAttendanceDatePicker"
+											onAction="#handleFilteringLabAsstByAttendance" prefHeight="26.0"
+											prefWidth="388.0" GridPane.columnIndex="2">
 											<GridPane.margin>
 												<Insets right="10.0" />
 											</GridPane.margin>
 										</DatePicker>
-										<ComboBox fx:id="filteredAndAddedComboBox" onAction="#handleTypingNpmOnLabAsstTab" prefWidth="150.0" GridPane.columnIndex="1" />
+										<ComboBox fx:id="filteredAndAddedComboBox" onAction="#handleTypingNpmOnLabAsstTab"
+											prefWidth="150.0" GridPane.columnIndex="1" />
 									</children>
 								</GridPane>
 							</children>
@@ -227,7 +314,8 @@
 				</Tab>
 			</tabs>
 		</TabPane>
-		<MenuBar maxHeight="-Infinity" maxWidth="1.7976931348623157E308" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+		<MenuBar maxHeight="-Infinity" maxWidth="1.7976931348623157E308"
+			GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
 			<menus>
 				<Menu mnemonicParsing="false" text="File">
 					<items>
@@ -236,7 +324,8 @@
 				</Menu>
 				<Menu mnemonicParsing="false" text="Edit">
 					<items>
-						<MenuItem mnemonicParsing="false" onAction="#handleSettingMenu" text="Setting" />
+						<MenuItem mnemonicParsing="false" onAction="#handleSettingMenu"
+							text="Setting" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Help">

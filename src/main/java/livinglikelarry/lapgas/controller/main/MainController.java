@@ -129,11 +129,16 @@ public class MainController implements Initializable {
 	@FXML
 	private TableColumn<LabAssistantAttendanceTableModel, Timestamp> studentAttendanceLabAsstTableColumn;
 
+	@FXML
+	private DatePicker labAsstAttendanceDatePicker;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
 
 	private ArrayList<StudentPaymentTableModel> noFilteredStudentPaymentList;
+
+	private ArrayList<LabAssistantAttendanceTableModel> noFilteredLabAsstAttendance;
 
 	private static final String UNLA_IF_STUD_NUM_PATTERN = "4115505\\d{7}";
 
@@ -344,6 +349,15 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
+	public void handleFilteringLabAsstByAttendance() {
+		loadAllLabAsstAttendances();
+		this.labAssistantAttendanceTableView.getItems()
+				.setAll(this.labAssistantAttendanceTableView.getItems().stream().filter(x -> x.getStudentAttendance()
+						.toLocalDateTime().toLocalDate().equals(this.labAsstAttendanceDatePicker.getValue()))
+				.collect(Collectors.toList()));
+	}
+
+	@FXML
 	public void handleTypingNpmOnLabAsstTab() {
 		String selectedMode = this.filteredAndAddedComboBox.getValue();
 		String studentNumber = this.studentNumberAsstTabTextField.getText();
@@ -378,10 +392,9 @@ public class MainController implements Initializable {
 					this.studentNumberAsstTabTextField.clear();
 				}
 			} else {
-				System.out.println("mode filter");
+				System.out.println("filter");
 			}
 		}
-
 	}
 
 	private void loadAllLabAsstAttendances() {
@@ -392,6 +405,7 @@ public class MainController implements Initializable {
 									(Timestamp) x.get("created_at")))
 							.collect(Collectors.toList()));
 		});
+		this.noFilteredLabAsstAttendance = new ArrayList<>(this.labAssistantAttendanceTableView.getItems());
 	}
 
 	@FXML
