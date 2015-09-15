@@ -13,9 +13,9 @@ import org.apache.commons.io.FilenameUtils;
 
 import javafx.collections.ObservableList;
 import livinglikelarry.lapgas.Configurator;
-import livinglikelarry.lapgas.model.Course;
-import livinglikelarry.lapgas.model.CoursesTableModel;
-import livinglikelarry.lapgas.model.StudentPayment;
+import livinglikelarry.lapgas.model.sql.Course;
+import livinglikelarry.lapgas.model.sql.StudentPayment;
+import livinglikelarry.lapgas.model.table.CoursesTableModel;
 
 /**
  * 

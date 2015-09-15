@@ -11,8 +11,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import livinglikelarry.lapgas.Configurator;
-import livinglikelarry.lapgas.model.StudentPayment;
-import livinglikelarry.lapgas.model.StudentPaymentTableModel;
+import livinglikelarry.lapgas.model.sql.StudentPayment;
+import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
 
 public class StudentGradingController implements Initializable {
 

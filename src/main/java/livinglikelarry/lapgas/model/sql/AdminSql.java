@@ -1,8 +1,10 @@
-package livinglikelarry.lapgas.model;
+package livinglikelarry.lapgas.model.sql;
 
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.DbName;
 import org.javalite.activejdbc.annotations.Table;
+
+import livinglikelarry.lapgas.model.Admin;
 
 /**
  * 

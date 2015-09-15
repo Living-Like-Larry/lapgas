@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import livinglikelarry.lapgas.AdminAuth;
 import livinglikelarry.lapgas.model.Admin;
-import livinglikelarry.lapgas.model.AdminSql;
+import livinglikelarry.lapgas.model.sql.AdminSql;
 
 public class AdminAuthTest {
 

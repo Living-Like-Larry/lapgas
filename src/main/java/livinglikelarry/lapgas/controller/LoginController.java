@@ -17,7 +17,7 @@ import livinglikelarry.lapgas.AdminAuth;
 import livinglikelarry.lapgas.Configurator;
 import livinglikelarry.lapgas.controller.main.MainController;
 import livinglikelarry.lapgas.model.Admin;
-import livinglikelarry.lapgas.model.AdminSql;
+import livinglikelarry.lapgas.model.sql.AdminSql;
 
 /**
  * 

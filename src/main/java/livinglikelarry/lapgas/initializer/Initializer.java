@@ -35,6 +35,7 @@ public class Initializer {
 			Base.exec("USE lapgas");
 			Base.exec(Configurator.table("courses"));
 			Base.exec(Configurator.table("student_payments"));
+			Base.exec(Configurator.table("lab_assistant"));
 			Base.exec(Configurator.table("lab_assistant_attendances"));
 		}
 

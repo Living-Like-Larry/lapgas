@@ -10,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import livinglikelarry.lapgas.controller.LoginController;
-import livinglikelarry.lapgas.model.AdminSql;
+import livinglikelarry.lapgas.model.sql.AdminSql;
 
 /**
  * Main class for lapgas

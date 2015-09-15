@@ -31,10 +31,10 @@ import livinglikelarry.lapgas.Configurator;
 import livinglikelarry.lapgas.controller.SettingController;
 import livinglikelarry.lapgas.controller.StudentGradingController;
 import livinglikelarry.lapgas.controller.StudentPaymentController;
-import livinglikelarry.lapgas.model.Course;
-import livinglikelarry.lapgas.model.CoursesTableModel;
-import livinglikelarry.lapgas.model.StudentPayment;
-import livinglikelarry.lapgas.model.StudentPaymentTableModel;
+import livinglikelarry.lapgas.model.sql.Course;
+import livinglikelarry.lapgas.model.sql.StudentPayment;
+import livinglikelarry.lapgas.model.table.CoursesTableModel;
+import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
 import javafx.stage.Stage;
 
 /**
@@ -61,18 +61,6 @@ public class MainController implements Initializable {
 
 	@FXML
 	private Button reportModeButton;
-
-	@FXML
-	private ComboBox<String> classReportTabComboBox;
-
-	@FXML
-	private ComboBox<String> coursesReportTabComboBox;
-
-	@FXML
-	private ComboBox<Integer> semesterReportTabComboBox;
-
-	@FXML
-	private TextField studentNumReportTabTextField;
 
 	@FXML
 	private TextField classTabPaymentTextField;
@@ -110,7 +98,6 @@ public class MainController implements Initializable {
 
 		this.coursePaymentTabTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
 		this.coursesPaymentTabTableView.getColumns().setAll(Arrays.asList(this.coursePaymentTabTableColumn));
-		this.semesterReportTabComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
 		loadAllCourseNames(this.coursesPaymentTabComboBox);
 
 		this.studentNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
@@ -277,20 +264,6 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	public void handleReportButton() {
-		ReportTabUtil reportTabUtil = new ReportTabUtil();
-
-		String course = this.coursesReportTabComboBox.getValue();
-		String studentClass = this.classReportTabComboBox.getValue();
-		int semester = this.semesterReportTabComboBox.getValue();
-		if (this.reportModeButton.getText().equalsIgnoreCase("semua")) {
-			reportTabUtil.reportAll(course, studentClass, semester);
-		} else {
-			reportTabUtil.reportBasedOn(this.studentNumReportTabTextField.getText(), course, studentClass, semester);
-		}
-	}
-
-	@FXML
 	public void handleUpdatingGrade() {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -299,7 +272,8 @@ public class MainController implements Initializable {
 			final StudentPaymentTableModel selectedStudentPayment = this.studentPaymentTableView.getSelectionModel()
 					.getSelectedItem();
 			studentGradingController.setGrade(selectedStudentPayment.getId(), selectedStudentPayment.getStudentGrade());
-			studentGradingController.setStudentPaymentTableView(this.studentPaymentTableView, this::loadAllStudentPayment);
+			studentGradingController.setStudentPaymentTableView(this.studentPaymentTableView,
+					this::loadAllStudentPayment);
 			Stage stage = new Stage();
 			stage.setScene(new Scene(root));
 			stage.show();

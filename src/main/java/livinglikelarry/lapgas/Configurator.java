@@ -21,7 +21,7 @@ public final class Configurator {
 
 	private static final String VIEW_BASE_PATH = "livinglikelarry/lapgas/resource/view/";
 	private static final String VIEW_EXT = ".fxml";
-	private static final String TABLE_BASE_PATH = "livinglikelarry/lapgas/resource/table/";
+	private static final String TABLE_BASE_PATH = "livinglikelarry/lapgas/resource/sql/";
 	private static final String CONFIG_DIR = ".lapgas-config/";
 	private static final String SQL_CONFIG = CONFIG_DIR + "sql.config";
 	public static final String PIC_PATH = CONFIG_DIR + "pic/";

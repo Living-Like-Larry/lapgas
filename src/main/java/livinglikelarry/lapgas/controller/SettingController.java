@@ -14,8 +14,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import livinglikelarry.lapgas.Configurator;
-import livinglikelarry.lapgas.model.Course;
-import livinglikelarry.lapgas.model.CoursesTableModel;
+import livinglikelarry.lapgas.model.sql.Course;
+import livinglikelarry.lapgas.model.table.CoursesTableModel;
 
 public class SettingController implements Initializable {
 	@FXML

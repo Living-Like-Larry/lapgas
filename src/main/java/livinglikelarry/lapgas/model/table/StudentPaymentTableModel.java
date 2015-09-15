@@ -1,4 +1,4 @@
-package livinglikelarry.lapgas.model;
+package livinglikelarry.lapgas.model.table;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;

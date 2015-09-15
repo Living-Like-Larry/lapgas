@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.javalite.activejdbc.Base;
 
 import livinglikelarry.lapgas.Configurator;
-import livinglikelarry.lapgas.model.StudentPayment;
+import livinglikelarry.lapgas.model.sql.StudentPayment;
 
 public class StudentPaymentTest {
 	public static void main(String[] args) throws IOException {
