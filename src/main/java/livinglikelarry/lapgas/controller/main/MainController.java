@@ -106,6 +106,9 @@ public class MainController implements Initializable {
 	@FXML
 	private ComboBox<String> studentClassTabStudentComboBox;
 
+	@FXML
+	private ComboBox<String> filteredCourseNameComboBox;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
@@ -137,14 +140,17 @@ public class MainController implements Initializable {
 
 	private void loadAllStudentPayment(TableView<StudentPaymentTableModel> studentPaymentTableView) {
 		Configurator.doDBACtion(() -> {
-			studentPaymentTableView.getItems().setAll(StudentPayment.findAll().stream()
-					.map(x -> new StudentPaymentTableModel((long) x.getId(), (String) x.get("student_number"),
-							(String) x.get("course_number"), (String) x.get("class"), (Timestamp) x.get("created_at"),
-							new BigDecimal((long) x.get("payment_value")), (String) x.get("payment_receipt"),
-							(String) x.get("grade")))
-					.collect(Collectors.toList()));
+			studentPaymentTableView.getItems().setAll(StudentPayment.findAll().stream().map(x -> {
+				Model course = Course.findById((String) x.get("course_number"));
+				return new StudentPaymentTableModel((long) x.getId(), (String) x.get("student_number"),
+						(String) x.get("course_number"), (String) x.get("class"), (Timestamp) x.get("created_at"),
+						new BigDecimal((long) x.get("payment_value")), (String) x.get("payment_receipt"),
+						(String) x.get("grade"), (String) course.get("name"));
+			}).collect(Collectors.toList()));
 			this.studentClassTabStudentComboBox.getItems().setAll(this.studentPaymentTableView.getItems().stream()
 					.map(x -> x.getStudentClass()).distinct().collect(Collectors.toList()));
+			this.filteredCourseNameComboBox.getItems().setAll(this.studentPaymentTableView.getItems().stream()
+					.map(x -> x.getCourseName()).distinct().collect(Collectors.toList()));
 		});
 		this.noFilteredStudentPaymentList = new ArrayList<>(this.studentPaymentTableView.getItems());
 		System.out.println(noFilteredStudentPaymentList);
@@ -299,7 +305,11 @@ public class MainController implements Initializable {
 			alert.setContentText("Perhatian ! Tidak boleh ada satupun kolom yang di kosongkan !");
 			alert.showAndWait();
 		}
+	}
 
+	@FXML
+	public void handleFilteringByCourseName() {
+		doFiltering(() -> filterBasedOn(x -> x.getCourseName().equals(filteredCourseNameComboBox.getValue())));
 	}
 
 	@FXML

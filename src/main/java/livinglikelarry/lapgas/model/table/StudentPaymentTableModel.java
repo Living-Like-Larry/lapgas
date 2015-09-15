@@ -20,7 +20,7 @@ public class StudentPaymentTableModel {
 	private String courseName;
 
 	public StudentPaymentTableModel(long id, String studentNumber, String courseNumber, String studentClass,
-			Timestamp timestamp, BigDecimal paymentValue, String paymentReceiptFilePath, String grade) {
+			Timestamp timestamp, BigDecimal paymentValue, String paymentReceiptFilePath, String grade, String courseName) {
 
 		this.setId(id);
 		this.studentNumber = new SimpleStringProperty(studentNumber);
@@ -30,6 +30,7 @@ public class StudentPaymentTableModel {
 		this.setPaymentValue(paymentValue);
 		this.setPaymentReceiptFilePath(paymentReceiptFilePath);
 		this.studentGrade = new SimpleStringProperty(grade);
+		this.courseName = courseName;
 	}
 
 	public StudentPaymentTableModel(long id, String studentNumber, String courseNumber, String studentClass,

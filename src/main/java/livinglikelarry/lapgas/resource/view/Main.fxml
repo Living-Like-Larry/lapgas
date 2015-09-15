@@ -218,8 +218,9 @@
 											vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
-										<ComboBox prefHeight="26.0" prefWidth="157.0"
-											promptText="Matakuliah" />
+										<ComboBox fx:id="filteredCourseNameComboBox"
+											onAction="#handleFilteringByCourseName" prefHeight="26.0"
+											prefWidth="157.0" promptText="Matakuliah" />
 										<ComboBox fx:id="studentClassTabStudentComboBox"
 											onAction="#handleFilteringByClass" prefHeight="26.0"
 											prefWidth="180.0" promptText="Kelas" GridPane.columnIndex="1" />
