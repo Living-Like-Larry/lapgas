@@ -10,6 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.javalite.activejdbc.Model;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -94,6 +97,9 @@ public class MainController implements Initializable {
 	@FXML
 	private DatePicker filteredStudentPaymentDatePicker;
 
+	@FXML
+	private ComboBox<Integer> filteredStudentPaymentBySemesterComboBox;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
@@ -117,6 +123,8 @@ public class MainController implements Initializable {
 						this.paymentDateTimeTableColumn, this.courseNumberTableColumn, this.studentGradeTableColumn));
 
 		loadAllStudentPayment(this.studentPaymentTableView);
+
+		this.filteredStudentPaymentBySemesterComboBox.getItems().setAll(1, 2, 3, 4, 5, 6, 7, 8);
 
 		paymentTabUtil = new PaymentTabUtil();
 	}
@@ -186,6 +194,22 @@ public class MainController implements Initializable {
 		}
 		System.out.println("filtering by date");
 		System.out.println(this.filteredStudentPaymentDatePicker.getValue());
+	}
+
+	@FXML
+	public void handleFilteringBySemester() {
+
+		if (this.studentPaymentTableView.getItems().isEmpty()) {
+			this.studentPaymentTableView.getItems().setAll(new ArrayList<>(this.noFilteredStudentPaymentList));
+		} else {
+			Configurator.doDBACtion(() -> {
+				Stream<StudentPaymentTableModel> stream = studentPaymentTableView.getItems().stream().filter(p -> {
+					Model course = Course.findById(p.getCourseNumber());
+					return this.filteredStudentPaymentBySemesterComboBox.getValue() == ((int) course.get("semester"));
+				});
+				this.studentPaymentTableView.getItems().setAll(stream.collect(Collectors.toList()));
+			});
+		}
 	}
 
 	@FXML

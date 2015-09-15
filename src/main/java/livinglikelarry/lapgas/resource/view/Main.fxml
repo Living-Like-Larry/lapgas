@@ -9,7 +9,7 @@
 <?import javafx.scene.control.TextField?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-	minWidth="-Infinity" prefHeight="336.0" prefWidth="783.0"
+	minWidth="-Infinity" prefHeight="336.0" prefWidth="859.0"
 	xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="livinglikelarry.lapgas.controller.main.MainController">
 	<columnConstraints>
@@ -146,9 +146,9 @@
 						<GridPane>
 							<columnConstraints>
 								<ColumnConstraints hgrow="SOMETIMES" maxWidth="144.0"
-									minWidth="10.0" prefWidth="11.0" />
-								<ColumnConstraints hgrow="SOMETIMES" maxWidth="756.0"
-									minWidth="10.0" prefWidth="755.0" />
+									minWidth="1.0" prefWidth="1.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="847.0"
+									minWidth="10.0" prefWidth="847.0" />
 								<ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0"
 									minWidth="0.0" prefWidth="0.0" />
 							</columnConstraints>
@@ -163,19 +163,19 @@
 									prefHeight="40.0" vgrow="SOMETIMES" />
 							</rowConstraints>
 							<children>
-								<TableView fx:id="studentPaymentTableView" prefHeight="145.0"
-									prefWidth="697.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+								<TableView fx:id="studentPaymentTableView" prefHeight="138.0"
+									prefWidth="829.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
 									<columns>
 										<TableColumn fx:id="studentNumberTableColumn"
 											prefWidth="150.0" text="NPM" />
 										<TableColumn fx:id="courseNumberTableColumn"
-											prefWidth="119.0" text="Kode MK" />
+											prefWidth="230.0" text="Kode MK" />
 										<TableColumn fx:id="studentClassTableColumn"
-											prefWidth="150.0" text="kelas" />
+											prefWidth="206.0" text="kelas" />
 										<TableColumn fx:id="paymentDateTimeTableColumn"
-											prefWidth="223.0" text="waktu bayar" />
+											prefWidth="146.0" text="waktu bayar" />
 										<TableColumn fx:id="studentGradeTableColumn"
-											prefWidth="110.0" text="nilai" />
+											minWidth="0.0" prefWidth="114.0" text="nilai" />
 									</columns>
 									<contextMenu>
 										<ContextMenu>
@@ -220,12 +220,11 @@
 									<children>
 										<ComboBox fx:id="classReportTabComboBox1" prefHeight="26.0"
 											prefWidth="157.0" promptText="Matakuliah" />
-										<ComboBox fx:id="coursesReportTabComboBox1"
-											prefHeight="26.0" prefWidth="180.0" promptText="Kelas"
-											GridPane.columnIndex="1" />
-										<ComboBox fx:id="semesterReportTabComboBox1"
-											prefHeight="26.0" prefWidth="161.0" promptText="semester"
-											GridPane.columnIndex="3">
+										<ComboBox prefHeight="26.0" prefWidth="180.0"
+											promptText="Kelas" GridPane.columnIndex="1" />
+										<ComboBox fx:id="filteredStudentPaymentBySemesterComboBox"
+											onAction="#handleFilteringBySemester" prefHeight="26.0"
+											prefWidth="161.0" promptText="semester" GridPane.columnIndex="3">
 											<GridPane.margin>
 												<Insets />
 											</GridPane.margin>
