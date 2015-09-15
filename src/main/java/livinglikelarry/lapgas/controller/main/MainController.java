@@ -20,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -90,6 +91,9 @@ public class MainController implements Initializable {
 	@FXML
 	private TableColumn<StudentPaymentTableModel, String> studentGradeTableColumn;
 
+	@FXML
+	private DatePicker filteredStudentPaymentDatePicker;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
@@ -158,15 +162,30 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleFilteringByStudentNumber() {
 		final String filteredStudentNumber = this.studentNumberFilteredTabStudent.getText();
-		System.out.println(filteredStudentNumber);
-		System.out.println(this.noFilteredStudentPaymentList);
 		if (!filteredStudentNumber.equals("")) {
-			this.studentPaymentTableView.getItems().setAll(this.noFilteredStudentPaymentList.stream()
-					.filter(x -> x.getStudentNumber().matches(filteredStudentNumber + "\\d*")).collect(Collectors.toList()));
+			this.studentPaymentTableView.getItems()
+					.setAll(this.noFilteredStudentPaymentList.stream()
+							.filter(x -> x.getStudentNumber().matches(filteredStudentNumber + "\\d*"))
+							.collect(Collectors.toList()));
 			System.out.println("not \"\"");
 		} else {
 			this.studentPaymentTableView.getItems().setAll(new ArrayList<>(this.noFilteredStudentPaymentList));
 		}
+	}
+
+	@FXML
+	public void handleFilteringByDate() {
+		if (this.studentPaymentTableView.getItems().isEmpty()) {
+			this.studentPaymentTableView.getItems().setAll(this.noFilteredStudentPaymentList);
+		} else {
+			this.studentPaymentTableView.getItems()
+					.setAll(this.studentPaymentTableView.getItems().stream()
+							.filter(x -> x.getPaymentDateTime().toLocalDateTime().toLocalDate()
+									.equals(this.filteredStudentPaymentDatePicker.getValue()))
+					.collect(Collectors.toList()));
+		}
+		System.out.println("filtering by date");
+		System.out.println(this.filteredStudentPaymentDatePicker.getValue());
 	}
 
 	@FXML

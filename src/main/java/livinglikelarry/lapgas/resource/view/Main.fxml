@@ -16,6 +16,7 @@
 		<ColumnConstraints hgrow="ALWAYS" minWidth="10.0"
 			prefWidth="100.0" />
 	</columnConstraints>
+
 	<rowConstraints>
 		<RowConstraints maxHeight="40.0" minHeight="9.0"
 			prefHeight="40.0" vgrow="NEVER" />
@@ -217,18 +218,21 @@
 											vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
-										<ComboBox prefHeight="26.0" prefWidth="157.0"
-											promptText="Matakuliah" />
-										<ComboBox prefHeight="26.0" prefWidth="180.0"
-											promptText="Kelas" GridPane.columnIndex="1" />
-										<ComboBox prefHeight="26.0" prefWidth="161.0"
-											promptText="semester" GridPane.columnIndex="3">
+										<ComboBox fx:id="classReportTabComboBox1" prefHeight="26.0"
+											prefWidth="157.0" promptText="Matakuliah" />
+										<ComboBox fx:id="coursesReportTabComboBox1"
+											prefHeight="26.0" prefWidth="180.0" promptText="Kelas"
+											GridPane.columnIndex="1" />
+										<ComboBox fx:id="semesterReportTabComboBox1"
+											prefHeight="26.0" prefWidth="161.0" promptText="semester"
+											GridPane.columnIndex="3">
 											<GridPane.margin>
 												<Insets />
 											</GridPane.margin>
 										</ComboBox>
-										<DatePicker prefHeight="26.0" prefWidth="184.0"
-											GridPane.columnIndex="2" />
+										<DatePicker fx:id="filteredStudentPaymentDatePicker"
+											onAction="#handleFilteringByDate" prefHeight="26.0"
+											prefWidth="184.0" GridPane.columnIndex="2" />
 									</children>
 								</GridPane>
 								<Button mnemonicParsing="false" prefHeight="26.0"
