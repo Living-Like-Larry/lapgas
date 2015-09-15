@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -69,7 +70,7 @@ public class MainController implements Initializable {
 	private TextField paymentValueTabPaymentTextField;
 
 	@FXML
-	private TextField studentPatternTabStudentTextField;
+	private TextField studentNumberFilteredTabStudent;
 
 	@FXML
 	private TableView<StudentPaymentTableModel> studentPaymentTableView;
@@ -92,6 +93,8 @@ public class MainController implements Initializable {
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
+
+	private ArrayList<StudentPaymentTableModel> noFilteredStudentPaymentList;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -123,6 +126,8 @@ public class MainController implements Initializable {
 							(String) x.get("grade")))
 					.collect(Collectors.toList()));
 		});
+		this.noFilteredStudentPaymentList = new ArrayList<>(this.studentPaymentTableView.getItems());
+		System.out.println(noFilteredStudentPaymentList);
 	}
 
 	private void loadAllCourseNames(ComboBox<String> coursesPaymentComboBox) {
@@ -151,6 +156,20 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
+	public void handleFilteringByStudentNumber() {
+		final String filteredStudentNumber = this.studentNumberFilteredTabStudent.getText();
+		System.out.println(filteredStudentNumber);
+		System.out.println(this.noFilteredStudentPaymentList);
+		if (!filteredStudentNumber.equals("")) {
+			this.studentPaymentTableView.getItems().setAll(this.noFilteredStudentPaymentList.stream()
+					.filter(x -> x.getStudentNumber().matches(filteredStudentNumber + "\\d*")).collect(Collectors.toList()));
+			System.out.println("not \"\"");
+		} else {
+			this.studentPaymentTableView.getItems().setAll(new ArrayList<>(this.noFilteredStudentPaymentList));
+		}
+	}
+
+	@FXML
 	public void handleSettingMenu() {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
@@ -162,16 +181,6 @@ public class MainController implements Initializable {
 			stage.showAndWait();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-	}
-
-	@FXML
-	public void handleTypingPatternStudentTab() {
-		String pattern = this.studentPatternTabStudentTextField.getText();
-		if (pattern != null) {
-			Configurator.doDBACtion(() -> {
-				StudentPayment.findAll().stream();
-			});
 		}
 	}
 
