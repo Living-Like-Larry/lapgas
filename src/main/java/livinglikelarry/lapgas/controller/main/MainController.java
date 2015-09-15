@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -39,8 +41,11 @@ import livinglikelarry.lapgas.controller.SettingController;
 import livinglikelarry.lapgas.controller.StudentGradingController;
 import livinglikelarry.lapgas.controller.StudentPaymentController;
 import livinglikelarry.lapgas.model.sql.Course;
+import livinglikelarry.lapgas.model.sql.LabAssistant;
+import livinglikelarry.lapgas.model.sql.LabAssistantAttendance;
 import livinglikelarry.lapgas.model.sql.StudentPayment;
 import livinglikelarry.lapgas.model.table.CoursesTableModel;
+import livinglikelarry.lapgas.model.table.LabAssistantAttendanceTableModel;
 import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import javafx.stage.Stage;
@@ -101,6 +106,9 @@ public class MainController implements Initializable {
 	private DatePicker filteredStudentPaymentDatePicker;
 
 	@FXML
+	private TextField studentNumberAsstTabTextField;
+
+	@FXML
 	private ComboBox<Integer> filteredStudentPaymentBySemesterComboBox;
 
 	@FXML
@@ -109,11 +117,25 @@ public class MainController implements Initializable {
 	@FXML
 	private ComboBox<String> filteredCourseNameComboBox;
 
+	@FXML
+	private ComboBox<String> filteredAndAddedComboBox;
+
+	@FXML
+	private TableView<LabAssistantAttendanceTableModel> labAssistantAttendanceTableView;
+
+	@FXML
+	private TableColumn<LabAssistantAttendanceTableModel, String> studentNumberLabAssistantTableColumn;
+
+	@FXML
+	private TableColumn<LabAssistantAttendanceTableModel, Timestamp> studentAttendanceLabAsstTableColumn;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
 
 	private ArrayList<StudentPaymentTableModel> noFilteredStudentPaymentList;
+
+	private static final String UNLA_IF_STUD_NUM_PATTERN = "4115505\\d{7}";
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -131,11 +153,21 @@ public class MainController implements Initializable {
 				.setAll(Arrays.asList(this.studentNumberTableColumn, this.studentClassTableColumn,
 						this.paymentDateTimeTableColumn, this.courseNumberTableColumn, this.studentGradeTableColumn));
 
+		this.studentNumberLabAssistantTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
+		this.studentAttendanceLabAsstTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentAttendance"));
+
+		this.labAssistantAttendanceTableView.getColumns().setAll(
+				Arrays.asList(this.studentNumberLabAssistantTableColumn, this.studentAttendanceLabAsstTableColumn));
+
 		loadAllStudentPayment(this.studentPaymentTableView);
+
+		this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
 
 		this.filteredStudentPaymentBySemesterComboBox.getItems().setAll(1, 2, 3, 4, 5, 6, 7, 8);
 
 		paymentTabUtil = new PaymentTabUtil();
+
+		loadAllLabAsstAttendances();
 	}
 
 	private void loadAllStudentPayment(TableView<StudentPaymentTableModel> studentPaymentTableView) {
@@ -247,9 +279,8 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleTypingNpm() {
 
-		final String UNLA_IF_STUD_NUM_PATTERN = "4115505\\d{7}";
 		String studentNumber = this.npmPaymentTabTextField.getText();
-		if (studentNumber.matches(UNLA_IF_STUD_NUM_PATTERN)) {
+		if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
 			Configurator.doDBACtion(() -> {
 				List<String> courses = paymentTabUtil.getCourses(studentNumber);
 				if (courses != null) {
@@ -310,6 +341,57 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleFilteringByCourseName() {
 		doFiltering(() -> filterBasedOn(x -> x.getCourseName().equals(filteredCourseNameComboBox.getValue())));
+	}
+
+	@FXML
+	public void handleTypingNpmOnLabAsstTab() {
+		String selectedMode = this.filteredAndAddedComboBox.getValue();
+		String studentNumber = this.studentNumberAsstTabTextField.getText();
+		if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
+			if (selectedMode == null) {
+				System.out.println("null");
+
+			} else if (selectedMode.equals("absen!")) {
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setContentText("Anda yakin npm ini yang dimaksud ? npm -> " + studentNumber);
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get().getText().equalsIgnoreCase("ok")) {
+					System.out.println("ok");
+					this.studentNumberAsstTabTextField.clear();
+				} else {
+					System.out.println("batal");
+				}
+
+				if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
+					Configurator.doDBACtion(() -> {
+						Model labAssistant = LabAssistant.findById((String) studentNumber);
+						if (labAssistant != null) {
+							LabAssistantAttendance labAssistantAttendance = new LabAssistantAttendance();
+							labAssistantAttendance.set("student_number", studentNumber).saveIt();
+						} else {
+							Alert alertNotLabAsst = new Alert(AlertType.WARNING);
+							alertNotLabAsst.setContentText("npm ini tidak terdaftar sebagai ASLAB!");
+							alertNotLabAsst.showAndWait();
+						}
+					});
+					loadAllLabAsstAttendances();
+					this.studentNumberAsstTabTextField.clear();
+				}
+			} else {
+				System.out.println("mode filter");
+			}
+		}
+
+	}
+
+	private void loadAllLabAsstAttendances() {
+		Configurator.doDBACtion(() -> {
+			this.labAssistantAttendanceTableView.getItems()
+					.setAll(LabAssistantAttendance.findAll().stream()
+							.map(x -> new LabAssistantAttendanceTableModel((String) x.get("student_number"),
+									(Timestamp) x.get("created_at")))
+							.collect(Collectors.toList()));
+		});
 	}
 
 	@FXML
