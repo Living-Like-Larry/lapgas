@@ -15,7 +15,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import livinglikelarry.lapgas.Configurator;
 import livinglikelarry.lapgas.model.sql.Course;
+import livinglikelarry.lapgas.model.sql.LabAssistant;
 import livinglikelarry.lapgas.model.table.CoursesTableModel;
+import livinglikelarry.lapgas.model.table.LabAssistantTableModel;
 
 public class SettingController implements Initializable {
 	@FXML
@@ -39,6 +41,15 @@ public class SettingController implements Initializable {
 	@FXML
 	private ComboBox<Integer> semesterComboBox;
 
+	@FXML
+	private TableView<LabAssistantTableModel> labAssistantTableView;
+
+	@FXML
+	private TableColumn<LabAssistantTableModel, String> labAsstStudentNumberTableColumn;
+
+	@FXML
+	private TextField labAsstStudentNumberTextField;
+
 	private ComboBox<String> coursesPaymentComboBox;
 
 	private Consumer<ComboBox<String>> coursePaymentComboBoxConsumer;
@@ -50,10 +61,14 @@ public class SettingController implements Initializable {
 		this.courseNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseNumber"));
 		this.courseTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
 		this.semesterTableColumn.setCellValueFactory(new PropertyValueFactory<>("semester"));
-
 		this.courseTableView.getColumns()
 				.setAll(Arrays.asList(this.courseNumberTableColumn, this.courseTableColumn, this.semesterTableColumn));
+
+		this.labAsstStudentNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
+		this.labAssistantTableView.getColumns().setAll(Arrays.asList(this.labAsstStudentNumberTableColumn));
+
 		loadAllCourses();
+		loadAllLabAssistant();
 
 	}
 
@@ -89,6 +104,21 @@ public class SettingController implements Initializable {
 			Consumer<ComboBox<String>> coursePaymentComboBoxConsumer) {
 		this.coursesPaymentComboBox = coursesPaymentComboBox;
 		this.coursePaymentComboBoxConsumer = coursePaymentComboBoxConsumer;
+	}
+
+	private void loadAllLabAssistant() {
+		Configurator.doDBACtion(() -> {
+			this.labAssistantTableView.getItems().setAll(LabAssistant.findAll().stream()
+					.map(x -> new LabAssistantTableModel((String) x.getId())).collect(Collectors.toList()));
+		});
+	}
+
+	@FXML
+	public void handleAddingNewLabAssistant() {
+		Configurator.doDBACtion(() -> {
+			new LabAssistant().set("student_number", (String) this.labAsstStudentNumberTextField.getText()).insert();
+		});
+		loadAllLabAssistant();
 	}
 
 }

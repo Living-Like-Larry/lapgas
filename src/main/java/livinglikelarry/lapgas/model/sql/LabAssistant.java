@@ -7,7 +7,7 @@ import org.javalite.activejdbc.annotations.Table;
 
 
 @DbName("lapgas")
-@Table("lab_assistant")
+@Table("lab_assistants")
 @IdName("student_number")
 public class LabAssistant extends Model {
 
