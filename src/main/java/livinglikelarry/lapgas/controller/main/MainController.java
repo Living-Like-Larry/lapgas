@@ -185,25 +185,28 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleFilteringByDate() {
-		if (this.studentPaymentTableView.getItems().isEmpty()) {
-			this.studentPaymentTableView.getItems().setAll(this.noFilteredStudentPaymentList);
-		} else {
+		doFiltering(() -> {
 			this.studentPaymentTableView.getItems()
 					.setAll(this.studentPaymentTableView.getItems().stream()
 							.filter(x -> x.getPaymentDateTime().toLocalDateTime().toLocalDate()
 									.equals(this.filteredStudentPaymentDatePicker.getValue()))
 					.collect(Collectors.toList()));
-		}
+		});
 		System.out.println("filtering by date");
 		System.out.println(this.filteredStudentPaymentDatePicker.getValue());
 	}
 
-	@FXML
-	public void handleFilteringBySemester() {
-
+	private void doFiltering(Runnable filteringRunnable) {
 		if (this.studentPaymentTableView.getItems().isEmpty()) {
 			this.studentPaymentTableView.getItems().setAll(new ArrayList<>(this.noFilteredStudentPaymentList));
 		} else {
+			filteringRunnable.run();
+		}
+	}
+
+	@FXML
+	public void handleFilteringBySemester() {
+		doFiltering(() -> {
 			Configurator.doDBACtion(() -> {
 				Stream<StudentPaymentTableModel> stream = studentPaymentTableView.getItems().stream().filter(p -> {
 					Model course = Course.findById(p.getCourseNumber());
@@ -211,7 +214,7 @@ public class MainController implements Initializable {
 				});
 				this.studentPaymentTableView.getItems().setAll(stream.collect(Collectors.toList()));
 			});
-		}
+		});
 	}
 
 	@FXML
@@ -296,7 +299,6 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleReportingButton() {
 		Configurator.doDBACtion(() -> {
-
 			try {
 				Collection<?> studentPayment = this.studentPaymentTableView.getItems().stream().map(x -> {
 					Model course = Course.findById(x.getCourseNumber());
