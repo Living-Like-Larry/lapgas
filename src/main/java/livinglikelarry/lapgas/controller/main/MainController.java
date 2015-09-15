@@ -7,6 +7,7 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -40,6 +41,7 @@ import livinglikelarry.lapgas.model.sql.Course;
 import livinglikelarry.lapgas.model.sql.StudentPayment;
 import livinglikelarry.lapgas.model.table.CoursesTableModel;
 import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
+import net.sf.dynamicreports.report.builder.DynamicReports;
 import javafx.stage.Stage;
 
 /**
@@ -289,6 +291,37 @@ public class MainController implements Initializable {
 			alert.showAndWait();
 		}
 
+	}
+
+	@FXML
+	public void handleReportingButton() {
+		Configurator.doDBACtion(() -> {
+
+			try {
+				Collection<?> studentPayment = this.studentPaymentTableView.getItems().stream().map(x -> {
+					Model course = Course.findById(x.getCourseNumber());
+					int studentSemester = (int) course.get("semester");
+					String courseName = (String) course.get("name");
+					return new StudentPaymentTableModel(x.getId(), x.getStudentNumber(), x.getCourseNumber(),
+							x.getStudentClass(), x.getPaymentDateTime(), x.getPaymentValue(),
+							x.getPaymentReceiptFilePath(), x.getStudentGrade(), studentSemester, courseName);
+				}).collect(Collectors.toList());
+
+				DynamicReports.report()
+						.columns(DynamicReports.col.column("npm", "studentNumber", DynamicReports.type.stringType()),
+								DynamicReports.col.column("matakuliah", "courseName", DynamicReports.type.stringType()),
+								DynamicReports.col.column("nilai", "studentGrade", DynamicReports.type.stringType()),
+								DynamicReports.col.column("jumlah bayar", "paymentValue",
+										DynamicReports.type.bigDecimalType()),
+						DynamicReports.col.column("waktu membayar", "paymentDate", DynamicReports.type.dateType()),
+						DynamicReports.col.column("Kelas", "studentClass", DynamicReports.type.stringType()),
+						DynamicReports.col.column("semester", "studentSemester", DynamicReports.type.integerType()))
+						.setDataSource(studentPayment).show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		});
 	}
 
 	@FXML

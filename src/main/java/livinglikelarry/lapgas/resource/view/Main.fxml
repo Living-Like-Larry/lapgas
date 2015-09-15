@@ -218,8 +218,8 @@
 											vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
-										<ComboBox fx:id="classReportTabComboBox1" prefHeight="26.0"
-											prefWidth="157.0" promptText="Matakuliah" />
+										<ComboBox prefHeight="26.0" prefWidth="157.0"
+											promptText="Matakuliah" />
 										<ComboBox prefHeight="26.0" prefWidth="180.0"
 											promptText="Kelas" GridPane.columnIndex="1" />
 										<ComboBox fx:id="filteredStudentPaymentBySemesterComboBox"
@@ -236,7 +236,7 @@
 								</GridPane>
 								<Button mnemonicParsing="false" prefHeight="26.0"
 									prefWidth="158.0" text="Lapor" GridPane.columnIndex="1"
-									GridPane.rowIndex="2" />
+									GridPane.rowIndex="2" onAction="#handleReportingButton" />
 							</children>
 						</GridPane>
 					</content>
