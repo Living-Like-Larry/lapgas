@@ -178,15 +178,12 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleFilteringByStudentNumber() {
 		final String filteredStudentNumber = this.studentNumberFilteredTabStudent.getText();
-		if (!filteredStudentNumber.equals("")) {
-			this.studentPaymentTableView.getItems()
-					.setAll(this.noFilteredStudentPaymentList.stream()
-							.filter(x -> x.getStudentNumber().matches(filteredStudentNumber + "\\d*"))
-							.collect(Collectors.toList()));
-			System.out.println("not \"\"");
-		} else {
-			this.studentPaymentTableView.getItems().setAll(new ArrayList<>(this.noFilteredStudentPaymentList));
-		}
+
+		this.studentPaymentTableView.getItems().setAll(new ArrayList<>(this.noFilteredStudentPaymentList));
+		this.studentPaymentTableView.getItems()
+				.setAll(this.noFilteredStudentPaymentList.stream()
+						.filter(x -> x.getStudentNumber().matches(filteredStudentNumber + "\\d*"))
+						.collect(Collectors.toList()));
 	}
 
 	@FXML
@@ -203,11 +200,8 @@ public class MainController implements Initializable {
 	}
 
 	private void doFiltering(Runnable filteringRunnable) {
-		if (this.studentPaymentTableView.getItems().isEmpty()) {
-			this.studentPaymentTableView.getItems().setAll(new ArrayList<>(this.noFilteredStudentPaymentList));
-		} else {
-			filteringRunnable.run();
-		}
+		this.studentPaymentTableView.getItems().setAll(new ArrayList<>(this.noFilteredStudentPaymentList));
+		filteringRunnable.run();
 	}
 
 	@FXML
