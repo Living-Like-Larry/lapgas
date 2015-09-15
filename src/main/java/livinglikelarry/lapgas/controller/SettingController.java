@@ -56,7 +56,7 @@ public class SettingController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		this.semesterComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9);
+		this.semesterComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
 
 		this.courseNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseNumber"));
 		this.courseTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));

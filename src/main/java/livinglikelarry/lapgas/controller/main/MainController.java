@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -102,6 +103,9 @@ public class MainController implements Initializable {
 	@FXML
 	private ComboBox<Integer> filteredStudentPaymentBySemesterComboBox;
 
+	@FXML
+	private ComboBox<String> studentClassTabStudentComboBox;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
@@ -139,6 +143,8 @@ public class MainController implements Initializable {
 							new BigDecimal((long) x.get("payment_value")), (String) x.get("payment_receipt"),
 							(String) x.get("grade")))
 					.collect(Collectors.toList()));
+			this.studentClassTabStudentComboBox.getItems().setAll(this.studentPaymentTableView.getItems().stream()
+					.map(x -> x.getStudentClass()).distinct().collect(Collectors.toList()));
 		});
 		this.noFilteredStudentPaymentList = new ArrayList<>(this.studentPaymentTableView.getItems());
 		System.out.println(noFilteredStudentPaymentList);
@@ -186,14 +192,14 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleFilteringByDate() {
 		doFiltering(() -> {
-			this.studentPaymentTableView.getItems()
-					.setAll(this.studentPaymentTableView.getItems().stream()
-							.filter(x -> x.getPaymentDateTime().toLocalDateTime().toLocalDate()
-									.equals(this.filteredStudentPaymentDatePicker.getValue()))
-					.collect(Collectors.toList()));
+			filterBasedOn(x -> x.getPaymentDateTime().toLocalDateTime().toLocalDate()
+					.equals(this.filteredStudentPaymentDatePicker.getValue()));
 		});
-		System.out.println("filtering by date");
-		System.out.println(this.filteredStudentPaymentDatePicker.getValue());
+	}
+
+	private void filterBasedOn(Predicate<StudentPaymentTableModel> predicate) {
+		this.studentPaymentTableView.getItems().setAll(
+				this.studentPaymentTableView.getItems().stream().filter(predicate).collect(Collectors.toList()));
 	}
 
 	private void doFiltering(Runnable filteringRunnable) {
@@ -202,6 +208,12 @@ public class MainController implements Initializable {
 		} else {
 			filteringRunnable.run();
 		}
+	}
+
+	@FXML
+	public void handleFilteringByClass() {
+		doFiltering(
+				() -> filterBasedOn(x -> x.getStudentClass().equals(this.studentClassTabStudentComboBox.getValue())));
 	}
 
 	@FXML
