@@ -30,7 +30,7 @@ public class AboutController implements Initializable {
 
 	@FXML
 	public void handleDeveloperButton() {
-		this.aboutTextArea.setText("Moch Deden (htpp://github.com/seledepselesnul)\nRabani ()\nRiki");
+		this.aboutTextArea.setText("Moch Deden (htpp://github.com/seledepselesnul)\nRabani (http://github.com/fsckgrep3)\nRiki (http://github.com/riki49)");
 	}
 	
 	@FXML

@@ -15,7 +15,8 @@
 			layoutY="215.0" prefHeight="25.0" prefWidth="297.0" />
 		<Button layoutX="423.0" layoutY="215.0" mnemonicParsing="false"
 			onAction="#handleLoginButton" text="login" />
-		<ImageView fitHeight="150.0" fitWidth="344.0" layoutX="128.0"
-			layoutY="47.0" pickOnBounds="true" preserveRatio="true" />
+		<ImageView fx:id="loginImageView" fitHeight="150.0"
+			fitWidth="344.0" layoutX="128.0" layoutY="47.0" pickOnBounds="true"
+			preserveRatio="true" />
 	</children>
 </AnchorPane>

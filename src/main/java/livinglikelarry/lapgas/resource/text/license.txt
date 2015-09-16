@@ -1,5 +1,5 @@
-    Lapgas is app for handling task for lab assistant
-    Copyright (C) 2015  
+    Lapgas is Lab payment and grading system
+    Copyright (C) 2015  Living-Like-Larry
     (https://github.com/Living-Like-Larry/lapgas.git)
 
     This program is free software: you can redistribute it and/or modify

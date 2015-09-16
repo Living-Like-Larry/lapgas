@@ -362,21 +362,24 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleTypingNpmOnLabAsstTab() {
-		String selectedMode = this.filteredAndAddedComboBox.getSelectionModel().getSelectedItem();
-		String studentNumber = this.studentNumberAsstTabTextField.getText();
-		if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
-			if (selectedMode == null) {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setContentText("pilih salahsatu untuk melakukan absensi atau filterisasi");
-				alert.showAndWait();
-			} else if (selectedMode.equals("absen!")) {
+		final String selectedMode = this.filteredAndAddedComboBox.getSelectionModel().getSelectedItem();
+		final String studentNumber = this.studentNumberAsstTabTextField.getText();
+		if (selectedMode != null) {
+			if (selectedMode.equals("filter")) {
+
+				this.labAssistantAttendanceTableView.getItems()
+						.setAll(new ArrayList<>(this.noFilteredLabAsstAttendance));
+				this.labAssistantAttendanceTableView.getItems()
+						.setAll(this.noFilteredLabAsstAttendance.stream()
+								.filter(x -> x.getStudentNumber().matches(studentNumber + "\\d*"))
+								.collect(Collectors.toList()));
+			} else
+				if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN) && selectedMode.equals("absen!")) {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setContentText("Anda yakin npm ini yang dimaksud ? npm -> " + studentNumber);
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get().getText().equalsIgnoreCase("ok")) {
-					System.out.println("ok");
 					this.studentNumberAsstTabTextField.clear();
-
 					if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
 						Configurator.doDBACtion(() -> {
 							Model labAssistant = LabAssistant.findById((String) studentNumber);
@@ -393,14 +396,12 @@ public class MainController implements Initializable {
 						this.studentNumberAsstTabTextField.clear();
 					}
 				}
-			} else {
-				loadAllLabAsstAttendances();
-				this.labAssistantAttendanceTableView.getItems()
-						.setAll(this.labAssistantAttendanceTableView.getItems().stream()
-								.filter(x -> x.getStudentNumber()
-										.matches(this.studentNumberAsstTabTextField.getText() + "\\d*"))
-						.collect(Collectors.toList()));
+
 			}
+		} else {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setContentText("pilih salah satu Mode!");
+			alert.showAndWait();
 		}
 	}
 
@@ -434,8 +435,9 @@ public class MainController implements Initializable {
 						.columns(DynamicReports.col.column("npm", "studentNumber", DynamicReports.type.stringType()),
 								DynamicReports.col.column("matakuliah", "courseName", DynamicReports.type.stringType()),
 								DynamicReports.col.column("nilai", "studentGrade", DynamicReports.type.stringType()),
-								DynamicReports.col.column("jumlah bayar", "paymentValue",
-										DynamicReports.type.bigDecimalType()),
+								DynamicReports.col
+										.column("jumlah bayar", "paymentValue", DynamicReports.type.bigDecimalType())
+										.setValueFormatter(Templates.createCurrencyValueFormatter("")),
 								DynamicReports.col.column("waktu membayar", "paymentDate",
 										DynamicReports.type.dateType()),
 								DynamicReports.col.column("Kelas", "studentClass", DynamicReports.type.stringType()),
