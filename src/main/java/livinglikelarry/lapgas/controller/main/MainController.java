@@ -364,8 +364,9 @@ public class MainController implements Initializable {
 		String studentNumber = this.studentNumberAsstTabTextField.getText();
 		if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
 			if (selectedMode == null) {
-				System.out.println("null");
-
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setContentText("pilih salahsatu untuk melakukan absensi atau filterisasi");
+				alert.showAndWait();
 			} else if (selectedMode.equals("absen!")) {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setContentText("Anda yakin npm ini yang dimaksud ? npm -> " + studentNumber);
@@ -391,7 +392,11 @@ public class MainController implements Initializable {
 					}
 				}
 			} else {
-				System.out.println("filter");
+				loadAllLabAsstAttendances();
+				this.labAssistantAttendanceTableView.getItems().setAll(this.labAssistantAttendanceTableView.getItems().stream()
+						.filter(x -> x.getStudentNumber()
+								.matches(this.studentNumberAsstTabTextField.getText() + "\\d*"))
+						.collect(Collectors.toList()));
 			}
 		}
 	}
