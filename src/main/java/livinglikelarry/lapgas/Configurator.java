@@ -27,6 +27,7 @@ public final class Configurator {
 	private static final String SQL_CONFIG = CONFIG_DIR + "sql.config";
 	public static final String PIC_PATH = CONFIG_DIR + "pic/";
 	private static final String IMAGE_BASE_PATH = "livinglikelarry/lapgas/resource/image/";
+	private static final String TEXT_BASE_PATH = "livinglikelarry/lapgas/resource/text/";
 	private static Properties properties;
 
 	static {
@@ -48,7 +49,7 @@ public final class Configurator {
 	public static InputStream view(String view) {
 		return ClassLoader.getSystemResourceAsStream(VIEW_BASE_PATH + view + VIEW_EXT);
 	}
-	
+
 	public static URL image(String image) {
 		return ClassLoader.getSystemResource(IMAGE_BASE_PATH + image);
 	}
@@ -106,6 +107,14 @@ public final class Configurator {
 				Configurator.properties("main.username"), Configurator.properties("main.password"));
 		actionRunnable.run();
 		lapgasDB.close();
+	}
+
+	public static String text(String text) throws IOException {
+		InputStream systemRes = ClassLoader.getSystemResourceAsStream(TEXT_BASE_PATH + text + ".txt");
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(systemRes));
+		String textToDisplaying = bufferedReader.lines().collect(Collectors.joining("\n"));
+		bufferedReader.close();
+		return textToDisplaying;
 	}
 
 }

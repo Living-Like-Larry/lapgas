@@ -285,7 +285,6 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleTypingNpm() {
-
 		String studentNumber = this.npmPaymentTabTextField.getText();
 		if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
 			Configurator.doDBACtion(() -> {
@@ -361,7 +360,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleTypingNpmOnLabAsstTab() {
-		String selectedMode = this.filteredAndAddedComboBox.getValue();
+		String selectedMode = this.filteredAndAddedComboBox.getSelectionModel().getSelectedItem();
 		String studentNumber = this.studentNumberAsstTabTextField.getText();
 		if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
 			if (selectedMode == null) {
@@ -394,9 +393,10 @@ public class MainController implements Initializable {
 				}
 			} else {
 				loadAllLabAsstAttendances();
-				this.labAssistantAttendanceTableView.getItems().setAll(this.labAssistantAttendanceTableView.getItems().stream()
-						.filter(x -> x.getStudentNumber()
-								.matches(this.studentNumberAsstTabTextField.getText() + "\\d*"))
+				this.labAssistantAttendanceTableView.getItems()
+						.setAll(this.labAssistantAttendanceTableView.getItems().stream()
+								.filter(x -> x.getStudentNumber()
+										.matches(this.studentNumberAsstTabTextField.getText() + "\\d*"))
 						.collect(Collectors.toList()));
 			}
 		}
@@ -426,24 +426,38 @@ public class MainController implements Initializable {
 							x.getPaymentReceiptFilePath(), x.getStudentGrade(), studentSemester, courseName);
 				}).collect(Collectors.toList());
 
-				DynamicReports.report()
-			        .setTemplate(Templates.reportTemplate)
-			        .title(Templates.createTitleComponent("Praktek Mahasiswa"))
-			        .pageFooter(Templates.footerComponent)
-					.columns(DynamicReports.col.column("npm", "studentNumber", DynamicReports.type.stringType()),
+				DynamicReports.report().setTemplate(Templates.reportTemplate)
+						.title(Templates.createTitleComponent("Praktek Mahasiswa"))
+						.pageFooter(Templates.footerComponent)
+						.columns(DynamicReports.col.column("npm", "studentNumber", DynamicReports.type.stringType()),
 								DynamicReports.col.column("matakuliah", "courseName", DynamicReports.type.stringType()),
 								DynamicReports.col.column("nilai", "studentGrade", DynamicReports.type.stringType()),
 								DynamicReports.col.column("jumlah bayar", "paymentValue",
 										DynamicReports.type.bigDecimalType()),
-						DynamicReports.col.column("waktu membayar", "paymentDate", DynamicReports.type.dateType()),
-						DynamicReports.col.column("Kelas", "studentClass", DynamicReports.type.stringType()),
-						DynamicReports.col.column("semester", "studentSemester", DynamicReports.type.integerType()))
+								DynamicReports.col.column("waktu membayar", "paymentDate",
+										DynamicReports.type.dateType()),
+								DynamicReports.col.column("Kelas", "studentClass", DynamicReports.type.stringType()),
+								DynamicReports.col.column("semester", "studentSemester",
+										DynamicReports.type.integerType()))
 						.setDataSource(studentPayment).show(false);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
 		});
+	}
+
+	@FXML
+	public void handleAboutButton() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			AnchorPane root = (AnchorPane) fxmlLoader.load(Configurator.view("About"));
+			Stage stage = new Stage();
+			stage.setScene(new Scene(root));
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -464,10 +478,8 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleReportingLabAsstAttendance() {
 		try {
-			DynamicReports.report()
-			        .setTemplate(Templates.reportTemplate)
-			        .title(Templates.createTitleComponent("Absensi Asisten Lab"))
-			        .pageFooter(Templates.footerComponent)
+			DynamicReports.report().setTemplate(Templates.reportTemplate)
+					.title(Templates.createTitleComponent("Absensi Asisten Lab")).pageFooter(Templates.footerComponent)
 					.columns(DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
 							DynamicReports.col.column("tgl hadir", "studentAttendanceDate",
 									DynamicReports.type.dateType()))
@@ -481,7 +493,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleChoosingCoursesComboBox() {
-		String selectedCourse = this.coursesPaymentTabComboBox.getValue();
+		String selectedCourse = this.coursesPaymentTabComboBox.getSelectionModel().getSelectedItem();
 		if (selectedCourse != null) {
 			this.coursesPaymentTabTableView.getItems().add(new CoursesTableModel(selectedCourse));
 			this.coursesPaymentTabComboBox.getItems().remove(selectedCourse);
