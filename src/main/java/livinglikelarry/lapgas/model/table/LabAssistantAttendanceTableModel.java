@@ -1,5 +1,6 @@
 package livinglikelarry.lapgas.model.table;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -13,6 +14,10 @@ public class LabAssistantAttendanceTableModel {
 	public LabAssistantAttendanceTableModel(String studentNumber, Timestamp studentAttendance) {
 		this.studentNumber = new SimpleStringProperty(studentNumber);
 		this.studentAttendance = new SimpleObjectProperty<>(studentAttendance);
+	}
+
+	public Date getStudentAttendanceDate() {
+		return Date.valueOf(this.studentAttendance.get().toLocalDateTime().toLocalDate());
 	}
 
 	public final SimpleObjectProperty<Timestamp> studentAttendanceProperty() {

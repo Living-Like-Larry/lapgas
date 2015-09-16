@@ -48,6 +48,7 @@ import livinglikelarry.lapgas.model.table.CoursesTableModel;
 import livinglikelarry.lapgas.model.table.LabAssistantAttendanceTableModel;
 import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
 import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.exception.DRException;
 import javafx.stage.Stage;
 
 /**
@@ -451,6 +452,21 @@ public class MainController implements Initializable {
 
 	public void setStage(Stage stage) {
 		this.stage = stage;
+	}
+
+	@FXML
+	public void handleReportingLabAsstAttendance() {
+		try {
+			DynamicReports.report()
+					.columns(
+							DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
+							DynamicReports.col.column("tgl hadir", "studentAttendanceDate", DynamicReports.type.dateType()))
+					.setDataSource(
+							this.labAssistantAttendanceTableView.getItems().stream().collect(Collectors.toList()))
+					.show(false);
+		} catch (DRException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
