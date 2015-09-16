@@ -373,24 +373,22 @@ public class MainController implements Initializable {
 				if (result.get().getText().equalsIgnoreCase("ok")) {
 					System.out.println("ok");
 					this.studentNumberAsstTabTextField.clear();
-				} else {
-					System.out.println("batal");
-				}
 
-				if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
-					Configurator.doDBACtion(() -> {
-						Model labAssistant = LabAssistant.findById((String) studentNumber);
-						if (labAssistant != null) {
-							LabAssistantAttendance labAssistantAttendance = new LabAssistantAttendance();
-							labAssistantAttendance.set("student_number", studentNumber).saveIt();
-						} else {
-							Alert alertNotLabAsst = new Alert(AlertType.WARNING);
-							alertNotLabAsst.setContentText("npm ini tidak terdaftar sebagai ASLAB!");
-							alertNotLabAsst.showAndWait();
-						}
-					});
-					loadAllLabAsstAttendances();
-					this.studentNumberAsstTabTextField.clear();
+					if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
+						Configurator.doDBACtion(() -> {
+							Model labAssistant = LabAssistant.findById((String) studentNumber);
+							if (labAssistant != null) {
+								LabAssistantAttendance labAssistantAttendance = new LabAssistantAttendance();
+								labAssistantAttendance.set("student_number", studentNumber).saveIt();
+							} else {
+								Alert alertNotLabAsst = new Alert(AlertType.WARNING);
+								alertNotLabAsst.setContentText("npm ini tidak terdaftar sebagai ASLAB!");
+								alertNotLabAsst.showAndWait();
+							}
+						});
+						loadAllLabAsstAttendances();
+						this.studentNumberAsstTabTextField.clear();
+					}
 				}
 			} else {
 				System.out.println("filter");
@@ -431,7 +429,7 @@ public class MainController implements Initializable {
 						DynamicReports.col.column("waktu membayar", "paymentDate", DynamicReports.type.dateType()),
 						DynamicReports.col.column("Kelas", "studentClass", DynamicReports.type.stringType()),
 						DynamicReports.col.column("semester", "studentSemester", DynamicReports.type.integerType()))
-						.setDataSource(studentPayment).show();
+						.setDataSource(studentPayment).show(false);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -458,9 +456,9 @@ public class MainController implements Initializable {
 	public void handleReportingLabAsstAttendance() {
 		try {
 			DynamicReports.report()
-					.columns(
-							DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
-							DynamicReports.col.column("tgl hadir", "studentAttendanceDate", DynamicReports.type.dateType()))
+					.columns(DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
+							DynamicReports.col.column("tgl hadir", "studentAttendanceDate",
+									DynamicReports.type.dateType()))
 					.setDataSource(
 							this.labAssistantAttendanceTableView.getItems().stream().collect(Collectors.toList()))
 					.show(false);
