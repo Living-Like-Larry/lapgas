@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -25,6 +26,7 @@ public final class Configurator {
 	private static final String CONFIG_DIR = ".lapgas-config/";
 	private static final String SQL_CONFIG = CONFIG_DIR + "sql.config";
 	public static final String PIC_PATH = CONFIG_DIR + "pic/";
+	private static final String IMAGE_BASE_PATH = "livinglikelarry/lapgas/resource/image/";
 	private static Properties properties;
 
 	static {
@@ -45,6 +47,10 @@ public final class Configurator {
 	 */
 	public static InputStream view(String view) {
 		return ClassLoader.getSystemResourceAsStream(VIEW_BASE_PATH + view + VIEW_EXT);
+	}
+	
+	public static URL image(String image) {
+		return ClassLoader.getSystemResource(IMAGE_BASE_PATH + image);
 	}
 
 	/**

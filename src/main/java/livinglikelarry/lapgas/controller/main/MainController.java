@@ -47,6 +47,7 @@ import livinglikelarry.lapgas.model.sql.StudentPayment;
 import livinglikelarry.lapgas.model.table.CoursesTableModel;
 import livinglikelarry.lapgas.model.table.LabAssistantAttendanceTableModel;
 import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
+import livinglikelarry.lapgas.resource.view.Templates;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.exception.DRException;
 import javafx.stage.Stage;
@@ -426,7 +427,10 @@ public class MainController implements Initializable {
 				}).collect(Collectors.toList());
 
 				DynamicReports.report()
-						.columns(DynamicReports.col.column("npm", "studentNumber", DynamicReports.type.stringType()),
+			        .setTemplate(Templates.reportTemplate)
+			        .title(Templates.createTitleComponent("Praktek Mahasiswa"))
+			        .pageFooter(Templates.footerComponent)
+					.columns(DynamicReports.col.column("npm", "studentNumber", DynamicReports.type.stringType()),
 								DynamicReports.col.column("matakuliah", "courseName", DynamicReports.type.stringType()),
 								DynamicReports.col.column("nilai", "studentGrade", DynamicReports.type.stringType()),
 								DynamicReports.col.column("jumlah bayar", "paymentValue",
@@ -461,6 +465,9 @@ public class MainController implements Initializable {
 	public void handleReportingLabAsstAttendance() {
 		try {
 			DynamicReports.report()
+			        .setTemplate(Templates.reportTemplate)
+			        .title(Templates.createTitleComponent("Absensi Asisten Lab"))
+			        .pageFooter(Templates.footerComponent)
 					.columns(DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
 							DynamicReports.col.column("tgl hadir", "studentAttendanceDate",
 									DynamicReports.type.dateType()))
