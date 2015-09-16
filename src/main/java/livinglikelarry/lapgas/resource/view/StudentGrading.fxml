@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
-	minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="80.0"
-	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="94.0"
+	xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="livinglikelarry.lapgas.controller.StudentGradingController">
 	<children>
-		<ComboBox fx:id="gradeComboBox" layoutY="2.0" prefHeight="36.0"
-			prefWidth="81.0" onAction="#handleUpdatingGrade"/>
+		<ComboBox fx:id="gradeComboBox" layoutX="7.0" layoutY="2.0"
+			onAction="#handleUpdatingGrade" prefHeight="36.0" prefWidth="81.0" />
 	</children>
 </AnchorPane>

@@ -214,6 +214,7 @@ public class MainController implements Initializable {
 			studentPaymentController.setPaymentValue(studentPayment.getPaymentValue());
 			Stage stage = new Stage();
 			stage.setScene(new Scene(root));
+			stage.setResizable(false);
 			stage.showAndWait();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -277,6 +278,7 @@ public class MainController implements Initializable {
 			settingController.setCoursesComboBox(this.coursesPaymentTabComboBox, this::loadAllCourseNames);
 			Stage stage = new Stage();
 			stage.setScene(new Scene(root));
+			stage.setResizable(false);
 			stage.showAndWait();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -454,6 +456,7 @@ public class MainController implements Initializable {
 			AnchorPane root = (AnchorPane) fxmlLoader.load(Configurator.view("About"));
 			Stage stage = new Stage();
 			stage.setScene(new Scene(root));
+			stage.setResizable(false);
 			stage.showAndWait();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -513,6 +516,7 @@ public class MainController implements Initializable {
 					this::loadAllStudentPayment);
 			Stage stage = new Stage();
 			stage.setScene(new Scene(root));
+			stage.setResizable(false);
 			stage.show();
 		} catch (IOException e) {
 			e.printStackTrace();

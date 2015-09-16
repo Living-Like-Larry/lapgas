@@ -33,6 +33,8 @@ public class Lapgas extends Application {
 			Scene scene = new Scene((AnchorPane) fxmlLoader.getRoot());
 			primaryStage.setScene(scene);
 			loginController.setStage(primaryStage);
+			primaryStage.setTitle("Login");
+			primaryStage.setResizable(false);
 			primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
