@@ -450,6 +450,15 @@ public class MainController implements Initializable {
 
 		});
 	}
+	
+	@FXML
+	public void handleDeletingChoosenCourseName() {
+		int selectedIndex = this.coursesPaymentTabTableView.getSelectionModel().getSelectedIndex();
+		if(selectedIndex != -1) {
+			this.coursesPaymentTabTableView.getItems().remove(selectedIndex);
+		}
+		
+	}
 
 	@FXML
 	public void handleAboutButton() {
