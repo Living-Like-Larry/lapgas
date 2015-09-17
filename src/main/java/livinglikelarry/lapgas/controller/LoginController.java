@@ -2,6 +2,7 @@ package livinglikelarry.lapgas.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -54,6 +55,7 @@ public class LoginController implements Initializable {
 		adminAuth.onSuccess(x -> {
 			try {
 				adminDB.close();
+				makeLapgasDB();
 
 				FXMLLoader fxmlLoader = new FXMLLoader();
 				GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Main"));
@@ -80,6 +82,34 @@ public class LoginController implements Initializable {
 
 	public void setAdminDB(DB adminDB) {
 		this.adminDB = adminDB;
+	}
+	
+	private static void makeLapgasDB() throws SQLException, IOException {
+		Configurator.doRawDBActionConsumer((x) -> {
+
+			try {
+				ResultSet resultSet = x.connection().createStatement().executeQuery("SHOW DATABASES");
+				boolean isFound = false;
+				while (resultSet.next()) {
+					if (resultSet.getString("Database").equalsIgnoreCase("lapgas")) {
+						isFound = true;
+						break;
+					}
+				}
+				if (!isFound) {
+					x.exec("CREATE DATABASE lapgas");
+					x.exec("USE lapgas");
+					x.exec(Configurator.table("courses"));
+					x.exec(Configurator.table("student_payments"));
+					x.exec(Configurator.table("lab_assistant"));
+					x.exec(Configurator.table("lab_assistant_attendances"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		});
+
 	}
 
 }

@@ -158,10 +158,12 @@ public class MainController implements Initializable {
 		this.studentGradeTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentGrade"));
 		this.studentPaymentTableView.getColumns()
 				.setAll(Arrays.asList(this.studentNumberTableColumn, this.studentClassTableColumn,
-						this.paymentDateTimeTableColumn, this.courseNumberTableColumn, this.studentGradeTableColumn));
+						this.paymentDateTimeTableColumn, this.courseNumberTableColumn,
+						this.studentGradeTableColumn));
 
 		this.studentNumberLabAssistantTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
-		this.studentAttendanceLabAsstTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentAttendance"));
+		this.studentAttendanceLabAsstTableColumn
+				.setCellValueFactory(new PropertyValueFactory<>("studentAttendance"));
 
 		this.labAssistantAttendanceTableView.getColumns().setAll(
 				Arrays.asList(this.studentNumberLabAssistantTableColumn, this.studentAttendanceLabAsstTableColumn));
@@ -450,14 +452,14 @@ public class MainController implements Initializable {
 
 		});
 	}
-	
+
 	@FXML
 	public void handleDeletingChoosenCourseName() {
 		int selectedIndex = this.coursesPaymentTabTableView.getSelectionModel().getSelectedIndex();
-		if(selectedIndex != -1) {
+		if (selectedIndex != -1) {
 			this.coursesPaymentTabTableView.getItems().remove(selectedIndex);
 		}
-		
+
 	}
 
 	@FXML
@@ -533,4 +535,7 @@ public class MainController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+
+	
+
 }

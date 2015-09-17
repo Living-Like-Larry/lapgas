@@ -55,5 +55,6 @@ public class Lapgas extends Application {
 			new AdminSql().set("password", "livinglikelarry").saveIt();
 		}
 	}
-
+	
+	
 }

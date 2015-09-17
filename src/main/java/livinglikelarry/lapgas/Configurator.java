@@ -8,6 +8,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.javalite.activejdbc.DB;
@@ -107,6 +108,15 @@ public final class Configurator {
 				Configurator.properties("main.username"), Configurator.properties("main.password"));
 		actionRunnable.run();
 		lapgasDB.close();
+	}
+
+	public static void doRawDBActionConsumer(Consumer<DB> actionConsumer) {
+		DB lapgasDB = new DB("lapgas");
+		lapgasDB.open(Configurator.properties("main.driver"), Configurator.properties("main.url"),
+				Configurator.properties("main.username"), Configurator.properties("main.password"));
+		actionConsumer.accept(lapgasDB);
+		lapgasDB.close();
+
 	}
 
 	public static String text(String text) throws IOException {
