@@ -50,6 +50,8 @@ import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
 import livinglikelarry.lapgas.resource.view.Templates;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.exception.DRException;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 import javafx.stage.Stage;
 
 /**
@@ -158,12 +160,10 @@ public class MainController implements Initializable {
 		this.studentGradeTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentGrade"));
 		this.studentPaymentTableView.getColumns()
 				.setAll(Arrays.asList(this.studentNumberTableColumn, this.studentClassTableColumn,
-						this.paymentDateTimeTableColumn, this.courseNumberTableColumn,
-						this.studentGradeTableColumn));
+						this.paymentDateTimeTableColumn, this.courseNumberTableColumn, this.studentGradeTableColumn));
 
 		this.studentNumberLabAssistantTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
-		this.studentAttendanceLabAsstTableColumn
-				.setCellValueFactory(new PropertyValueFactory<>("studentAttendance"));
+		this.studentAttendanceLabAsstTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentAttendance"));
 
 		this.labAssistantAttendanceTableView.getColumns().setAll(
 				Arrays.asList(this.studentNumberLabAssistantTableColumn, this.studentAttendanceLabAsstTableColumn));
@@ -433,7 +433,7 @@ public class MainController implements Initializable {
 							x.getPaymentReceiptFilePath(), x.getStudentGrade(), studentSemester, courseName);
 				}).collect(Collectors.toList());
 
-				DynamicReports.report().setTemplate(Templates.reportTemplate)
+				JasperPrint jasperPrint = DynamicReports.report().setTemplate(Templates.reportTemplate)
 						.title(Templates.createTitleComponent("Praktek Mahasiswa"))
 						.pageFooter(Templates.footerComponent)
 						.columns(DynamicReports.col.column("npm", "studentNumber", DynamicReports.type.stringType()),
@@ -447,7 +447,10 @@ public class MainController implements Initializable {
 								DynamicReports.col.column("Kelas", "studentClass", DynamicReports.type.stringType()),
 								DynamicReports.col.column("semester", "studentSemester",
 										DynamicReports.type.integerType()))
-						.setDataSource(studentPayment).show(false);
+						.setDataSource(studentPayment).toJasperPrint();
+				JasperViewer jasperViewer = new JasperViewer(jasperPrint);
+				jasperViewer.setTitle("Laporan Pembayaran");
+				jasperViewer.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -497,14 +500,18 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleReportingLabAsstAttendance() {
 		try {
-			DynamicReports.report().setTemplate(Templates.reportTemplate)
+			JasperPrint jasperPrint = DynamicReports.report().setTemplate(Templates.reportTemplate)
 					.title(Templates.createTitleComponent("Absensi Asisten Lab")).pageFooter(Templates.footerComponent)
 					.columns(DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
 							DynamicReports.col.column("tgl hadir", "studentAttendanceDate",
 									DynamicReports.type.dateType()))
 					.setDataSource(
 							this.labAssistantAttendanceTableView.getItems().stream().collect(Collectors.toList()))
-					.show(false);
+					.toJasperPrint();
+
+			JasperViewer jasperViewer = new JasperViewer(jasperPrint);
+			jasperViewer.setTitle("Laporan Kehadiran Aslab");
+			jasperViewer.setVisible(true);
 		} catch (DRException e) {
 			e.printStackTrace();
 		}
@@ -539,7 +546,5 @@ public class MainController implements Initializable {
 			e.printStackTrace();
 		}
 	}
-
-	
 
 }
