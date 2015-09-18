@@ -10,8 +10,8 @@
 	prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="livinglikelarry.lapgas.controller.AboutController">
 	<children>
-		<TextArea fx:id="aboutTextArea" layoutX="17.0" layoutY="131.0"
-			prefHeight="208.0" prefWidth="567.0" />
+		<TextArea fx:id="aboutTextArea" editable="false" layoutX="17.0"
+			layoutY="131.0" prefHeight="208.0" prefWidth="567.0" />
 		<Button layoutX="141.0" layoutY="353.0" mnemonicParsing="false"
 			onAction="#handleLicenseButton" prefHeight="26.0" prefWidth="104.0"
 			text="Lisensi" />

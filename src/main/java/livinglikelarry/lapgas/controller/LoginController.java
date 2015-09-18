@@ -61,6 +61,7 @@ public class LoginController implements Initializable {
 				GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Main"));
 				MainController mainController = (MainController) fxmlLoader.getController();
 				Stage stage = new Stage();
+				stage.setTitle("Lapgas");
 				stage.setScene(new Scene(root));
 				mainController.setStage(stage);
 				primaryStage.close();

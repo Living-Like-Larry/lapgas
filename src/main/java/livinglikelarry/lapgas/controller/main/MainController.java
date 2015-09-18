@@ -215,6 +215,7 @@ public class MainController implements Initializable {
 			studentPaymentController.setPaymentReceipt(studentPayment.getPaymentReceiptFilePath());
 			studentPaymentController.setPaymentValue(studentPayment.getPaymentValue());
 			Stage stage = new Stage();
+			stage.setTitle("Struk");
 			stage.setScene(new Scene(root));
 			stage.setResizable(false);
 			stage.showAndWait();
@@ -279,6 +280,7 @@ public class MainController implements Initializable {
 			SettingController settingController = (SettingController) fxmlLoader.getController();
 			settingController.setCoursesComboBox(this.coursesPaymentTabComboBox, this::loadAllCourseNames);
 			Stage stage = new Stage();
+			stage.setTitle("Setting");
 			stage.setScene(new Scene(root));
 			stage.setResizable(false);
 			stage.showAndWait();
@@ -468,6 +470,7 @@ public class MainController implements Initializable {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			AnchorPane root = (AnchorPane) fxmlLoader.load(Configurator.view("About"));
 			Stage stage = new Stage();
+			stage.setTitle("About");
 			stage.setScene(new Scene(root));
 			stage.setResizable(false);
 			stage.showAndWait();
@@ -528,6 +531,7 @@ public class MainController implements Initializable {
 			studentGradingController.setStudentPaymentTableView(this.studentPaymentTableView,
 					this::loadAllStudentPayment);
 			Stage stage = new Stage();
+			stage.setTitle("Perbaharui nilai");
 			stage.setScene(new Scene(root));
 			stage.setResizable(false);
 			stage.show();
