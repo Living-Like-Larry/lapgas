@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,6 +32,8 @@ public class AddingNewAttendanceController implements Initializable {
 	private Text studentNumberText;
 
 	private String studentNumber;
+	private TableView<LabAssistantAttendanceTableModel> labAssistantAttendanceTableView;
+	private Consumer<TableView<LabAssistantAttendanceTableModel>> labAsstAttendanceTableViewConsumer;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -62,6 +65,14 @@ public class AddingNewAttendanceController implements Initializable {
 			});
 		});
 		this.labAssistantNewAttendanceTableView.getItems().clear();
+		this.labAsstAttendanceTableViewConsumer.accept(this.labAssistantAttendanceTableView);
+	}
+
+	public void setLabAsstAttendanceTableView(
+			TableView<LabAssistantAttendanceTableModel> labAssistantAttendanceTableView,
+			Consumer<TableView<LabAssistantAttendanceTableModel>> labAsstAttendanceTableViewConsumer) {
+		this.labAssistantAttendanceTableView = labAssistantAttendanceTableView;
+		this.labAsstAttendanceTableViewConsumer = labAsstAttendanceTableViewConsumer;
 	}
 
 }

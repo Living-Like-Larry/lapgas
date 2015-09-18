@@ -176,7 +176,7 @@ public class MainController implements Initializable {
 
 		paymentTabUtil = new PaymentTabUtil();
 
-		loadAllLabAsstAttendances();
+		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
 	}
 
 	private void loadAllStudentPayment(TableView<StudentPaymentTableModel> studentPaymentTableView) {
@@ -278,6 +278,8 @@ public class MainController implements Initializable {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Setting"));
 			SettingController settingController = (SettingController) fxmlLoader.getController();
+			settingController.setLabAsstAttendanceTableView(this.labAssistantAttendanceTableView,
+					this::loadAllLabAsstAttendances);
 			settingController.setCoursesComboBox(this.coursesPaymentTabComboBox, this::loadAllCourseNames);
 			Stage stage = new Stage();
 			stage.setTitle("Setting");
@@ -357,7 +359,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleFilteringLabAsstByAttendance() {
-		loadAllLabAsstAttendances();
+		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
 		this.labAssistantAttendanceTableView.getItems()
 				.setAll(this.labAssistantAttendanceTableView.getItems().stream().filter(x -> x.getStudentAttendance()
 						.toLocalDateTime().toLocalDate().equals(this.labAsstAttendanceDatePicker.getValue()))
@@ -396,7 +398,7 @@ public class MainController implements Initializable {
 								alertNotLabAsst.showAndWait();
 							}
 						});
-						loadAllLabAsstAttendances();
+						loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
 						this.studentNumberAsstTabTextField.clear();
 					}
 				}
@@ -409,9 +411,10 @@ public class MainController implements Initializable {
 		}
 	}
 
-	private void loadAllLabAsstAttendances() {
+	private void loadAllLabAsstAttendances(
+			TableView<LabAssistantAttendanceTableModel> labAssistantAttendanceTableView) {
 		Configurator.doDBACtion(() -> {
-			this.labAssistantAttendanceTableView.getItems()
+			labAssistantAttendanceTableView.getItems()
 					.setAll(LabAssistantAttendance.findAll().stream()
 							.map(x -> new LabAssistantAttendanceTableModel((String) x.get("student_number"),
 									(Timestamp) x.get("created_at")))

@@ -29,6 +29,7 @@ import livinglikelarry.lapgas.model.sql.AdminSql;
 import livinglikelarry.lapgas.model.sql.Course;
 import livinglikelarry.lapgas.model.sql.LabAssistant;
 import livinglikelarry.lapgas.model.table.CoursesTableModel;
+import livinglikelarry.lapgas.model.table.LabAssistantAttendanceTableModel;
 import livinglikelarry.lapgas.model.table.LabAssistantTableModel;
 
 public class SettingController implements Initializable {
@@ -71,6 +72,10 @@ public class SettingController implements Initializable {
 	private ComboBox<String> coursesPaymentComboBox;
 
 	private Consumer<ComboBox<String>> coursePaymentComboBoxConsumer;
+
+	private TableView<LabAssistantAttendanceTableModel> labAssistantAttendanceTableView;
+
+	private Consumer<TableView<LabAssistantAttendanceTableModel>> labAsstAttendanceTableViewConsumer;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -187,6 +192,7 @@ public class SettingController implements Initializable {
 			AddingNewAttendanceController addingNewAttendanceController = (AddingNewAttendanceController) fxmlLoader
 					.getController();
 			addingNewAttendanceController.setStudentNumber(studentNumber);
+			addingNewAttendanceController.setLabAsstAttendanceTableView(this.labAssistantAttendanceTableView, this.labAsstAttendanceTableViewConsumer);
 			Stage stage = new Stage();
 			stage.setTitle("Tambah Kehadiran");
 			stage.setScene(new Scene(root));
@@ -195,5 +201,13 @@ public class SettingController implements Initializable {
 			e.printStackTrace();
 		}
 	}
+
+	public void setLabAsstAttendanceTableView(
+			TableView<LabAssistantAttendanceTableModel> labAssistantAttendanceTableView,
+			Consumer<TableView<LabAssistantAttendanceTableModel>> labAsstAttendanceTableViewConsumer) {
+		this.labAssistantAttendanceTableView = labAssistantAttendanceTableView;
+		this.labAsstAttendanceTableViewConsumer = labAsstAttendanceTableViewConsumer;
+	}
+
 
 }
