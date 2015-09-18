@@ -120,5 +120,4 @@ public class SettingController implements Initializable {
 		});
 		loadAllLabAssistant();
 	}
-
 }
