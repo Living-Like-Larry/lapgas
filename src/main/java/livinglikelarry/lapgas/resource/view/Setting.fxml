@@ -40,7 +40,7 @@
 								<TextField disable="true" layoutX="85.0" layoutY="107.0"
 									prefHeight="26.0" prefWidth="226.0" />
 								<Button layoutX="311.0" layoutY="107.0" mnemonicParsing="false"
-									text="Ganti" />
+									prefHeight="26.0" prefWidth="96.0" text="Ganti" />
 							</children>
 						</AnchorPane>
 					</content>

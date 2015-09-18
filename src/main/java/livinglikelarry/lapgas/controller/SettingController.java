@@ -196,6 +196,7 @@ public class SettingController implements Initializable {
 			Stage stage = new Stage();
 			stage.setTitle("Tambah Kehadiran");
 			stage.setScene(new Scene(root));
+			stage.setResizable(false);
 			stage.showAndWait();
 		} catch (IOException e) {
 			e.printStackTrace();
