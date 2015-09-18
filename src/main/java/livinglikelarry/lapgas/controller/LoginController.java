@@ -17,6 +17,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import livinglikelarry.lapgas.AdminAuth;
@@ -49,32 +51,34 @@ public class LoginController implements Initializable {
 	}
 
 	@FXML
-	public void handleLoginButton() throws IOException, SQLException {
-		Admin admin = AdminSql.findFirst("id = ?", "1");
-		AdminAuth adminAuth = new AdminAuth(admin, this.passwordTextField.getText());
-		adminAuth.onSuccess(x -> {
-			try {
-				adminDB.close();
-				makeLapgasDB();
+	public void handlePressingEnter(KeyEvent keyEvent) {
+		if (keyEvent.getCode() == KeyCode.ENTER) {
+			Admin admin = AdminSql.findFirst("id = ?", "1");
+			AdminAuth adminAuth = new AdminAuth(admin, this.passwordTextField.getText());
+			adminAuth.onSuccess(x -> {
+				try {
+					adminDB.close();
+					makeLapgasDB();
 
-				FXMLLoader fxmlLoader = new FXMLLoader();
-				GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Main"));
-				MainController mainController = (MainController) fxmlLoader.getController();
-				Stage stage = new Stage();
-				stage.setTitle("Lapgas");
-				stage.setScene(new Scene(root));
-				mainController.setStage(stage);
-				primaryStage.close();
-				stage.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}).onFailed(x -> {
-			Alert alert = new Alert(AlertType.WARNING);
-			alert.setTitle("Autentikasi gagal");
-			alert.setContentText("Sepertinya password yang anda masukan salah");
-			alert.showAndWait();
-		});
+					FXMLLoader fxmlLoader = new FXMLLoader();
+					GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Main"));
+					MainController mainController = (MainController) fxmlLoader.getController();
+					Stage stage = new Stage();
+					stage.setTitle("Lapgas");
+					stage.setScene(new Scene(root));
+					mainController.setStage(stage);
+					primaryStage.close();
+					stage.show();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}).onFailed(x -> {
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Autentikasi gagal");
+				alert.setContentText("Sepertinya password yang anda masukan salah");
+				alert.showAndWait();
+			});
+		}
 	}
 
 	public void setStage(Stage primaryStage) {
@@ -84,7 +88,7 @@ public class LoginController implements Initializable {
 	public void setAdminDB(DB adminDB) {
 		this.adminDB = adminDB;
 	}
-	
+
 	private static void makeLapgasDB() throws SQLException, IOException {
 		Configurator.doRawDBActionConsumer((x) -> {
 
