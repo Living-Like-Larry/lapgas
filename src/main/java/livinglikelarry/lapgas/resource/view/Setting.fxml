@@ -6,7 +6,7 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
 	minWidth="-Infinity" prefHeight="296.0" prefWidth="460.0"
-	xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="livinglikelarry.lapgas.controller.SettingController">
 	<columnConstraints>
 		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
@@ -24,10 +24,11 @@
 					<content>
 						<AnchorPane prefHeight="155.0" prefWidth="430.0">
 							<children>
-								<TextField disable="true" layoutX="78.0" layoutY="107.0"
-									prefHeight="26.0" prefWidth="228.0" />
-								<Button layoutX="306.0" layoutY="107.0" mnemonicParsing="false"
-									prefHeight="26.0" prefWidth="66.0" text="Ganti" />
+								<PasswordField fx:id="adminPasswdField" disable="true"
+									layoutX="110.0" layoutY="108.0" prefHeight="25.0" prefWidth="196.0" />
+								<Button fx:id="adminPasswdButton" layoutX="306.0"
+									layoutY="107.0" mnemonicParsing="false" onAction="#handleEditingAdminPasswd"
+									prefHeight="26.0" prefWidth="94.0" text="Ganti" />
 							</children>
 						</AnchorPane>
 					</content>

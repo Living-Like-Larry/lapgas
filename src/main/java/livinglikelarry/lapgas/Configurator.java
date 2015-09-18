@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.javalite.activejdbc.DB;
 
+
 /**
  * Class that is represented as a wide configurator for lapgas system
  * 
@@ -125,6 +126,15 @@ public final class Configurator {
 		String textToDisplaying = bufferedReader.lines().collect(Collectors.joining("\n"));
 		bufferedReader.close();
 		return textToDisplaying;
+	}
+
+	public static void doAdminDBAction(Runnable adminAction) throws IOException {
+		DB adminDB = new DB("admin");
+		adminDB.open(Configurator.properties("admin.driver"),
+				Configurator.properties("admin.url") + Configurator.properties("admin.dbname"),
+				Configurator.properties("admin.username"), Configurator.properties("admin.password"));
+		adminAction.run();
+		adminDB.close();
 	}
 
 }

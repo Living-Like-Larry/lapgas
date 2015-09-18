@@ -1,19 +1,27 @@
 package livinglikelarry.lapgas.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.javalite.activejdbc.Model;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import livinglikelarry.lapgas.Configurator;
+import livinglikelarry.lapgas.model.sql.AdminSql;
 import livinglikelarry.lapgas.model.sql.Course;
 import livinglikelarry.lapgas.model.sql.LabAssistant;
 import livinglikelarry.lapgas.model.table.CoursesTableModel;
@@ -50,25 +58,41 @@ public class SettingController implements Initializable {
 	@FXML
 	private TextField labAsstStudentNumberTextField;
 
+	@FXML
+	private PasswordField adminPasswdField;
+
+	@FXML
+	private Button adminPasswdButton;
+
 	private ComboBox<String> coursesPaymentComboBox;
 
 	private Consumer<ComboBox<String>> coursePaymentComboBoxConsumer;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		this.semesterComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
 
-		this.courseNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseNumber"));
-		this.courseTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
-		this.semesterTableColumn.setCellValueFactory(new PropertyValueFactory<>("semester"));
-		this.courseTableView.getColumns()
-				.setAll(Arrays.asList(this.courseNumberTableColumn, this.courseTableColumn, this.semesterTableColumn));
+		try {
+			this.semesterComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
 
-		this.labAsstStudentNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
-		this.labAssistantTableView.getColumns().setAll(Arrays.asList(this.labAsstStudentNumberTableColumn));
+			this.courseNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseNumber"));
+			this.courseTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
+			this.semesterTableColumn.setCellValueFactory(new PropertyValueFactory<>("semester"));
+			this.courseTableView.getColumns().setAll(
+					Arrays.asList(this.courseNumberTableColumn, this.courseTableColumn, this.semesterTableColumn));
 
-		loadAllCourses();
-		loadAllLabAssistant();
+			this.labAsstStudentNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
+			this.labAssistantTableView.getColumns().setAll(Arrays.asList(this.labAsstStudentNumberTableColumn));
+
+			loadAllCourses();
+			loadAllLabAssistant();
+
+			Configurator.doAdminDBAction(() -> {
+				Model admin = AdminSql.findById(1L);
+				this.adminPasswdField.setText((String) admin.get("password"));
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -120,4 +144,33 @@ public class SettingController implements Initializable {
 		});
 		loadAllLabAssistant();
 	}
+
+	@FXML
+	public void handleEditingAdminPasswd() {
+		if (this.adminPasswdButton.getText().equals("Ganti")) {
+			this.adminPasswdField.setDisable(false);
+			this.adminPasswdButton.setText("Simpan");
+			this.adminPasswdField.clear();
+		} else {
+			if(!this.adminPasswdField.getText().equals("")) {
+				try {
+					Configurator.doAdminDBAction(() -> {
+						Model admin = AdminSql.findById(1l);
+						admin.set("password", (String)this.adminPasswdField.getText());
+						admin.saveIt();
+						this.adminPasswdField.setText(this.adminPasswdField.getText());
+						this.adminPasswdButton.setText("Ganti");
+						this.adminPasswdField.setDisable(true);
+					});
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setContentText("Password baru kosong !");
+				alert.showAndWait();
+			}
+		}
+	}
+
 }
