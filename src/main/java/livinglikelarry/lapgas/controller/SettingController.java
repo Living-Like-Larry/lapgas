@@ -10,8 +10,10 @@ import java.util.stream.Collectors;
 import org.javalite.activejdbc.Model;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -20,6 +22,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import livinglikelarry.lapgas.Configurator;
 import livinglikelarry.lapgas.model.sql.AdminSql;
 import livinglikelarry.lapgas.model.sql.Course;
@@ -152,11 +156,11 @@ public class SettingController implements Initializable {
 			this.adminPasswdButton.setText("Simpan");
 			this.adminPasswdField.clear();
 		} else {
-			if(!this.adminPasswdField.getText().equals("")) {
+			if (!this.adminPasswdField.getText().equals("")) {
 				try {
 					Configurator.doAdminDBAction(() -> {
 						Model admin = AdminSql.findById(1l);
-						admin.set("password", (String)this.adminPasswdField.getText());
+						admin.set("password", (String) this.adminPasswdField.getText());
 						admin.saveIt();
 						this.adminPasswdField.setText(this.adminPasswdField.getText());
 						this.adminPasswdButton.setText("Ganti");
@@ -170,6 +174,25 @@ public class SettingController implements Initializable {
 				alert.setContentText("Password baru kosong !");
 				alert.showAndWait();
 			}
+		}
+	}
+
+	@FXML
+	public void handleAddingNewAttendance() {
+		try {
+			String studentNumber = this.labAssistantTableView.getSelectionModel().getSelectedItem().getStudentNumber();
+			System.out.println(studentNumber);
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			AnchorPane root = (AnchorPane) fxmlLoader.load(Configurator.view("AddingNewAttendance"));
+			AddingNewAttendanceController addingNewAttendanceController = (AddingNewAttendanceController) fxmlLoader
+					.getController();
+			addingNewAttendanceController.setStudentNumber(studentNumber);
+			Stage stage = new Stage();
+			stage.setTitle("Tambah Kehadiran");
+			stage.setScene(new Scene(root));
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

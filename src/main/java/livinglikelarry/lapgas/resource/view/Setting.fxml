@@ -6,7 +6,7 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
 	minWidth="-Infinity" prefHeight="296.0" prefWidth="460.0"
-	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="livinglikelarry.lapgas.controller.SettingController">
 	<columnConstraints>
 		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
@@ -84,6 +84,14 @@
 										<TableColumn fx:id="labAsstStudentNumberTableColumn"
 											prefWidth="383.0" text="NPM" />
 									</columns>
+									<contextMenu>
+										<ContextMenu>
+											<items>
+												<MenuItem mnemonicParsing="false"
+													onAction="#handleAddingNewAttendance" text="Tambah kehadiran" />
+											</items>
+										</ContextMenu>
+									</contextMenu>
 								</TableView>
 								<TextField fx:id="labAsstStudentNumberTextField"
 									layoutX="38.0" layoutY="223.0" prefHeight="26.0" prefWidth="353.0" />

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="241.0"
+	prefWidth="248.0" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="livinglikelarry.lapgas.controller.AddingNewAttendanceController">
+	<children>
+		<DatePicker fx:id="newAttendanceDatePicker" layoutX="14.0"
+			layoutY="175.0" onAction="#handleAddingNewAttendance" prefHeight="31.0"
+			prefWidth="220.0" />
+		<TableView fx:id="labAssistantNewAttendanceTableView"
+			layoutX="14.0" layoutY="48.0" prefHeight="114.0" prefWidth="220.0">
+			<columns>
+				<TableColumn fx:id="studentAttendanceTableColumn"
+					prefWidth="219.0" text="Waktu Kehadiran" />
+			</columns>
+		</TableView>
+		<Button layoutX="14.0" layoutY="210.0" mnemonicParsing="false"
+			onAction="#handleSubmitButton" text="Submit" />
+		<Text fx:id="studentNumberText" layoutX="14.0" layoutY="43.0"
+			strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+	</children>
+</AnchorPane>
