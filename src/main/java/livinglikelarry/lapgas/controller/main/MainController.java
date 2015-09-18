@@ -15,6 +15,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.swing.JFrame;
+
 import org.javalite.activejdbc.Model;
 
 import javafx.collections.ObservableList;
@@ -32,6 +34,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -433,7 +436,7 @@ public class MainController implements Initializable {
 							x.getPaymentReceiptFilePath(), x.getStudentGrade(), studentSemester, courseName);
 				}).collect(Collectors.toList());
 
-				JasperPrint jasperPrint = DynamicReports.report().setTemplate(Templates.reportTemplate)
+				showReport(DynamicReports.report().setTemplate(Templates.reportTemplate)
 						.title(Templates.createTitleComponent("Praktek Mahasiswa"))
 						.pageFooter(Templates.footerComponent)
 						.columns(DynamicReports.col.column("npm", "studentNumber", DynamicReports.type.stringType()),
@@ -447,10 +450,7 @@ public class MainController implements Initializable {
 								DynamicReports.col.column("Kelas", "studentClass", DynamicReports.type.stringType()),
 								DynamicReports.col.column("semester", "studentSemester",
 										DynamicReports.type.integerType()))
-						.setDataSource(studentPayment).toJasperPrint();
-				JasperViewer jasperViewer = new JasperViewer(jasperPrint);
-				jasperViewer.setTitle("Laporan Pembayaran");
-				jasperViewer.setVisible(true);
+						.setDataSource(studentPayment).toJasperPrint(), "Pembayaran Praktek");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -500,18 +500,14 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleReportingLabAsstAttendance() {
 		try {
-			JasperPrint jasperPrint = DynamicReports.report().setTemplate(Templates.reportTemplate)
+			showReport(DynamicReports.report().setTemplate(Templates.reportTemplate)
 					.title(Templates.createTitleComponent("Absensi Asisten Lab")).pageFooter(Templates.footerComponent)
 					.columns(DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
 							DynamicReports.col.column("tgl hadir", "studentAttendanceDate",
 									DynamicReports.type.dateType()))
 					.setDataSource(
 							this.labAssistantAttendanceTableView.getItems().stream().collect(Collectors.toList()))
-					.toJasperPrint();
-
-			JasperViewer jasperViewer = new JasperViewer(jasperPrint);
-			jasperViewer.setTitle("Laporan Kehadiran Aslab");
-			jasperViewer.setVisible(true);
+					.toJasperPrint(), "Absensi Aslab");
 		} catch (DRException e) {
 			e.printStackTrace();
 		}
@@ -545,6 +541,12 @@ public class MainController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void showReport(JasperPrint jasperPrint, String title) {
+		JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+		jasperViewer.setTitle(title);
+		jasperViewer.setVisible(true);
 	}
 
 }

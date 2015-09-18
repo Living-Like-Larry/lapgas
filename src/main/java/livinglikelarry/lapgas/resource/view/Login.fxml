@@ -8,16 +8,16 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="296.0"
-	prefWidth="528.0" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
+	prefWidth="507.0" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="livinglikelarry.lapgas.controller.LoginController">
 	<children>
-		<PasswordField fx:id="passwordTextField" layoutX="89.0"
-			layoutY="215.0" prefHeight="25.0" prefWidth="297.0" />
+		<PasswordField fx:id="passwordTextField" layoutX="57.0"
+			layoutY="215.0" prefHeight="26.0" prefWidth="329.0" />
 		<Button layoutX="386.0" layoutY="215.0" mnemonicParsing="false"
 			onAction="#handleLoginButton" prefHeight="26.0" prefWidth="76.0"
 			text="login" />
 		<ImageView fx:id="loginImageView" fitHeight="150.0"
-			fitWidth="256.0" layoutX="110.0" layoutY="43.0" pickOnBounds="true"
+			fitWidth="256.0" layoutX="155.0" layoutY="48.0" pickOnBounds="true"
 			preserveRatio="true" />
 	</children>
 </AnchorPane>

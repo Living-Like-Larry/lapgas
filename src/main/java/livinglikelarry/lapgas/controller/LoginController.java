@@ -45,7 +45,7 @@ public class LoginController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		this.loginImageView.setImage(new Image(Configurator.image("login.jpg").toString()));
+		this.loginImageView.setImage(new Image(Configurator.image("if_unla.png").toString()));
 	}
 
 	@FXML
