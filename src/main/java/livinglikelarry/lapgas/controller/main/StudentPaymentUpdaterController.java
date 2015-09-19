@@ -15,6 +15,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
 
+/**
+ * 
+ * @author Moch Deden (https://github.com/selesdepselesnul)
+ *
+ */
 public class StudentPaymentUpdaterController implements Initializable {
 
 	@FXML
