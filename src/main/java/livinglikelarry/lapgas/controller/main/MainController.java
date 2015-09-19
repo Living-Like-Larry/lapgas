@@ -543,6 +543,24 @@ public class MainController implements Initializable {
 		}
 	}
 
+	@FXML
+	public void handleUpdatingStudentPayment() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			AnchorPane root = (AnchorPane)fxmlLoader.load(Configurator.view("StudentPaymentUpdater"));
+			StudentPaymentUpdaterController StudentPaymentUpdaterController = (StudentPaymentUpdaterController) fxmlLoader
+					.getController();
+			StudentPaymentUpdaterController
+					.setStudentPayment(this.studentPaymentTableView.getSelectionModel().getSelectedItem());
+			Stage stage = new Stage();
+			stage.setScene(new Scene(root));
+			stage.setTitle("Perbaharui Pembayaran Mahasiswa");
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void showReport(JasperPrint jasperPrint, String title) {
 		JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
 		jasperViewer.setTitle(title);
