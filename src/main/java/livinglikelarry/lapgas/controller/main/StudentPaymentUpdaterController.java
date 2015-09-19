@@ -13,7 +13,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import livinglikelarry.lapgas.Configurator;
 import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
 
 public class StudentPaymentUpdaterController implements Initializable {
