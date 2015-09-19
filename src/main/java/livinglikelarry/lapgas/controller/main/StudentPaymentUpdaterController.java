@@ -5,6 +5,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,6 +14,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import livinglikelarry.lapgas.Configurator;
+import livinglikelarry.lapgas.model.sql.Course;
 import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
 
 /**
@@ -62,6 +65,9 @@ public class StudentPaymentUpdaterController implements Initializable {
 			this.gradeComboBox.setValue(this.studentPaymentTableModel.getStudentGrade());
 			this.paymentReceiptImageView.setImage(new Image(
 					Files.newInputStream(Paths.get(this.studentPaymentTableModel.getPaymentReceiptFilePath()))));
+			Configurator.doDBACtion(() -> courseNameComboBox.getItems()
+					.setAll(Course.findAll().stream().map(x -> (String) x.get("name")).collect(Collectors.toList())));
+			this.courseNameComboBox.setValue(this.studentPaymentTableModel.getCourseName());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

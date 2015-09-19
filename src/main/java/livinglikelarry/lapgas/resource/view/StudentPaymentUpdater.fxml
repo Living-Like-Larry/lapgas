@@ -6,15 +6,16 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="214.0" prefWidth="453.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="livinglikelarry.lapgas.controller.main.StudentPaymentUpdaterController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="214.0" prefWidth="453.0" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1" fx:controller="livinglikelarry.lapgas.controller.main.StudentPaymentUpdaterController">
 	<children>
 		<TextField fx:id="classTextField" layoutX="55.0" layoutY="52.0" prefHeight="25.0" prefWidth="81.0" promptText="Kelas" />
-		<ComboBox fx:id="gradeComboBox" layoutX="145.0" layoutY="52.0" prefHeight="25.0" prefWidth="81.0" promptText="Nilai" />
+		<ComboBox fx:id="gradeComboBox" layoutX="145.0" layoutY="52.0"
+	prefHeight="25.0" prefWidth="81.0" promptText="Nilai" />
 		<Button layoutX="55.0" layoutY="165.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="171.0" text="Update" />
 		<TextField fx:id="amountOfPaymentTextField" layoutX="55.0" layoutY="84.0" promptText="Jumlah Pembayaran" />
 		<Button layoutX="55.0" layoutY="116.0" mnemonicParsing="false" text="..." />
 		<TextField disable="true" layoutX="86.0" layoutY="116.0" prefHeight="25.0" prefWidth="140.0" />
 		<ImageView fx:id="paymentReceiptImageView" fitHeight="173.0" fitWidth="200.0" layoutX="232.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-		<ComboBox layoutX="55.0" layoutY="14.0" prefHeight="25.0" prefWidth="171.0" promptText="Matakuliah" />
+		<ComboBox fx:id="courseNameComboBox" layoutX="55.0" layoutY="14.0" prefHeight="25.0" prefWidth="171.0" promptText="Matakuliah" />
 	</children>
 </AnchorPane>
