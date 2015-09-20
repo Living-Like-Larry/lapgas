@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-import org.apache.commons.io.FileSystemUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import javafx.collections.ObservableList;

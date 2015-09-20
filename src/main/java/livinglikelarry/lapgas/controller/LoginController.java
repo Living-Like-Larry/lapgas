@@ -14,7 +14,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -41,6 +43,12 @@ public class LoginController implements Initializable {
 
 	@FXML
 	private ImageView loginImageView;
+	
+	@FXML
+	private TextField studentNumberTextField;
+	
+	@FXML
+	private ComboBox<String> roleComboBox;
 
 	private Stage primaryStage;
 	private DB adminDB;
@@ -48,6 +56,7 @@ public class LoginController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.loginImageView.setImage(new Image(Configurator.image("if_unla.png").toString()));
+		this.roleComboBox.getItems().setAll("Root", "Aslab Khusus", "Aslab");
 	}
 
 	@FXML
@@ -78,6 +87,15 @@ public class LoginController implements Initializable {
 				alert.setContentText("Sepertinya password yang anda masukan salah");
 				alert.showAndWait();
 			});
+		}
+	}
+	
+	@FXML
+	public void handleChoosingRole() {
+		if(!this.roleComboBox.getSelectionModel().getSelectedItem().equalsIgnoreCase("root")) {
+			this.studentNumberTextField.setVisible(true);
+		} else {
+			this.studentNumberTextField.setVisible(false);
 		}
 	}
 
