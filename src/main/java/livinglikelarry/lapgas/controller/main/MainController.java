@@ -548,11 +548,12 @@ public class MainController implements Initializable {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			AnchorPane root = (AnchorPane)fxmlLoader.load(Configurator.view("StudentPaymentUpdater"));
-			StudentPaymentUpdaterController StudentPaymentUpdaterController = (StudentPaymentUpdaterController) fxmlLoader
+			StudentPaymentUpdaterController studentPaymentUpdaterController = (StudentPaymentUpdaterController) fxmlLoader
 					.getController();
-			StudentPaymentUpdaterController
+			studentPaymentUpdaterController
 					.setStudentPayment(this.studentPaymentTableView.getSelectionModel().getSelectedItem());
 			Stage stage = new Stage();
+			studentPaymentUpdaterController.setStage(stage);
 			stage.setScene(new Scene(root));
 			stage.setTitle("Perbaharui Pembayaran Mahasiswa");
 			stage.showAndWait();

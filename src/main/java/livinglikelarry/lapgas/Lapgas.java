@@ -56,5 +56,4 @@ public class Lapgas extends Application {
 		}
 	}
 	
-	
 }

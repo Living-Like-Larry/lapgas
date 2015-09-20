@@ -1,11 +1,15 @@
 package livinglikelarry.lapgas.controller.main;
 
+import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+
+import org.javalite.activejdbc.Model;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,8 +18,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import livinglikelarry.lapgas.Configurator;
 import livinglikelarry.lapgas.model.sql.Course;
+import livinglikelarry.lapgas.model.sql.StudentPayment;
 import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
 
 /**
@@ -48,6 +55,10 @@ public class StudentPaymentUpdaterController implements Initializable {
 
 	private StudentPaymentTableModel studentPaymentTableModel;
 
+	private Stage stage;
+
+	private File choosenPaymentReceiptFile;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.gradeComboBox.getItems().setAll("A", "B", "C", "D", "E", "T");
@@ -73,4 +84,34 @@ public class StudentPaymentUpdaterController implements Initializable {
 		}
 	}
 
+	@FXML
+	public void handleChoosingNewReceiptPayment() {
+		FileChooser fileChooser = new FileChooser();
+		this.choosenPaymentReceiptFile = fileChooser.showOpenDialog(stage);
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
+
+	@FXML
+	public void handleUpdatingButton() {
+		Configurator.doDBACtion(() -> {
+			Model studentPayment = StudentPayment.findById((long) this.studentPaymentTableModel.getId());
+			final String newGrade = this.gradeComboBox.getValue();
+			final String newClass = (String) this.classTextField.getText().toUpperCase();
+			final BigDecimal newAmountOfPayment = new BigDecimal(this.amountOfPaymentTextField.getText());
+			Model course = Course.first("name = ?", (String)this.courseNameComboBox.getValue());
+			final String newCourseNumber = (String)course.get("course_number");
+			studentPayment.set("payment_value", newAmountOfPayment)
+					.set("class", newClass)
+					.set("course_number", newCourseNumber)
+					.set("grade", (String) newGrade).saveIt();
+			studentPaymentTableModel.setStudentGrade(newGrade);
+			studentPaymentTableModel.setStudentClass(newClass);
+			studentPaymentTableModel.setPaymentValue(newAmountOfPayment);
+			studentPaymentTableModel.setCourseNumber(newCourseNumber);
+			studentPaymentTableModel.setCourseName(this.courseNameComboBox.getValue());
+		});
+	}
 }
