@@ -1,4 +1,4 @@
-package livinglikelarry.lapgas;
+package livinglikelarry.lapgas.state;
 
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;

@@ -9,7 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import livinglikelarry.lapgas.Configurator;
+import livinglikelarry.lapgas.util.Configurator;
 
 public class AboutController implements Initializable {
 	@FXML

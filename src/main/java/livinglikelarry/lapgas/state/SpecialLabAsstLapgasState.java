@@ -1,13 +1,13 @@
-package livinglikelarry.lapgas;
+package livinglikelarry.lapgas.state;
 
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 
-public class LabAsstLapgasState implements LapgasState {
+public class SpecialLabAsstLapgasState implements LapgasState {
 
 	@Override
 	public void setPaymentTabState(Tab paymentTab) {
-		paymentTab.setDisable(true);
+		paymentTab.setDisable(false);
 	}
 
 	@Override
@@ -16,18 +16,17 @@ public class LabAsstLapgasState implements LapgasState {
 	}
 
 	@Override
-	public void setUpdatingStudentPaymentStateMI(MenuItem updatingStudentPaymentMenuItem) {
-		updatingStudentPaymentMenuItem.setDisable(true);
+	public void setUpdatingStudentPaymentStateMI(MenuItem updatingStudentPayment) {
+		updatingStudentPayment.setDisable(true);
 	}
 
 	@Override
 	public void setSettingMenuItemState(MenuItem settingMenuItem) {
-		settingMenuItem.setDisable(true);
+		settingMenuItem.setDisable(false);
 	}
 
 	@Override
 	public void setPasswordUpdaterAction() {
-		//
 	}
 
 }

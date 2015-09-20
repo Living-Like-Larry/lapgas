@@ -1,4 +1,4 @@
-package livinglikelarry.lapgas;
+package livinglikelarry.lapgas.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

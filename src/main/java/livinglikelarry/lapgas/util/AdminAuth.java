@@ -1,4 +1,4 @@
-package livinglikelarry.lapgas;
+package livinglikelarry.lapgas.util;
 
 import java.util.function.Consumer;
 import livinglikelarry.lapgas.model.Admin;

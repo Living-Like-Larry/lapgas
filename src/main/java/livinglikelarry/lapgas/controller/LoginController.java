@@ -19,16 +19,16 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import livinglikelarry.lapgas.AdminAuth;
-import livinglikelarry.lapgas.Configurator;
-import livinglikelarry.lapgas.LabAsstLapgasState;
-import livinglikelarry.lapgas.LapgasState;
-import livinglikelarry.lapgas.RootLapgasState;
-import livinglikelarry.lapgas.SpecialLabAsstLapgasState;
 import livinglikelarry.lapgas.controller.main.MainController;
 import livinglikelarry.lapgas.model.Admin;
 import livinglikelarry.lapgas.model.sql.AdminSql;
 import livinglikelarry.lapgas.model.sql.LabAssistant;
+import livinglikelarry.lapgas.state.LabAsstLapgasState;
+import livinglikelarry.lapgas.state.LapgasState;
+import livinglikelarry.lapgas.state.RootLapgasState;
+import livinglikelarry.lapgas.state.SpecialLabAsstLapgasState;
+import livinglikelarry.lapgas.util.AdminAuth;
+import livinglikelarry.lapgas.util.Configurator;
 
 /**
  * 

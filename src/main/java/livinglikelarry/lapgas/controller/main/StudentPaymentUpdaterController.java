@@ -20,10 +20,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import livinglikelarry.lapgas.Configurator;
 import livinglikelarry.lapgas.model.sql.Course;
 import livinglikelarry.lapgas.model.sql.StudentPayment;
 import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
+import livinglikelarry.lapgas.util.Configurator;
 
 /**
  * 

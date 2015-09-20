@@ -25,14 +25,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import livinglikelarry.lapgas.Configurator;
-import livinglikelarry.lapgas.LapgasState;
 import livinglikelarry.lapgas.model.sql.AdminSql;
 import livinglikelarry.lapgas.model.sql.Course;
 import livinglikelarry.lapgas.model.sql.LabAssistant;
 import livinglikelarry.lapgas.model.table.CoursesTableModel;
 import livinglikelarry.lapgas.model.table.LabAssistantAttendanceTableModel;
 import livinglikelarry.lapgas.model.table.LabAssistantTableModel;
+import livinglikelarry.lapgas.state.LapgasState;
+import livinglikelarry.lapgas.util.Configurator;
 
 public class SettingController implements Initializable {
 	@FXML

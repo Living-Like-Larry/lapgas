@@ -11,6 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import livinglikelarry.lapgas.controller.LoginController;
 import livinglikelarry.lapgas.model.sql.AdminSql;
+import livinglikelarry.lapgas.util.Configurator;
 
 /**
  * Main class for lapgas
