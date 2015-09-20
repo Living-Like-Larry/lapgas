@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -25,6 +26,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import livinglikelarry.lapgas.Configurator;
+import livinglikelarry.lapgas.LapgasState;
 import livinglikelarry.lapgas.model.sql.AdminSql;
 import livinglikelarry.lapgas.model.sql.Course;
 import livinglikelarry.lapgas.model.sql.LabAssistant;
@@ -75,13 +77,20 @@ public class SettingController implements Initializable {
 	@FXML
 	private ComboBox<String> labAssistantRoleComboBox;
 
+	@FXML
 	private ComboBox<String> coursesPaymentComboBox;
+	
+	@FXML
+	private Tab labAsstTab;
 
 	private Consumer<ComboBox<String>> coursePaymentComboBoxConsumer;
 
 	private TableView<LabAssistantAttendanceTableModel> labAssistantAttendanceTableView;
 
 	private Consumer<TableView<LabAssistantAttendanceTableModel>> labAsstAttendanceTableViewConsumer;
+
+	private LapgasState lapgasState;
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -224,6 +233,11 @@ public class SettingController implements Initializable {
 			Consumer<TableView<LabAssistantAttendanceTableModel>> labAsstAttendanceTableViewConsumer) {
 		this.labAssistantAttendanceTableView = labAssistantAttendanceTableView;
 		this.labAsstAttendanceTableViewConsumer = labAsstAttendanceTableViewConsumer;
+	}
+
+	public void setLapgasState(LapgasState lapgasState) {
+		this.lapgasState = lapgasState;
+		this.lapgasState.setLabAsstTabState(this.labAsstTab);
 	}
 
 }

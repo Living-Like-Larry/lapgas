@@ -73,7 +73,7 @@
 						</AnchorPane>
 					</content>
 				</Tab>
-				<Tab text="Aslab">
+				<Tab fx:id="labAsstTab" text="Aslab">
 					<content>
 						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
 							prefWidth="200.0">

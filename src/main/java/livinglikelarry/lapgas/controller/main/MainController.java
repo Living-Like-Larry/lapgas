@@ -295,6 +295,7 @@ public class MainController implements Initializable {
 			settingController.setLabAsstAttendanceTableView(this.labAssistantAttendanceTableView,
 					this::loadAllLabAsstAttendances);
 			settingController.setCoursesComboBox(this.coursesPaymentTabComboBox, this::loadAllCourseNames);
+			settingController.setLapgasState(this.lapgasState);
 			Stage stage = new Stage();
 			stage.setTitle("Setting");
 			stage.setScene(new Scene(root));
