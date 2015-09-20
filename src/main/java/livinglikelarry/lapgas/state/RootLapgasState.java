@@ -1,6 +1,7 @@
 package livinglikelarry.lapgas.state;
 
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 
@@ -32,6 +33,11 @@ public class RootLapgasState implements LapgasState {
 
 	@Override
 	public void setLabAsstComboBoxMode(ComboBox<String> modeComboBox) {
+	}
+
+	@Override
+	public void setLabAsstActionMenuButton(MenuButton labAsstActionMenuButton) {
+		labAsstActionMenuButton.setVisible(false);
 	}
 
 }

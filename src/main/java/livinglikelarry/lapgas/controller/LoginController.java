@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.javalite.activejdbc.Model;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -89,11 +91,12 @@ public class LoginController implements Initializable {
 			} else {
 				Configurator.doRawDBActionWithDBConsumer((x) -> {
 					try {
-						if (!LabAssistant.where("student_number = ? AND password = ? AND role = ? ",
+						Model labAssistant = LabAssistant.findFirst("student_number = ? AND password = ? AND role = ? ",
 								(String) studentNumberTextField.getText(), (String) this.passwordTextField.getText(),
-								(String) role).isEmpty()) {
+								(String) role);
+						if (labAssistant != null) {
 							x.close();
-							showMain();
+							showMain((String)labAssistant.get("student_number"));
 						} else {
 							authFailed();
 						}
@@ -104,6 +107,20 @@ public class LoginController implements Initializable {
 				});
 			}
 		}
+	}
+
+	private void showMain(String labAsstStudentNumber) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Main"));
+		MainController mainController = (MainController) fxmlLoader.getController();
+		mainController.setLapgasState(lapgasState);
+		mainController.setLabAsstStudentNumber(labAsstStudentNumber);
+		Stage stage = new Stage();
+		stage.setTitle("Lapgas");
+		stage.setScene(new Scene(root));
+		mainController.setStage(stage);
+		primaryStage.close();
+		stage.show();
 	}
 
 	private void authFailed() {

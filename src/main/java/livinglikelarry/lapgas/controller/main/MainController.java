@@ -28,6 +28,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
@@ -144,9 +145,12 @@ public class MainController implements Initializable {
 
 	@FXML
 	private MenuItem settingMenuItem;
-	
+
 	@FXML
 	private MenuItem studentPaymentUpdatingMenuItem;
+
+	@FXML
+	private MenuButton labAsstActionMenuButton;
 
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
@@ -157,6 +161,8 @@ public class MainController implements Initializable {
 	private ArrayList<LabAssistantAttendanceTableModel> noFilteredLabAsstAttendance;
 
 	private LapgasState lapgasState;
+
+	private String labAsstStudentNumber;
 
 	private static final String UNLA_IF_STUD_NUM_PATTERN = "4115505\\d{7}";
 
@@ -405,8 +411,7 @@ public class MainController implements Initializable {
 						Configurator.doDBACtion(() -> {
 							Model labAssistant = LabAssistant.findById((String) studentNumber);
 							if (labAssistant != null) {
-								LabAssistantAttendance labAssistantAttendance = new LabAssistantAttendance();
-								labAssistantAttendance.set("student_number", studentNumber).saveIt();
+								makeLabAsstAttendance(studentNumber);
 							} else {
 								Alert alertNotLabAsst = new Alert(AlertType.WARNING);
 								alertNotLabAsst.setContentText("npm ini tidak terdaftar sebagai ASLAB!");
@@ -424,6 +429,11 @@ public class MainController implements Initializable {
 			alert.setContentText("pilih salah satu Mode!");
 			alert.showAndWait();
 		}
+	}
+
+	private void makeLabAsstAttendance(final String studentNumber) {
+		LabAssistantAttendance labAssistantAttendance = new LabAssistantAttendance();
+		labAssistantAttendance.set("student_number", studentNumber).saveIt();
 	}
 
 	private void loadAllLabAsstAttendances(
@@ -577,6 +587,11 @@ public class MainController implements Initializable {
 		}
 	}
 
+	@FXML
+	public void handleAddLabAsstAttendance() {
+		makeLabAsstAttendance(this.labAsstStudentNumber);
+	}
+
 	private void showReport(JasperPrint jasperPrint, String title) {
 		JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
 		jasperViewer.setTitle(title);
@@ -589,6 +604,11 @@ public class MainController implements Initializable {
 		this.lapgasState.setSettingMenuItemState(this.settingMenuItem);
 		this.lapgasState.setUpdatingStudentPaymentStateMI(this.studentPaymentUpdatingMenuItem);
 		this.lapgasState.setLabAsstComboBoxMode(this.filteredAndAddedComboBox);
+		this.lapgasState.setLabAsstActionMenuButton(this.labAsstActionMenuButton);
+	}
+
+	public void setLabAsstStudentNumber(String labAsstStudentNumber) {
+		this.labAsstStudentNumber = labAsstStudentNumber;
 	}
 
 }

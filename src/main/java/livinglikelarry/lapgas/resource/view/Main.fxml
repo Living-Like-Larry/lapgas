@@ -10,7 +10,7 @@
 
 <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="344.0"
-	prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
+	prefWidth="852.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="livinglikelarry.lapgas.controller.main.MainController">
 	<columnConstraints>
 		<ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
@@ -354,13 +354,6 @@
 										<Insets left="10.0" right="10.0" />
 									</GridPane.margin>
 								</TableView>
-								<Button mnemonicParsing="false"
-									onAction="#handleReportingLabAsstAttendance" prefHeight="26.0"
-									prefWidth="157.0" text="Lapor" GridPane.rowIndex="2">
-									<GridPane.margin>
-										<Insets left="10.0" />
-									</GridPane.margin>
-								</Button>
 								<GridPane>
 									<columnConstraints>
 										<ColumnConstraints hgrow="SOMETIMES"
@@ -406,6 +399,36 @@
 													GridPane.columnIndex="1" />
 											</children>
 										</GridPane>
+									</children>
+								</GridPane>
+								<GridPane GridPane.rowIndex="2">
+									<columnConstraints>
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="731.0" minWidth="10.0" prefWidth="700.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="420.0" minWidth="10.0" prefWidth="152.0" />
+									</columnConstraints>
+									<rowConstraints>
+										<RowConstraints minHeight="10.0" prefHeight="30.0"
+											vgrow="SOMETIMES" />
+									</rowConstraints>
+									<children>
+										<Button mnemonicParsing="false"
+											onAction="#handleReportingLabAsstAttendance" prefHeight="26.0"
+											prefWidth="157.0" text="Lapor">
+											<GridPane.margin>
+												<Insets left="10.0" />
+											</GridPane.margin>
+										</Button>
+										<MenuButton fx:id="labAsstActionMenuButton"
+											alignment="CENTER" mnemonicParsing="false" prefHeight="25.0"
+											prefWidth="142.0" text="Aksi" GridPane.columnIndex="1">
+											<items>
+												<MenuItem mnemonicParsing="false"
+													onAction="#handleAddLabAsstAttendance" text="Absen !" />
+												<MenuItem mnemonicParsing="false" text="Lihat Jadwal" />
+											</items>
+										</MenuButton>
 									</children>
 								</GridPane>
 							</children>
