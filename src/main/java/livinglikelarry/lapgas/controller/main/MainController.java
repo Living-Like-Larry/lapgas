@@ -408,9 +408,10 @@ public class MainController implements Initializable {
 				if (result.get().getText().equalsIgnoreCase("ok")) {
 					this.studentNumberAsstTabTextField.clear();
 					if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
-						Configurator.doDBACtion(() -> {
+						Configurator.doRawDBActionWithDBConsumer((x) -> {
 							Model labAssistant = LabAssistant.findById((String) studentNumber);
 							if (labAssistant != null) {
+								x.close();
 								makeLabAsstAttendance(studentNumber);
 							} else {
 								Alert alertNotLabAsst = new Alert(AlertType.WARNING);
@@ -432,8 +433,13 @@ public class MainController implements Initializable {
 	}
 
 	private void makeLabAsstAttendance(final String studentNumber) {
-		LabAssistantAttendance labAssistantAttendance = new LabAssistantAttendance();
-		labAssistantAttendance.set("student_number", studentNumber).saveIt();
+		Configurator.doDBACtion(() -> {
+			LabAssistantAttendance labAssistantAttendance = new LabAssistantAttendance();
+			labAssistantAttendance.set("student_number", studentNumber).saveIt();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setContentText("berhasil melakukan absensi!");
+			alert.showAndWait();
+		});
 	}
 
 	private void loadAllLabAsstAttendances(
@@ -489,7 +495,6 @@ public class MainController implements Initializable {
 		if (selectedIndex != -1) {
 			this.coursesPaymentTabTableView.getItems().remove(selectedIndex);
 		}
-
 	}
 
 	@FXML
@@ -590,6 +595,7 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleAddLabAsstAttendance() {
 		makeLabAsstAttendance(this.labAsstStudentNumber);
+		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
 	}
 
 	private void showReport(JasperPrint jasperPrint, String title) {
