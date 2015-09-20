@@ -1,8 +1,8 @@
 package livinglikelarry.lapgas;
 
 import java.io.IOException;
-
-import org.javalite.activejdbc.DB;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,23 +20,20 @@ import livinglikelarry.lapgas.model.sql.AdminSql;
  */
 public class Lapgas extends Application {
 
-	private static DB adminDB;
-
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			makeAdminDB();
+			initDB();
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.load(Configurator.view("Login"));
 			LoginController loginController = (LoginController) fxmlLoader.getController();
-			loginController.setAdminDB(Lapgas.adminDB);
 			Scene scene = new Scene((AnchorPane) fxmlLoader.getRoot());
 			primaryStage.setScene(scene);
 			loginController.setStage(primaryStage);
 			primaryStage.setTitle("Login");
 			primaryStage.setResizable(false);
 			primaryStage.show();
-		} catch (IOException e) {
+		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -44,16 +41,54 @@ public class Lapgas extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-
-	private static void makeAdminDB() throws IOException {
-		adminDB = new DB("admin");
-		adminDB.open(Configurator.properties("admin.driver"),
-				Configurator.properties("admin.url") + Configurator.properties("admin.dbname"),
-				Configurator.properties("admin.username"), Configurator.properties("admin.password"));
-		if (adminDB.exec("SELECT name FROM sqlite_master WHERE name='admins'") == 0) {
-			adminDB.exec(Configurator.table("admins"));
-			new AdminSql().set("password", "livinglikelarry").saveIt();
-		}
+	
+	private void initDB() throws IOException, SQLException {
+		makeAdminDB();
+		makeLapgasDB();
 	}
 	
+	private static void makeAdminDB() throws IOException {
+		Configurator.doRawAdminDBActionConsumer((x) -> {
+			try {
+
+				if (x.exec("SELECT name FROM sqlite_master WHERE name='admins'") == 0) {
+					x.exec(Configurator.table("admins"));
+					new AdminSql().set("password", "livinglikelarry").saveIt();
+				}
+				x.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		});
+	}
+
+	private static void makeLapgasDB() throws SQLException, IOException {
+		Configurator.doRawDBActionConsumer((x) -> {
+
+			try {
+				ResultSet resultSet = x.connection().createStatement().executeQuery("SHOW DATABASES");
+				boolean isFound = false;
+				while (resultSet.next()) {
+					if (resultSet.getString("Database").equalsIgnoreCase("lapgas")) {
+						isFound = true;
+						break;
+					}
+				}
+				if (!isFound) {
+					x.exec("CREATE DATABASE lapgas");
+					x.exec("USE lapgas");
+					x.exec(Configurator.table("courses"));
+					x.exec(Configurator.table("student_payments"));
+					x.exec(Configurator.table("lab_assistant"));
+					x.exec(Configurator.table("lab_assistant_attendances"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		});
+
+	}
+
 }

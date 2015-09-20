@@ -1,2 +1,3 @@
 /target/
 .lapgas-config/pic/*
+*.log

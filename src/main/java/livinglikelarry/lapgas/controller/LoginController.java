@@ -2,11 +2,7 @@ package livinglikelarry.lapgas.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
-
-import org.javalite.activejdbc.DB;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +28,7 @@ import livinglikelarry.lapgas.SpecialLabAsstLapgasState;
 import livinglikelarry.lapgas.controller.main.MainController;
 import livinglikelarry.lapgas.model.Admin;
 import livinglikelarry.lapgas.model.sql.AdminSql;
+import livinglikelarry.lapgas.model.sql.LabAssistant;
 
 /**
  * 
@@ -57,7 +54,7 @@ public class LoginController implements Initializable {
 	private LapgasState lapgasState;
 
 	private Stage primaryStage;
-	private DB adminDB;
+	// private DB adminDB;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -68,33 +65,65 @@ public class LoginController implements Initializable {
 	@FXML
 	public void handlePressingEnter(KeyEvent keyEvent) {
 		if (keyEvent.getCode() == KeyCode.ENTER) {
-			Admin admin = AdminSql.findFirst("id = ?", "1");
-			AdminAuth adminAuth = new AdminAuth(admin, this.passwordTextField.getText());
-			adminAuth.onSuccess(x -> {
+			String role = this.roleComboBox.getSelectionModel().getSelectedItem();
+			if (role.equalsIgnoreCase("root")) {
 				try {
-					adminDB.close();
-					makeLapgasDB();
+					Configurator.doRawAdminDBActionConsumer((adminDB) -> {
+						Admin admin = AdminSql.findFirst("id = ?", "1");
+						AdminAuth adminAuth = new AdminAuth(admin, this.passwordTextField.getText());
+						adminAuth.onSuccess(x -> {
+							try {
+								adminDB.close();
+								showMain();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}).onFailed(x -> {
+							authFailed();
+						});
 
-					FXMLLoader fxmlLoader = new FXMLLoader();
-					GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Main"));
-					MainController mainController = (MainController) fxmlLoader.getController();
-					mainController.setLapgasState(lapgasState);
-					Stage stage = new Stage();
-					stage.setTitle("Lapgas");
-					stage.setScene(new Scene(root));
-					mainController.setStage(stage);
-					primaryStage.close();
-					stage.show();
-				} catch (Exception e) {
+					});
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}).onFailed(x -> {
-				Alert alert = new Alert(AlertType.WARNING);
-				alert.setTitle("Autentikasi gagal");
-				alert.setContentText("Sepertinya password yang anda masukan salah");
-				alert.showAndWait();
-			});
+			} else {
+				Configurator.doRawDBActionWithDBConsumer((x) -> {
+					try {
+						if (!LabAssistant.where("student_number = ? AND password = ? AND role = ? ",
+								(String) studentNumberTextField.getText(), (String) this.passwordTextField.getText(),
+								(String) role).isEmpty()) {
+							x.close();
+							showMain();
+						} else {
+							authFailed();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+				});
+			}
 		}
+	}
+
+	private void authFailed() {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Autentikasi gagal");
+		alert.setContentText("Sepertinya password yang anda masukan salah");
+		alert.showAndWait();
+	}
+
+	private void showMain() throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Main"));
+		MainController mainController = (MainController) fxmlLoader.getController();
+		mainController.setLapgasState(lapgasState);
+		Stage stage = new Stage();
+		stage.setTitle("Lapgas");
+		stage.setScene(new Scene(root));
+		mainController.setStage(stage);
+		primaryStage.close();
+		stage.show();
 	}
 
 	@FXML
@@ -123,36 +152,5 @@ public class LoginController implements Initializable {
 		this.primaryStage = primaryStage;
 	}
 
-	public void setAdminDB(DB adminDB) {
-		this.adminDB = adminDB;
-	}
-
-	private static void makeLapgasDB() throws SQLException, IOException {
-		Configurator.doRawDBActionConsumer((x) -> {
-
-			try {
-				ResultSet resultSet = x.connection().createStatement().executeQuery("SHOW DATABASES");
-				boolean isFound = false;
-				while (resultSet.next()) {
-					if (resultSet.getString("Database").equalsIgnoreCase("lapgas")) {
-						isFound = true;
-						break;
-					}
-				}
-				if (!isFound) {
-					x.exec("CREATE DATABASE lapgas");
-					x.exec("USE lapgas");
-					x.exec(Configurator.table("courses"));
-					x.exec(Configurator.table("student_payments"));
-					x.exec(Configurator.table("lab_assistant"));
-					x.exec(Configurator.table("lab_assistant_attendances"));
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		});
-
-	}
-
+	
 }
