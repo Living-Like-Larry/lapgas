@@ -25,6 +25,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import livinglikelarry.lapgas.AdminAuth;
 import livinglikelarry.lapgas.Configurator;
+import livinglikelarry.lapgas.LabAsstLapgasState;
+import livinglikelarry.lapgas.LapgasState;
+import livinglikelarry.lapgas.RootLapgasState;
+import livinglikelarry.lapgas.SpecialLabAsstLapgasState;
 import livinglikelarry.lapgas.controller.main.MainController;
 import livinglikelarry.lapgas.model.Admin;
 import livinglikelarry.lapgas.model.sql.AdminSql;
@@ -43,12 +47,14 @@ public class LoginController implements Initializable {
 
 	@FXML
 	private ImageView loginImageView;
-	
+
 	@FXML
 	private TextField studentNumberTextField;
-	
+
 	@FXML
 	private ComboBox<String> roleComboBox;
+
+	private LapgasState lapgasState;
 
 	private Stage primaryStage;
 	private DB adminDB;
@@ -72,6 +78,7 @@ public class LoginController implements Initializable {
 					FXMLLoader fxmlLoader = new FXMLLoader();
 					GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Main"));
 					MainController mainController = (MainController) fxmlLoader.getController();
+					mainController.setLapgasState(lapgasState);
 					Stage stage = new Stage();
 					stage.setTitle("Lapgas");
 					stage.setScene(new Scene(root));
@@ -89,13 +96,26 @@ public class LoginController implements Initializable {
 			});
 		}
 	}
-	
+
 	@FXML
 	public void handleChoosingRole() {
-		if(!this.roleComboBox.getSelectionModel().getSelectedItem().equalsIgnoreCase("root")) {
+		final String selectedRole = this.roleComboBox.getSelectionModel().getSelectedItem();
+		Configurator.setRole(selectedRole);
+		if (!selectedRole.equalsIgnoreCase("root")) {
 			this.studentNumberTextField.setVisible(true);
+			System.out.println("my role is not root");
+			if (selectedRole.equalsIgnoreCase("aslab")) {
+				System.out.println("i'm labasst");
+				this.lapgasState = new LabAsstLapgasState();
+			} else {
+				System.out.println("i'm special labasst");
+				this.lapgasState = new SpecialLabAsstLapgasState();
+			}
 		} else {
+			System.out.println("my role is root");
 			this.studentNumberTextField.setVisible(false);
+			this.lapgasState = new RootLapgasState();
+
 		}
 	}
 

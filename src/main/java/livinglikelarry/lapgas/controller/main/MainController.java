@@ -28,6 +28,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -37,6 +39,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import livinglikelarry.lapgas.Configurator;
+import livinglikelarry.lapgas.LapgasState;
 import livinglikelarry.lapgas.controller.SettingController;
 import livinglikelarry.lapgas.controller.StudentGradingController;
 import livinglikelarry.lapgas.controller.StudentPaymentController;
@@ -136,6 +139,15 @@ public class MainController implements Initializable {
 	@FXML
 	private DatePicker labAsstAttendanceDatePicker;
 
+	@FXML
+	private Tab paymentTab;
+
+	@FXML
+	private MenuItem settingMenuItem;
+	
+	@FXML
+	private MenuItem studentPaymentUpdatingMenuItem;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
@@ -143,6 +155,8 @@ public class MainController implements Initializable {
 	private ArrayList<StudentPaymentTableModel> noFilteredStudentPaymentList;
 
 	private ArrayList<LabAssistantAttendanceTableModel> noFilteredLabAsstAttendance;
+
+	private LapgasState lapgasState;
 
 	private static final String UNLA_IF_STUD_NUM_PATTERN = "4115505\\d{7}";
 
@@ -547,7 +561,7 @@ public class MainController implements Initializable {
 	public void handleUpdatingStudentPayment() {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
-			AnchorPane root = (AnchorPane)fxmlLoader.load(Configurator.view("StudentPaymentUpdater"));
+			AnchorPane root = (AnchorPane) fxmlLoader.load(Configurator.view("StudentPaymentUpdater"));
 			StudentPaymentUpdaterController studentPaymentUpdaterController = (StudentPaymentUpdaterController) fxmlLoader
 					.getController();
 			studentPaymentUpdaterController
@@ -566,6 +580,13 @@ public class MainController implements Initializable {
 		JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
 		jasperViewer.setTitle(title);
 		jasperViewer.setVisible(true);
+	}
+
+	public void setLapgasState(LapgasState lapgasState) {
+		this.lapgasState = lapgasState;
+		this.lapgasState.setPaymentTabState(this.paymentTab);
+		this.lapgasState.setSettingMenuItemState(this.settingMenuItem);
+		this.lapgasState.setUpdatingStudentPaymentStateMI(this.studentPaymentUpdatingMenuItem);
 	}
 
 }

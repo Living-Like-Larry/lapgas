@@ -1,0 +1,32 @@
+package livinglikelarry.lapgas;
+
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
+
+public class SpecialLabAsstLapgasState implements LapgasState {
+
+	@Override
+	public void setPaymentTabState(Tab paymentTab) {
+		paymentTab.setDisable(false);
+	}
+
+	@Override
+	public void setLabAsstTabState(Tab labAsstTab) {
+		labAsstTab.setDisable(true);
+	}
+
+	@Override
+	public void setUpdatingStudentPaymentStateMI(MenuItem updatingStudentPayment) {
+		updatingStudentPayment.setDisable(true);
+	}
+
+	@Override
+	public void setSettingMenuItemState(MenuItem settingMenuItem) {
+		settingMenuItem.setDisable(false);
+	}
+
+	@Override
+	public void setPasswordUpdaterAction() {
+	}
+
+}

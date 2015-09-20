@@ -31,6 +31,7 @@ public final class Configurator {
 	private static final String IMAGE_BASE_PATH = "livinglikelarry/lapgas/resource/image/";
 	private static final String TEXT_BASE_PATH = "livinglikelarry/lapgas/resource/text/";
 	private static Properties properties;
+	private static String role = ""; 
 
 	static {
 		try {
@@ -135,6 +136,14 @@ public final class Configurator {
 				Configurator.properties("admin.username"), Configurator.properties("admin.password"));
 		adminAction.run();
 		adminDB.close();
+	}
+	
+	public static void setRole(String role) {
+		Configurator.role = role;
+	}
+	
+	public static String getRole() {
+		return Configurator.role;
 	}
 
 }
