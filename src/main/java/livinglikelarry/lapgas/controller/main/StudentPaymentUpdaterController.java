@@ -97,21 +97,28 @@ public class StudentPaymentUpdaterController implements Initializable {
 	@FXML
 	public void handleUpdatingButton() {
 		Configurator.doDBACtion(() -> {
-			Model studentPayment = StudentPayment.findById((long) this.studentPaymentTableModel.getId());
-			final String newGrade = this.gradeComboBox.getValue();
-			final String newClass = (String) this.classTextField.getText().toUpperCase();
-			final BigDecimal newAmountOfPayment = new BigDecimal(this.amountOfPaymentTextField.getText());
-			Model course = Course.first("name = ?", (String)this.courseNameComboBox.getValue());
-			final String newCourseNumber = (String)course.get("course_number");
-			studentPayment.set("payment_value", newAmountOfPayment)
-					.set("class", newClass)
-					.set("course_number", newCourseNumber)
-					.set("grade", (String) newGrade).saveIt();
-			studentPaymentTableModel.setStudentGrade(newGrade);
-			studentPaymentTableModel.setStudentClass(newClass);
-			studentPaymentTableModel.setPaymentValue(newAmountOfPayment);
-			studentPaymentTableModel.setCourseNumber(newCourseNumber);
-			studentPaymentTableModel.setCourseName(this.courseNameComboBox.getValue());
+			try {
+				Model studentPayment = StudentPayment.findById((long) this.studentPaymentTableModel.getId());
+				final String newGrade = this.gradeComboBox.getValue();
+				final String newClass = (String) this.classTextField.getText().toUpperCase();
+				final BigDecimal newAmountOfPayment = new BigDecimal(this.amountOfPaymentTextField.getText());
+				Model course = Course.first("name = ?", (String) this.courseNameComboBox.getValue());
+				final String newCourseNumber = (String) course.get("course_number");
+				studentPayment.set("payment_value", newAmountOfPayment).set("class", newClass)
+						.set("course_number", newCourseNumber).set("grade", (String) newGrade).saveIt();
+
+				studentPaymentTableModel.setPaymentReceiptFilePath(new PaymentTabUtil().updatePaymentReceipt(
+						this.studentPaymentTableModel.getPaymentReceiptFilePath(), this.choosenPaymentReceiptFile,
+						this.studentPaymentTableModel.getId())
+				);
+				studentPaymentTableModel.setStudentGrade(newGrade);
+				studentPaymentTableModel.setStudentClass(newClass);
+				studentPaymentTableModel.setPaymentValue(newAmountOfPayment);
+				studentPaymentTableModel.setCourseNumber(newCourseNumber);
+				studentPaymentTableModel.setCourseName(this.courseNameComboBox.getValue());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		});
 	}
 }
