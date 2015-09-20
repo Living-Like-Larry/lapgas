@@ -4,9 +4,11 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class LabAssistantTableModel {
 	private SimpleStringProperty studentNumber;
+	private SimpleStringProperty role;
 
-	public LabAssistantTableModel(String studentNumber) {
+	public LabAssistantTableModel(String studentNumber, String role) {
 		this.studentNumber = new SimpleStringProperty(studentNumber);
+		this.role = new SimpleStringProperty(role);
 	}
 
 	public final SimpleStringProperty studentNumberProperty() {
@@ -20,5 +22,20 @@ public class LabAssistantTableModel {
 	public final void setStudentNumber(final String studentNumber) {
 		this.studentNumberProperty().set(studentNumber);
 	}
+
+	public final SimpleStringProperty roleProperty() {
+		return this.role;
+	}
+	
+
+	public final java.lang.String getRole() {
+		return this.roleProperty().get();
+	}
+	
+
+	public final void setRole(final java.lang.String role) {
+		this.roleProperty().set(role);
+	}
+	
 
 }

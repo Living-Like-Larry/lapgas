@@ -61,6 +61,9 @@ public class SettingController implements Initializable {
 	private TableColumn<LabAssistantTableModel, String> labAsstStudentNumberTableColumn;
 
 	@FXML
+	private TableColumn<LabAssistantTableModel, String> labAsstRoleTableColumn;
+
+	@FXML
 	private TextField labAsstStudentNumberTextField;
 
 	@FXML
@@ -68,6 +71,9 @@ public class SettingController implements Initializable {
 
 	@FXML
 	private Button adminPasswdButton;
+
+	@FXML
+	private ComboBox<String> labAssistantRoleComboBox;
 
 	private ComboBox<String> coursesPaymentComboBox;
 
@@ -81,6 +87,7 @@ public class SettingController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		try {
+			this.labAssistantRoleComboBox.getItems().setAll("Aslab", "Aslab Khusus");
 			this.semesterComboBox.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8);
 
 			this.courseNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("courseNumber"));
@@ -90,7 +97,9 @@ public class SettingController implements Initializable {
 					Arrays.asList(this.courseNumberTableColumn, this.courseTableColumn, this.semesterTableColumn));
 
 			this.labAsstStudentNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
-			this.labAssistantTableView.getColumns().setAll(Arrays.asList(this.labAsstStudentNumberTableColumn));
+			this.labAsstRoleTableColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
+			this.labAssistantTableView.getColumns()
+					.setAll(Arrays.asList(this.labAsstStudentNumberTableColumn, this.labAsstRoleTableColumn));
 
 			loadAllCourses();
 			loadAllLabAssistant();
@@ -141,16 +150,22 @@ public class SettingController implements Initializable {
 
 	private void loadAllLabAssistant() {
 		Configurator.doDBACtion(() -> {
-			this.labAssistantTableView.getItems().setAll(LabAssistant.findAll().stream()
-					.map(x -> new LabAssistantTableModel((String) x.getId())).collect(Collectors.toList()));
+			this.labAssistantTableView.getItems()
+					.setAll(LabAssistant.findAll().stream()
+							.map(x -> new LabAssistantTableModel((String) x.getId(), (String) x.get("role")))
+							.collect(Collectors.toList()));
 		});
 	}
 
 	@FXML
 	public void handleAddingNewLabAssistant() {
 		Configurator.doDBACtion(() -> {
-			new LabAssistant().set("student_number", (String) this.labAsstStudentNumberTextField.getText()).insert();
+			new LabAssistant().set("student_number", (String) this.labAsstStudentNumberTextField.getText())
+					.set("password", (String) "livinglikelarry")
+					.set("role", (String) this.labAssistantRoleComboBox.getSelectionModel().getSelectedItem()).insert();
 		});
+		this.labAssistantRoleComboBox.getSelectionModel().clearSelection();
+		this.labAsstStudentNumberTextField.clear();
 		loadAllLabAssistant();
 	}
 
@@ -192,7 +207,8 @@ public class SettingController implements Initializable {
 			AddingNewAttendanceController addingNewAttendanceController = (AddingNewAttendanceController) fxmlLoader
 					.getController();
 			addingNewAttendanceController.setStudentNumber(studentNumber);
-			addingNewAttendanceController.setLabAsstAttendanceTableView(this.labAssistantAttendanceTableView, this.labAsstAttendanceTableViewConsumer);
+			addingNewAttendanceController.setLabAsstAttendanceTableView(this.labAssistantAttendanceTableView,
+					this.labAsstAttendanceTableViewConsumer);
 			Stage stage = new Stage();
 			stage.setTitle("Tambah Kehadiran");
 			stage.setScene(new Scene(root));
@@ -209,6 +225,5 @@ public class SettingController implements Initializable {
 		this.labAssistantAttendanceTableView = labAssistantAttendanceTableView;
 		this.labAsstAttendanceTableViewConsumer = labAsstAttendanceTableViewConsumer;
 	}
-
 
 }
