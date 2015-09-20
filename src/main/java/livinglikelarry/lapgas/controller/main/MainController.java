@@ -588,6 +588,7 @@ public class MainController implements Initializable {
 		this.lapgasState.setPaymentTabState(this.paymentTab);
 		this.lapgasState.setSettingMenuItemState(this.settingMenuItem);
 		this.lapgasState.setUpdatingStudentPaymentStateMI(this.studentPaymentUpdatingMenuItem);
+		this.lapgasState.setLabAsstComboBoxMode(this.filteredAndAddedComboBox);
 	}
 
 }
