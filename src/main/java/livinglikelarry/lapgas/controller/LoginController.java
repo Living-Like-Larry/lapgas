@@ -68,43 +68,51 @@ public class LoginController implements Initializable {
 	public void handlePressingEnter(KeyEvent keyEvent) {
 		if (keyEvent.getCode() == KeyCode.ENTER) {
 			String role = this.roleComboBox.getSelectionModel().getSelectedItem();
-			if (role.equalsIgnoreCase("root")) {
-				try {
-					Configurator.doRawAdminDBActionConsumer((adminDB) -> {
-						Admin admin = AdminSql.findFirst("id = ?", "1");
-						AdminAuth adminAuth = new AdminAuth(admin, this.passwordTextField.getText());
-						adminAuth.onSuccess(x -> {
-							try {
-								adminDB.close();
-								showMain();
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}).onFailed(x -> {
-							authFailed();
-						});
-
-					});
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} else {
-				Configurator.doRawDBActionWithDBConsumer((x) -> {
+			if (role != null) {
+				if (role.equalsIgnoreCase("root")) {
 					try {
-						Model labAssistant = LabAssistant.findFirst("student_number = ? AND password = ? AND role = ? ",
-								(String) studentNumberTextField.getText(), (String) this.passwordTextField.getText(),
-								(String) role);
-						if (labAssistant != null) {
-							x.close();
-							showMain((String)labAssistant.get("student_number"));
-						} else {
-							authFailed();
-						}
-					} catch (Exception e) {
+						Configurator.doRawAdminDBActionConsumer((adminDB) -> {
+							Admin admin = AdminSql.findFirst("id = ?", "1");
+							AdminAuth adminAuth = new AdminAuth(admin, this.passwordTextField.getText());
+							adminAuth.onSuccess(x -> {
+								try {
+									adminDB.close();
+									showMain();
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}).onFailed(x -> {
+								authFailed();
+							});
+
+						});
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
+				} else {
+					Configurator.doRawDBActionWithDBConsumer((x) -> {
+						try {
+							Model labAssistant = LabAssistant.findFirst(
+									"student_number = ? AND password = ? AND role = ? ",
+									(String) studentNumberTextField.getText(),
+									(String) this.passwordTextField.getText(), (String) role);
+							if (labAssistant != null) {
+								x.close();
+								showMain((String) labAssistant.get("student_number"));
+							} else {
+								authFailed();
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 
-				});
+					});
+				}
+
+			} else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setContentText("Harap pilih salah satu role");
+				alert.showAndWait();
 			}
 		}
 	}
@@ -126,7 +134,7 @@ public class LoginController implements Initializable {
 	private void authFailed() {
 		Alert alert = new Alert(AlertType.WARNING);
 		alert.setTitle("Autentikasi gagal");
-		alert.setContentText("Sepertinya password yang anda masukan salah");
+		alert.setContentText("Data yang dimasukan tidak cocok !");
 		alert.showAndWait();
 	}
 
@@ -169,5 +177,4 @@ public class LoginController implements Initializable {
 		this.primaryStage = primaryStage;
 	}
 
-	
 }
