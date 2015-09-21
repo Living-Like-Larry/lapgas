@@ -274,11 +274,18 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleStudentPaymentClearModeButton() {
 		this.studentPaymentTableView.getItems().setAll(this.noFilteredStudentPaymentList);
+		this.studentNumberFilteredTabStudent.clear();
+		this.filteredCourseNameComboBox.getSelectionModel().clearSelection();
+		this.filteredStudentPaymentBySemesterComboBox.getSelectionModel().clearSelection();
+		this.filteredStudentPaymentDatePicker.setValue(null);
+		this.studentPaymentUntilDatePicker.setValue(null);
+		this.studentClassTabStudentComboBox.getSelectionModel().clearSelection();
 	}
 	
 
 	@FXML
 	public void handleChoosingUntilPartStudentPaymentDP() {
+		this.studentPaymentTableView.getItems().setAll(this.noFilteredStudentPaymentList);
 		this.studentPaymentTableView.getItems().setAll(this.studentPaymentTableView.getItems().stream().filter(x -> {
 			LocalDate studentPaymentLocalDate = x.getPaymentDate().toLocalDate();
 			LocalDate fromLocalDate = this.filteredStudentPaymentDatePicker.getValue();
