@@ -51,7 +51,6 @@ public class Lapgas extends Application {
 	private static void makeAdminDB() throws IOException {
 		Configurator.doRawAdminDBActionConsumer((x) -> {
 			try {
-
 				if (x.exec("SELECT name FROM sqlite_master WHERE name='admins'") == 0) {
 					x.exec(Configurator.table("admins"));
 					new AdminSql().set("password", "livinglikelarry").saveIt();
@@ -83,6 +82,7 @@ public class Lapgas extends Application {
 					x.exec(Configurator.table("student_payments"));
 					x.exec(Configurator.table("lab_assistant"));
 					x.exec(Configurator.table("lab_assistant_attendances"));
+					x.exec(Configurator.table("lab_assistant_logs"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

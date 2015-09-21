@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 import livinglikelarry.lapgas.model.sql.AdminSql;
 import livinglikelarry.lapgas.model.sql.Course;
 import livinglikelarry.lapgas.model.sql.LabAssistant;
+import livinglikelarry.lapgas.model.sql.LabAssistantLog;
 import livinglikelarry.lapgas.model.table.CoursesTableModel;
 import livinglikelarry.lapgas.model.table.LabAssistantAttendanceTableModel;
 import livinglikelarry.lapgas.model.table.LabAssistantTableModel;
@@ -79,7 +80,7 @@ public class SettingController implements Initializable {
 
 	@FXML
 	private ComboBox<String> coursesPaymentComboBox;
-	
+
 	@FXML
 	private Tab labAsstTab;
 
@@ -90,7 +91,6 @@ public class SettingController implements Initializable {
 	private Consumer<TableView<LabAssistantAttendanceTableModel>> labAsstAttendanceTableViewConsumer;
 
 	private LapgasState lapgasState;
-
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -224,6 +224,19 @@ public class SettingController implements Initializable {
 			stage.setResizable(false);
 			stage.showAndWait();
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	public void handleSeeingLabAsstLogs() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			AnchorPane root = (AnchorPane) fxmlLoader.load(Configurator.view("LabAsstLog"));
+			LabAssistantLogController labAssistantLogController = (LabAssistantLogController)fxmlLoader.getController();
+			Stage stage = new Stage();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

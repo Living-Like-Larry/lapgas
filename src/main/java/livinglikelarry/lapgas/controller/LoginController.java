@@ -56,7 +56,6 @@ public class LoginController implements Initializable {
 	private LapgasState lapgasState;
 
 	private Stage primaryStage;
-	// private DB adminDB;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
