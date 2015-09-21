@@ -105,12 +105,13 @@ public class StudentPaymentUpdaterController implements Initializable {
 				Model course = Course.first("name = ?", (String) this.courseNameComboBox.getValue());
 				final String newCourseNumber = (String) course.get("course_number");
 
-				if (this.choosenPaymentReceiptFile == null) {
-					this.choosenPaymentReceiptFile = new File(studentPaymentTableModel.getPaymentReceiptFilePath());
+				if (this.choosenPaymentReceiptFile != null) {
+					// this.choosenPaymentReceiptFile = new
+					// File(studentPaymentTableModel.getPaymentReceiptFilePath());
+					studentPaymentTableModel.setPaymentReceiptFilePath(new PaymentTabUtil().updatePaymentReceipt(
+							this.studentPaymentTableModel.getPaymentReceiptFilePath(), this.choosenPaymentReceiptFile,
+							this.studentPaymentTableModel.getId()));
 				}
-				studentPaymentTableModel.setPaymentReceiptFilePath(new PaymentTabUtil().updatePaymentReceipt(
-						this.studentPaymentTableModel.getPaymentReceiptFilePath(), this.choosenPaymentReceiptFile,
-						this.studentPaymentTableModel.getId()));
 				studentPaymentTableModel.setStudentGrade(newGrade);
 				studentPaymentTableModel.setStudentClass(newClass);
 				studentPaymentTableModel.setPaymentValue(newAmountOfPayment);
