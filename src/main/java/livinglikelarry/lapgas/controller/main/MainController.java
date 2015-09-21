@@ -478,7 +478,7 @@ public class MainController implements Initializable {
 						.column("jumlah bayar", "paymentValue", DynamicReports.type.bigDecimalType())
 						.setValueFormatter(Templates.createCurrencyValueFormatter(""));
 				AggregationSubtotalBuilder<BigDecimal> paymentAmountSum = DynamicReports.sbt.sum(paymentAmountColumn)
-						.setLabel("total ");
+						.setLabel("total ").setValueFormatter(Templates.createCurrencyValueFormatter(""));
 
 				showReport(DynamicReports.report().setTemplate(Templates.reportTemplate)
 						.title(Templates.createTitleComponent("Praktek Mahasiswa"))
