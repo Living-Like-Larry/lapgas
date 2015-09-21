@@ -546,7 +546,7 @@ public class MainController implements Initializable {
 					.title(Templates.createTitleComponent("Absensi Asisten Lab")).pageFooter(Templates.footerComponent)
 					.columns(DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
 							DynamicReports.col.column("tgl hadir", "studentAttendanceDate",
-									DynamicReports.type.dateType()))
+									DynamicReports.type.dateType()).setPattern("dd/MM/yyyy"))
 					.setDataSource(
 							this.labAssistantAttendanceTableView.getItems().stream().collect(Collectors.toList()))
 					.toJasperPrint(), "Absensi Aslab");
