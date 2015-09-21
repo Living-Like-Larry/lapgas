@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,6 +38,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import livinglikelarry.lapgas.controller.SettingController;
@@ -155,6 +157,15 @@ public class MainController implements Initializable {
 	@FXML
 	private MenuButton labAsstActionMenuButton;
 
+	@FXML
+	private Button studentPaymentDatePickerModeButton;
+
+	@FXML
+	private Text studentPaymentUntilText;
+
+	@FXML
+	private DatePicker studentPaymentUntilDatePicker;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
@@ -245,6 +256,36 @@ public class MainController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@FXML
+	public void handleStudentPaymentDatePickerMode() {
+		if (this.studentPaymentDatePickerModeButton.getText().equalsIgnoreCase("hingga ke")) {
+			this.studentPaymentUntilText.setVisible(true);
+			this.studentPaymentUntilDatePicker.setVisible(true);
+			this.studentPaymentDatePickerModeButton.setText("tepat");
+		} else {
+			this.studentPaymentUntilText.setVisible(false);
+			this.studentPaymentUntilDatePicker.setVisible(false);
+			this.studentPaymentDatePickerModeButton.setText("Hingga ke");
+		}
+	}
+	
+	@FXML
+	public void handleStudentPaymentClearModeButton() {
+		this.studentPaymentTableView.getItems().setAll(this.noFilteredStudentPaymentList);
+	}
+	
+
+	@FXML
+	public void handleChoosingUntilPartStudentPaymentDP() {
+		this.studentPaymentTableView.getItems().setAll(this.studentPaymentTableView.getItems().stream().filter(x -> {
+			LocalDate studentPaymentLocalDate = x.getPaymentDate().toLocalDate();
+			LocalDate fromLocalDate = this.filteredStudentPaymentDatePicker.getValue();
+			LocalDate toLocalDate = this.studentPaymentUntilDatePicker.getValue();
+			return ((studentPaymentLocalDate.isAfter(fromLocalDate) || studentPaymentLocalDate.isEqual(fromLocalDate))
+					&& (studentPaymentLocalDate.isBefore(toLocalDate) || studentPaymentLocalDate.isEqual(toLocalDate)));
+		}).collect(Collectors.toList()));
 	}
 
 	@FXML
@@ -487,8 +528,9 @@ public class MainController implements Initializable {
 								DynamicReports.col.column("matakuliah", "courseName", DynamicReports.type.stringType()),
 								DynamicReports.col.column("nilai", "studentGrade", DynamicReports.type.stringType()),
 								paymentAmountColumn,
-								DynamicReports.col.column("waktu membayar", "paymentDate",
-										DynamicReports.type.dateType()).setPattern("dd/MM/yyyy"),
+								DynamicReports.col
+										.column("waktu membayar", "paymentDate", DynamicReports.type.dateType())
+										.setPattern("dd/MM/yyyy"),
 								DynamicReports.col.column("Kelas", "studentClass", DynamicReports.type.stringType()),
 								DynamicReports.col.column("semester", "studentSemester",
 										DynamicReports.type.integerType()))
@@ -542,11 +584,14 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleReportingLabAsstAttendance() {
 		try {
-			showReport(DynamicReports.report().setTemplate(Templates.reportTemplate)
-					.title(Templates.createTitleComponent("Absensi Asisten Lab")).pageFooter(Templates.footerComponent)
-					.columns(DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
-							DynamicReports.col.column("tgl hadir", "studentAttendanceDate",
-									DynamicReports.type.dateType()).setPattern("dd/MM/yyyy"))
+			showReport(
+					DynamicReports.report().setTemplate(Templates.reportTemplate)
+							.title(Templates.createTitleComponent("Absensi Asisten Lab"))
+							.pageFooter(Templates.footerComponent)
+							.columns(
+									DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
+									DynamicReports.col.column("tgl hadir", "studentAttendanceDate",
+											DynamicReports.type.dateType()).setPattern("dd/MM/yyyy"))
 					.setDataSource(
 							this.labAssistantAttendanceTableView.getItems().stream().collect(Collectors.toList()))
 					.toJasperPrint(), "Absensi Aslab");

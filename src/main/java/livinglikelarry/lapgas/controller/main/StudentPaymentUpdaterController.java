@@ -106,8 +106,6 @@ public class StudentPaymentUpdaterController implements Initializable {
 				final String newCourseNumber = (String) course.get("course_number");
 
 				if (this.choosenPaymentReceiptFile != null) {
-					// this.choosenPaymentReceiptFile = new
-					// File(studentPaymentTableModel.getPaymentReceiptFilePath());
 					studentPaymentTableModel.setPaymentReceiptFilePath(new PaymentTabUtil().updatePaymentReceipt(
 							this.studentPaymentTableModel.getPaymentReceiptFilePath(), this.choosenPaymentReceiptFile,
 							this.studentPaymentTableModel.getId()));

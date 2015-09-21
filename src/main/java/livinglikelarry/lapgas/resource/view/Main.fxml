@@ -207,6 +207,8 @@
 									minHeight="2.0" prefHeight="57.0" vgrow="ALWAYS" />
 								<RowConstraints maxHeight="1.7976931348623157E308"
 									minHeight="10.0" prefHeight="27.0" vgrow="ALWAYS" />
+								<RowConstraints maxHeight="1.7976931348623157E308"
+									minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
 							</rowConstraints>
 							<children>
 								<TableView fx:id="studentPaymentTableView" maxHeight="1.7976931348623157E308"
@@ -303,19 +305,57 @@
 														<Insets right="10.0" />
 													</padding>
 													<GridPane.margin>
-														<Insets right="10.0" />
+														<Insets left="10.0" right="10.0" />
 													</GridPane.margin>
 												</ComboBox>
 											</children>
 										</GridPane>
-										<DatePicker fx:id="filteredStudentPaymentDatePicker"
-											onAction="#handleFilteringByDate" prefHeight="26.0"
-											prefWidth="184.0" GridPane.columnIndex="2" />
+										<GridPane GridPane.columnIndex="2">
+											<columnConstraints>
+												<ColumnConstraints maxWidth="131.0"
+													minWidth="97.0" prefWidth="115.0" />
+												<ColumnConstraints hgrow="SOMETIMES"
+													maxWidth="95.0" minWidth="10.0" prefWidth="77.0" />
+												<ColumnConstraints hgrow="SOMETIMES"
+													minWidth="10.0" prefWidth="100.0" />
+											</columnConstraints>
+											<rowConstraints>
+												<RowConstraints minHeight="10.0" prefHeight="30.0"
+													vgrow="SOMETIMES" />
+												<RowConstraints minHeight="10.0" prefHeight="30.0"
+													vgrow="SOMETIMES" />
+											</rowConstraints>
+											<children>
+												<DatePicker fx:id="filteredStudentPaymentDatePicker"
+													onAction="#handleFilteringByDate" prefHeight="26.0"
+													prefWidth="184.0" />
+												<Button fx:id="studentPaymentDatePickerModeButton"
+													mnemonicParsing="false" onAction="#handleStudentPaymentDatePickerMode"
+													text="Hingga ke" GridPane.rowIndex="1" />
+												<Text fx:id="studentPaymentUntilText" strokeType="OUTSIDE"
+													strokeWidth="0.0" text=":" visible="false"
+													GridPane.columnIndex="1">
+													<GridPane.margin>
+														<Insets left="20.0" />
+													</GridPane.margin>
+												</Text>
+												<DatePicker fx:id="studentPaymentUntilDatePicker"
+													onAction="#handleChoosingUntilPartStudentPaymentDP"
+													visible="false" GridPane.columnIndex="2" />
+											</children>
+										</GridPane>
 									</children>
 								</GridPane>
 								<Button mnemonicParsing="false" onAction="#handleReportingButton"
 									prefHeight="26.0" prefWidth="158.0" text="Lapor"
 									GridPane.rowIndex="2">
+									<GridPane.margin>
+										<Insets left="10.0" />
+									</GridPane.margin>
+								</Button>
+								<Button mnemonicParsing="false"
+									onAction="#handleStudentPaymentClearModeButton" text="Clear filter !"
+									GridPane.rowIndex="4">
 									<GridPane.margin>
 										<Insets left="10.0" />
 									</GridPane.margin>
