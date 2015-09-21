@@ -488,7 +488,7 @@ public class MainController implements Initializable {
 								DynamicReports.col.column("nilai", "studentGrade", DynamicReports.type.stringType()),
 								paymentAmountColumn,
 								DynamicReports.col.column("waktu membayar", "paymentDate",
-										DynamicReports.type.dateType()),
+										DynamicReports.type.dateType()).setPattern("dd/MM/yyyy"),
 								DynamicReports.col.column("Kelas", "studentClass", DynamicReports.type.stringType()),
 								DynamicReports.col.column("semester", "studentSemester",
 										DynamicReports.type.integerType()))

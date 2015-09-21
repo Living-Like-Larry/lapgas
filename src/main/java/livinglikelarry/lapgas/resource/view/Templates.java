@@ -148,7 +148,8 @@ public class Templates {
 
 		@Override
 		public String getPattern() {
-			return "Rp #,###.00";
+			return "Rp #";
+//			return "Rp #,###.00";
 		}
 	}
 
