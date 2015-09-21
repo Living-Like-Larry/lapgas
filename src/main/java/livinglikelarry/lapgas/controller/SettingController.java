@@ -28,7 +28,6 @@ import javafx.stage.Stage;
 import livinglikelarry.lapgas.model.sql.AdminSql;
 import livinglikelarry.lapgas.model.sql.Course;
 import livinglikelarry.lapgas.model.sql.LabAssistant;
-import livinglikelarry.lapgas.model.sql.LabAssistantLog;
 import livinglikelarry.lapgas.model.table.CoursesTableModel;
 import livinglikelarry.lapgas.model.table.LabAssistantAttendanceTableModel;
 import livinglikelarry.lapgas.model.table.LabAssistantTableModel;
@@ -233,12 +232,14 @@ public class SettingController implements Initializable {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			AnchorPane root = (AnchorPane) fxmlLoader.load(Configurator.view("LabAsstLog"));
-			LabAssistantLogController labAssistantLogController = (LabAssistantLogController)fxmlLoader.getController();
+			LabAssistantLogController labAssistantLogController = (LabAssistantLogController) fxmlLoader
+					.getController();
+			labAssistantLogController.setLabAsstStudentNumber(
+					this.labAssistantTableView.getSelectionModel().getSelectedItem().getStudentNumber());
 			Stage stage = new Stage();
 			stage.setScene(new Scene(root));
 			stage.showAndWait();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -11,7 +11,7 @@
 	fx:controller="livinglikelarry.lapgas.controller.LabAssistantLogController">
 	<children>
 		<TextArea layoutX="26.0" layoutY="14.0" prefHeight="306.0"
-			prefWidth="552.0" />
+			prefWidth="552.0" fx:id="labAsstLogTextArea" />
 		<DatePicker layoutX="26.0" layoutY="344.0" />
 		<Button layoutX="421.0" layoutY="344.0" mnemonicParsing="false"
 			prefHeight="26.0" prefWidth="157.0" text="Remove" />

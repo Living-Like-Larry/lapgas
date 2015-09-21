@@ -52,7 +52,7 @@ import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
 import livinglikelarry.lapgas.resource.view.Templates;
 import livinglikelarry.lapgas.state.LapgasState;
 import livinglikelarry.lapgas.util.Configurator;
-import livinglikelarry.lapgas.util.Logger;
+import livinglikelarry.lapgas.util.LabAssistantLogger;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -346,7 +346,7 @@ public class MainController implements Initializable {
 					}
 				});
 				if (this.labAsstStudentNumber != null) {
-					Logger.logNewStudentPayment(this.labAsstStudentNumber, studentNumber, courseNames, paymentReceipt,
+					LabAssistantLogger.logNewStudentPayment(this.labAsstStudentNumber, studentNumber, courseNames, paymentReceipt,
 							studentClass, paymentValue);
 				}
 				Alert alert = new Alert(AlertType.INFORMATION);
