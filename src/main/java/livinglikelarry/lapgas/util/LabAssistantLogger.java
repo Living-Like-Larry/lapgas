@@ -1,6 +1,7 @@
 package livinglikelarry.lapgas.util;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.text.StrBuilder;
@@ -19,10 +20,14 @@ public class LabAssistantLogger {
 			LabAssistantLog labAssistantLog = new LabAssistantLog();
 			labAssistantLog.set("student_number", (String) labAsstStudentNumber)
 					.set("log",
-							"melakukan penambahan pembayaran mahasiswa : \n" + "npm                 : " + studentNumber
-									+ "\n" + "matakuliah          : " + courseNames + "\n" + "bukti pembayaran    : "
-									+ paymentReceipt.toString() + "\n" + "kelas               : " + studentClass + "\n"
-									+ "pembayaran sejumlah : " + paymentValue)
+							"Pada saat " + LocalDateTime.now().toString() + "\n"
+							+ "aslab dengan npm " + labAsstStudentNumber + "\n"
+							+ "melakukan penambahan pembayaran mahasiswa dengan detail berikut => \n" 
+				            + "npm                 : " + studentNumber + "\n" 
+							+ "matakuliah           : " + courseNames + "\n"
+				            + "bukti pembayaran      : " + paymentReceipt.toString() + "\n" 
+							+ "kelas                  : " + studentClass + "\n"
+							+ "pembayaran sejumlah : " + paymentValue)
 					.saveIt();
 		});
 	}
