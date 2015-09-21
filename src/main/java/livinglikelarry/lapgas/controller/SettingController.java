@@ -235,6 +235,8 @@ public class SettingController implements Initializable {
 			AnchorPane root = (AnchorPane) fxmlLoader.load(Configurator.view("LabAsstLog"));
 			LabAssistantLogController labAssistantLogController = (LabAssistantLogController)fxmlLoader.getController();
 			Stage stage = new Stage();
+			stage.setScene(new Scene(root));
+			stage.showAndWait();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

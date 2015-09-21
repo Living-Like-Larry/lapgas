@@ -91,7 +91,7 @@
 											<items>
 												<MenuItem mnemonicParsing="false"
 													onAction="#handleAddingNewAttendance" text="Tambah kehadiran" />
-												<MenuItem mnemonicParsing="false" text="Lihat log" />
+												<MenuItem mnemonicParsing="false" text="Lihat log"  onAction="#handleSeeingLabAsstLogs"/>
 											</items>
 										</ContextMenu>
 									</contextMenu>
