@@ -104,18 +104,23 @@ public class StudentPaymentUpdaterController implements Initializable {
 				final BigDecimal newAmountOfPayment = new BigDecimal(this.amountOfPaymentTextField.getText());
 				Model course = Course.first("name = ?", (String) this.courseNameComboBox.getValue());
 				final String newCourseNumber = (String) course.get("course_number");
-				studentPayment.set("payment_value", newAmountOfPayment).set("class", newClass)
-						.set("course_number", newCourseNumber).set("grade", (String) newGrade).saveIt();
 
+				if (this.choosenPaymentReceiptFile == null) {
+					this.choosenPaymentReceiptFile = new File(studentPaymentTableModel.getPaymentReceiptFilePath());
+				}
 				studentPaymentTableModel.setPaymentReceiptFilePath(new PaymentTabUtil().updatePaymentReceipt(
 						this.studentPaymentTableModel.getPaymentReceiptFilePath(), this.choosenPaymentReceiptFile,
-						this.studentPaymentTableModel.getId())
-				);
+						this.studentPaymentTableModel.getId()));
 				studentPaymentTableModel.setStudentGrade(newGrade);
 				studentPaymentTableModel.setStudentClass(newClass);
 				studentPaymentTableModel.setPaymentValue(newAmountOfPayment);
 				studentPaymentTableModel.setCourseNumber(newCourseNumber);
 				studentPaymentTableModel.setCourseName(this.courseNameComboBox.getValue());
+
+				studentPayment.set("payment_value", newAmountOfPayment).set("class", newClass)
+						.set("course_number", newCourseNumber).set("grade", (String) newGrade)
+						.set("payment_receipt", (String) studentPaymentTableModel.getPaymentReceiptFilePath()).saveIt();
+				this.stage.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
