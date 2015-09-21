@@ -54,6 +54,8 @@ import livinglikelarry.lapgas.state.LapgasState;
 import livinglikelarry.lapgas.util.Configurator;
 import livinglikelarry.lapgas.util.LabAssistantLogger;
 import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
+import net.sf.dynamicreports.report.builder.subtotal.AggregationSubtotalBuilder;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
@@ -346,8 +348,8 @@ public class MainController implements Initializable {
 					}
 				});
 				if (this.labAsstStudentNumber != null) {
-					LabAssistantLogger.logNewStudentPayment(this.labAsstStudentNumber, studentNumber, courseNames, paymentReceipt,
-							studentClass, paymentValue);
+					LabAssistantLogger.logNewStudentPayment(this.labAsstStudentNumber, studentNumber, courseNames,
+							paymentReceipt, studentClass, paymentValue);
 				}
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Disimpan");
@@ -472,21 +474,26 @@ public class MainController implements Initializable {
 							x.getPaymentReceiptFilePath(), x.getStudentGrade(), studentSemester, courseName);
 				}).collect(Collectors.toList());
 
+				final TextColumnBuilder<BigDecimal> paymentAmountColumn = DynamicReports.col
+						.column("jumlah bayar", "paymentValue", DynamicReports.type.bigDecimalType())
+						.setValueFormatter(Templates.createCurrencyValueFormatter(""));
+				AggregationSubtotalBuilder<BigDecimal> paymentAmountSum = DynamicReports.sbt.sum(paymentAmountColumn)
+						.setLabel("total ");
+
 				showReport(DynamicReports.report().setTemplate(Templates.reportTemplate)
 						.title(Templates.createTitleComponent("Praktek Mahasiswa"))
 						.pageFooter(Templates.footerComponent)
 						.columns(DynamicReports.col.column("npm", "studentNumber", DynamicReports.type.stringType()),
 								DynamicReports.col.column("matakuliah", "courseName", DynamicReports.type.stringType()),
 								DynamicReports.col.column("nilai", "studentGrade", DynamicReports.type.stringType()),
-								DynamicReports.col
-										.column("jumlah bayar", "paymentValue", DynamicReports.type.bigDecimalType())
-										.setValueFormatter(Templates.createCurrencyValueFormatter("")),
+								paymentAmountColumn,
 								DynamicReports.col.column("waktu membayar", "paymentDate",
 										DynamicReports.type.dateType()),
 								DynamicReports.col.column("Kelas", "studentClass", DynamicReports.type.stringType()),
 								DynamicReports.col.column("semester", "studentSemester",
 										DynamicReports.type.integerType()))
-						.setDataSource(studentPayment).toJasperPrint(), "Pembayaran Praktek");
+						.subtotalsAtSummary(paymentAmountSum).setDataSource(studentPayment).toJasperPrint(),
+						"Pembayaran Praktek");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
