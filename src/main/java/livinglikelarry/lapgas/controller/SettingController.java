@@ -97,6 +97,8 @@ public class SettingController implements Initializable {
 
 	private LapgasState lapgasState;
 
+	private String labAsstStudentNumber;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -183,31 +185,49 @@ public class SettingController implements Initializable {
 		loadAllLabAssistant();
 	}
 
+	private void editAdminPassword(Runnable runnable) {
+		if (!this.adminPasswdField.getText().equals("")) {
+			runnable.run();
+		} else {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setContentText("Password baru kosong !");
+			alert.showAndWait();
+		}
+	}
+
+	private void setAdminField() {
+		this.adminPasswdField.setText(this.adminPasswdField.getText());
+		this.adminPasswdButton.setText("Ganti");
+		this.adminPasswdField.setDisable(true);
+	}
+
 	@FXML
 	public void handleEditingAdminPasswd() {
 		if (this.adminPasswdButton.getText().equals("Ganti")) {
 			this.adminPasswdField.setDisable(false);
 			this.adminPasswdButton.setText("Simpan");
 			this.adminPasswdField.clear();
-		} else {
-			if (!this.adminPasswdField.getText().equals("")) {
+		} else if (this.labAsstStudentNumber == null) {
+			editAdminPassword(() -> {
 				try {
 					Configurator.doAdminDBAction(() -> {
 						Model admin = AdminSql.findById(1l);
-						admin.set("password", (String) this.adminPasswdField.getText());
-						admin.saveIt();
-						this.adminPasswdField.setText(this.adminPasswdField.getText());
-						this.adminPasswdButton.setText("Ganti");
-						this.adminPasswdField.setDisable(true);
+						admin.set("password", (String) this.adminPasswdField.getText()).saveIt();
+						setAdminField();
 					});
-				} catch (IOException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			} else {
-				Alert alert = new Alert(AlertType.WARNING);
-				alert.setContentText("Password baru kosong !");
-				alert.showAndWait();
-			}
+			});
+		} else {
+			editAdminPassword(() -> {
+				Configurator.doDBACtion(() -> {
+					Model model = LabAssistant.findById((String) labAsstStudentNumber);
+					System.out.println(model);
+					model.set("password", (String) adminPasswdField.getText()).saveIt();
+					setAdminField();
+				});
+			});
 		}
 	}
 
@@ -264,6 +284,10 @@ public class SettingController implements Initializable {
 		this.lapgasState.setLabAsstTabState(this.labAsstTab);
 		this.lapgasState.setCourseTabSetting(courseTab);
 		this.lapgasState.setScannerTabSetting(scannerTab);
+	}
+
+	public void setLabAsstStudentNumber(String labAsstStudentNumber) {
+		this.labAsstStudentNumber = labAsstStudentNumber;
 	}
 
 }

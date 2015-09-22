@@ -363,6 +363,7 @@ public class MainController implements Initializable {
 					this::loadAllLabAsstAttendances);
 			settingController.setCoursesComboBox(this.coursesPaymentTabComboBox, this::loadAllCourseNames);
 			settingController.setLapgasState(this.lapgasState);
+			settingController.setLabAsstStudentNumber(this.labAsstStudentNumber);
 			Stage stage = new Stage();
 			stage.setTitle("Setting");
 			stage.setScene(new Scene(root));
