@@ -83,6 +83,12 @@ public class SettingController implements Initializable {
 	@FXML
 	private Tab labAsstTab;
 
+	@FXML
+	private Tab scannerTab;
+
+	@FXML
+	private Tab courseTab;
+
 	private Consumer<ComboBox<String>> coursePaymentComboBoxConsumer;
 
 	private TableView<LabAssistantAttendanceTableModel> labAssistantAttendanceTableView;
@@ -256,6 +262,8 @@ public class SettingController implements Initializable {
 	public void setLapgasState(LapgasState lapgasState) {
 		this.lapgasState = lapgasState;
 		this.lapgasState.setLabAsstTabState(this.labAsstTab);
+		this.lapgasState.setCourseTabSetting(courseTab);
+		this.lapgasState.setScannerTabSetting(scannerTab);
 	}
 
 }

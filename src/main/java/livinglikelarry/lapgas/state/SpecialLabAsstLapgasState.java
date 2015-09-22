@@ -23,11 +23,6 @@ public class SpecialLabAsstLapgasState implements LapgasState {
 	}
 
 	@Override
-	public void setSettingMenuItemState(MenuItem settingMenuItem) {
-		settingMenuItem.setDisable(false);
-	}
-
-	@Override
 	public void setPasswordUpdaterAction() {
 	}
 
@@ -39,6 +34,17 @@ public class SpecialLabAsstLapgasState implements LapgasState {
 
 	@Override
 	public void setLabAsstActionMenuButton(MenuButton labAsstActionMenuButton) {
+		labAsstActionMenuButton.setVisible(true);
+	}
+
+	@Override
+	public void setScannerTabSetting(Tab scannerTab) {
+		scannerTab.setDisable(false);
+	}
+
+	@Override
+	public void setCourseTabSetting(Tab courseTab) {
+		courseTab.setDisable(true);
 	}
 
 }

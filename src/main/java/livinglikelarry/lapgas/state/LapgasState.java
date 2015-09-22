@@ -7,17 +7,19 @@ import javafx.scene.control.Tab;
 
 public interface LapgasState {
 	public void setPaymentTabState(Tab paymentTab);
-	
+
 	public void setUpdatingStudentPaymentStateMI(MenuItem updatingStudentPayment);
-	
-	public void setSettingMenuItemState(MenuItem settingMenuItem);
-	
+
 	public void setLabAsstTabState(Tab labAsstTab);
-	
+
 	public void setPasswordUpdaterAction();
-	
+
 	public void setLabAsstComboBoxMode(ComboBox<String> modeComboBox);
-	
+
 	public void setLabAsstActionMenuButton(MenuButton labAsstActionMenuButton);
+
+	public void setScannerTabSetting(Tab scannerTab);
+
+	public void setCourseTabSetting(Tab courseTab);
 
 }

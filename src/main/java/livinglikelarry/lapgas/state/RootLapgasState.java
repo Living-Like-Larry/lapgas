@@ -23,21 +23,27 @@ public class RootLapgasState implements LapgasState {
 	}
 
 	@Override
-	public void setSettingMenuItemState(MenuItem settingMenuItem) {
-		settingMenuItem.setDisable(false);
-	}
-
-	@Override
 	public void setPasswordUpdaterAction() {
 	}
 
 	@Override
 	public void setLabAsstComboBoxMode(ComboBox<String> modeComboBox) {
+		modeComboBox.setDisable(false);
 	}
 
 	@Override
 	public void setLabAsstActionMenuButton(MenuButton labAsstActionMenuButton) {
 		labAsstActionMenuButton.setVisible(false);
+	}
+
+	@Override
+	public void setScannerTabSetting(Tab scannerTab) {
+		scannerTab.setDisable(false);
+	}
+
+	@Override
+	public void setCourseTabSetting(Tab courseTab) {
+		courseTab.setDisable(false);
 	}
 
 }

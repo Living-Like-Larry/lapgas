@@ -22,15 +22,9 @@ public class LabAsstLapgasState implements LapgasState {
 		updatingStudentPaymentMenuItem.setDisable(true);
 	}
 
-	@Override
-	public void setSettingMenuItemState(MenuItem settingMenuItem) {
-		settingMenuItem.setDisable(true);
-	}
 
 	@Override
-	public void setPasswordUpdaterAction() {
-		//
-	}
+	public void setPasswordUpdaterAction() {}
 
 	@Override
 	public void setLabAsstComboBoxMode(ComboBox<String> modeComboBox) {
@@ -40,8 +34,17 @@ public class LabAsstLapgasState implements LapgasState {
 
 	@Override
 	public void setLabAsstActionMenuButton(MenuButton labAsstActionMenuButton) {
-		// TODO Auto-generated method stub
-		
+		labAsstActionMenuButton.setVisible(true);
+	}
+
+	@Override
+	public void setScannerTabSetting(Tab scannerTab) {
+		scannerTab.setDisable(true);
+	}
+
+	@Override
+	public void setCourseTabSetting(Tab courseTab) {
+		courseTab.setDisable(true);
 	}
 
 }
