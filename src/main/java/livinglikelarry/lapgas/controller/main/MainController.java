@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -210,12 +211,14 @@ public class MainController implements Initializable {
 		loadAllStudentPayment(this.studentPaymentTableView);
 
 		final ObservableList<StudentPaymentTableModel> studentPayment = this.studentPaymentTableView.getItems();
+		final Function<Function<StudentPaymentTableModel, ?>, List<?>> studentPaymentsMapper = x -> studentPayment.stream()
+				.map(x).distinct().collect(Collectors.toList());
 		TextFields.bindAutoCompletion(studentNumberPaymentTabTextField,
-				studentPayment.stream().map(x -> x.getStudentNumber()).collect(Collectors.toList()));
-		TextFields.bindAutoCompletion(classTabPaymentTextField,
-				studentPayment.stream().map(x -> x.getStudentClass()).distinct().collect(Collectors.toList()));
-		TextFields.bindAutoCompletion(paymentValueTabPaymentTextField, studentPayment.stream()
-				.map(x -> x.getPaymentValue().toString()).distinct().collect(Collectors.toList()));
+				studentPaymentsMapper.apply(x -> x.getStudentNumber()));
+		TextFields.bindAutoCompletion(classTabPaymentTextField, 
+				studentPaymentsMapper.apply(x -> x.getStudentClass()));
+		TextFields.bindAutoCompletion(paymentValueTabPaymentTextField, 
+				studentPaymentsMapper.apply(x -> x.getPaymentValue().toString()));
 
 		this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
 
