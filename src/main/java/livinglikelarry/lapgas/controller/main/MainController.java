@@ -188,10 +188,33 @@ public class MainController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		this.coursePaymentTabTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
-		this.coursesPaymentTabTableView.getColumns().setAll(Arrays.asList(this.coursePaymentTabTableColumn));
+		initCourseNameTableViewPaymentTab();
 		loadAllCourseNames(this.coursesPaymentTabComboBox);
+		initStudentPaymentTableView();
+		initLabAsstAttendanceTableView();
 
+		this.filteredStudentPaymentHistoryList = new LinkedList<>();
+		loadAllStudentPayment(this.studentPaymentTableView);
+		implementAutoCompletePaymentTab();
+
+		this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
+
+		this.filteredStudentPaymentBySemesterComboBox.getItems().setAll(1, 2, 3, 4, 5, 6, 7, 8);
+
+		this.paymentTabUtil = new PaymentTabUtil();
+
+		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
+	}
+
+	private void initLabAsstAttendanceTableView() {
+		this.studentNumberLabAssistantTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
+		this.studentAttendanceLabAsstTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentAttendance"));
+
+		this.labAssistantAttendanceTableView.getColumns().setAll(
+				Arrays.asList(this.studentNumberLabAssistantTableColumn, this.studentAttendanceLabAsstTableColumn));
+	}
+
+	private void initStudentPaymentTableView() {
 		this.studentNumberTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
 		this.studentClassTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentClass"));
 		this.paymentDateTimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("paymentDateTime"));
@@ -200,16 +223,14 @@ public class MainController implements Initializable {
 		this.studentPaymentTableView.getColumns()
 				.setAll(Arrays.asList(this.studentNumberTableColumn, this.studentClassTableColumn,
 						this.paymentDateTimeTableColumn, this.courseNumberTableColumn, this.studentGradeTableColumn));
+	}
 
-		this.studentNumberLabAssistantTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentNumber"));
-		this.studentAttendanceLabAsstTableColumn.setCellValueFactory(new PropertyValueFactory<>("studentAttendance"));
+	private void initCourseNameTableViewPaymentTab() {
+		this.coursePaymentTabTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
+		this.coursesPaymentTabTableView.getColumns().setAll(Arrays.asList(this.coursePaymentTabTableColumn));
+	}
 
-		this.labAssistantAttendanceTableView.getColumns().setAll(
-				Arrays.asList(this.studentNumberLabAssistantTableColumn, this.studentAttendanceLabAsstTableColumn));
-
-		this.filteredStudentPaymentHistoryList = new LinkedList<>();
-		loadAllStudentPayment(this.studentPaymentTableView);
-
+	private void implementAutoCompletePaymentTab() {
 		final ObservableList<StudentPaymentTableModel> studentPayment = this.studentPaymentTableView.getItems();
 		final Function<Function<StudentPaymentTableModel, ?>, List<?>> studentPaymentsMapper = x -> studentPayment.stream()
 				.map(x).distinct().collect(Collectors.toList());
@@ -219,14 +240,6 @@ public class MainController implements Initializable {
 				studentPaymentsMapper.apply(x -> x.getStudentClass()));
 		TextFields.bindAutoCompletion(paymentValueTabPaymentTextField, 
 				studentPaymentsMapper.apply(x -> x.getPaymentValue().toString()));
-
-		this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
-
-		this.filteredStudentPaymentBySemesterComboBox.getItems().setAll(1, 2, 3, 4, 5, 6, 7, 8);
-
-		this.paymentTabUtil = new PaymentTabUtil();
-
-		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
 	}
 
 	private void loadAllStudentPayment(TableView<StudentPaymentTableModel> studentPaymentTableView) {
