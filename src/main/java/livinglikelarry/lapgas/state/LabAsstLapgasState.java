@@ -22,10 +22,6 @@ public class LabAsstLapgasState implements LapgasState {
 		updatingStudentPaymentMenuItem.setDisable(true);
 	}
 
-
-	@Override
-	public void setPasswordUpdaterAction() {}
-
 	@Override
 	public void setLabAsstComboBoxMode(ComboBox<String> modeComboBox) {
 		modeComboBox.setValue("filter");

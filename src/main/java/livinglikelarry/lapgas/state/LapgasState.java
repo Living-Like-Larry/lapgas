@@ -12,8 +12,6 @@ public interface LapgasState {
 
 	public void setLabAsstTabState(Tab labAsstTab);
 
-	public void setPasswordUpdaterAction();
-
 	public void setLabAsstComboBoxMode(ComboBox<String> modeComboBox);
 
 	public void setLabAsstActionMenuButton(MenuButton labAsstActionMenuButton);

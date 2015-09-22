@@ -23,10 +23,6 @@ public class RootLapgasState implements LapgasState {
 	}
 
 	@Override
-	public void setPasswordUpdaterAction() {
-	}
-
-	@Override
 	public void setLabAsstComboBoxMode(ComboBox<String> modeComboBox) {
 		modeComboBox.setDisable(false);
 	}
