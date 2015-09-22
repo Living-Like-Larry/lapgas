@@ -223,7 +223,6 @@ public class SettingController implements Initializable {
 			editAdminPassword(() -> {
 				Configurator.doDBACtion(() -> {
 					Model model = LabAssistant.findById((String) labAsstStudentNumber);
-					System.out.println(model);
 					model.set("password", (String) adminPasswdField.getText()).saveIt();
 					setAdminField();
 				});
@@ -235,7 +234,6 @@ public class SettingController implements Initializable {
 	public void handleAddingNewAttendance() {
 		try {
 			String studentNumber = this.labAssistantTableView.getSelectionModel().getSelectedItem().getStudentNumber();
-			System.out.println(studentNumber);
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			AnchorPane root = (AnchorPane) fxmlLoader.load(Configurator.view("AddingNewAttendance"));
 			AddingNewAttendanceController addingNewAttendanceController = (AddingNewAttendanceController) fxmlLoader
