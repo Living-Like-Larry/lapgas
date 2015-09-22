@@ -17,6 +17,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.controlsfx.control.textfield.TextFields;
 import org.javalite.activejdbc.Model;
 
 import javafx.collections.ObservableList;
@@ -207,6 +208,10 @@ public class MainController implements Initializable {
 
 		this.filteredStudentPaymentHistoryList = new LinkedList<>();
 		loadAllStudentPayment(this.studentPaymentTableView);
+
+		List<String> studentNumberList = this.studentPaymentTableView.getItems().stream().map(x -> x.getStudentNumber())
+				.collect(Collectors.toList());
+		TextFields.bindAutoCompletion(npmPaymentTabTextField, studentNumberList);
 
 		this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
 

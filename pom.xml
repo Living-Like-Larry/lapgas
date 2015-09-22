@@ -88,5 +88,10 @@
 			<artifactId>sqlite-jdbc</artifactId>
 			<version>3.8.11.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.controlsfx</groupId>
+			<artifactId>controlsfx</artifactId>
+			<version>8.40.9</version>
+		</dependency>
 	</dependencies>
 </project>
