@@ -214,6 +214,8 @@ public class MainController implements Initializable {
 				studentPayment.stream().map(x -> x.getStudentNumber()).collect(Collectors.toList()));
 		TextFields.bindAutoCompletion(classTabPaymentTextField,
 				studentPayment.stream().map(x -> x.getStudentClass()).distinct().collect(Collectors.toList()));
+		TextFields.bindAutoCompletion(paymentValueTabPaymentTextField, studentPayment.stream()
+				.map(x -> x.getPaymentValue().toString()).distinct().collect(Collectors.toList()));
 
 		this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
 
