@@ -209,9 +209,11 @@ public class MainController implements Initializable {
 		this.filteredStudentPaymentHistoryList = new LinkedList<>();
 		loadAllStudentPayment(this.studentPaymentTableView);
 
-		List<String> studentNumberList = this.studentPaymentTableView.getItems().stream().map(x -> x.getStudentNumber())
-				.collect(Collectors.toList());
-		TextFields.bindAutoCompletion(studentNumberPaymentTabTextField, studentNumberList);
+		final ObservableList<StudentPaymentTableModel> studentPayment = this.studentPaymentTableView.getItems();
+		TextFields.bindAutoCompletion(studentNumberPaymentTabTextField,
+				studentPayment.stream().map(x -> x.getStudentNumber()).collect(Collectors.toList()));
+		TextFields.bindAutoCompletion(classTabPaymentTextField,
+				studentPayment.stream().map(x -> x.getStudentClass()).distinct().collect(Collectors.toList()));
 
 		this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
 
@@ -398,7 +400,7 @@ public class MainController implements Initializable {
 		final String studentNumber = this.studentNumberPaymentTabTextField.getText();
 		final ObservableList<CoursesTableModel> courseNames = this.coursesPaymentTabTableView.getItems();
 		final File paymentReceipt = this.choosenPaymentReceiptFile;
-		final String studentClass = this.classTabPaymentTextField.getText();
+		final String studentClass = this.classTabPaymentTextField.getText().toUpperCase();
 		final String paymentValue = this.paymentValueTabPaymentTextField.getText();
 		if (studentNumber != null && courseNames.size() != 0 && paymentReceipt != null && studentClass != null
 				&& paymentValue != null) {
