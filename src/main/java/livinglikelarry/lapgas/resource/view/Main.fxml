@@ -176,8 +176,9 @@
 											prefHeight="25.0" prefWidth="444.0" GridPane.columnIndex="1" />
 									</children>
 								</GridPane>
-								<TextField fx:id="npmPaymentTabTextField"
-									onKeyReleased="#handleTypingNpm" promptText="npm">
+								<TextField fx:id="studentNumberPaymentTabTextField"
+									onKeyReleased="#handleTypingStudentNumberOnPaymentTab"
+									promptText="npm">
 									<GridPane.margin>
 										<Insets left="10.0" right="10.0" />
 									</GridPane.margin>
@@ -438,8 +439,8 @@
 											</rowConstraints>
 											<children>
 												<TextField fx:id="studentNumberAsstTabTextField"
-													onKeyReleased="#handleTypingNpmOnLabAsstTab" prefHeight="25.0"
-													prefWidth="527.0" promptText="npm">
+													onKeyReleased="#handleTypingStudentNumberOnLabAsstTab"
+													prefHeight="25.0" prefWidth="527.0" promptText="npm">
 													<GridPane.margin>
 														<Insets left="10.0" right="10.0" />
 													</GridPane.margin>
@@ -452,8 +453,8 @@
 													</GridPane.margin>
 												</DatePicker>
 												<ComboBox fx:id="filteredAndAddedComboBox"
-													onAction="#handleTypingNpmOnLabAsstTab" prefWidth="150.0"
-													GridPane.columnIndex="1" />
+													onAction="#handleTypingStudentNumberOnLabAsstTab"
+													prefWidth="150.0" GridPane.columnIndex="1" />
 											</children>
 										</GridPane>
 									</children>

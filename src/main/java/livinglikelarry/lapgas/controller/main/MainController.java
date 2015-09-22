@@ -79,7 +79,7 @@ public class MainController implements Initializable {
 	private TableColumn<CoursesTableModel, String> coursePaymentTabTableColumn;
 
 	@FXML
-	private TextField npmPaymentTabTextField;
+	private TextField studentNumberPaymentTabTextField;
 
 	@FXML
 	private ComboBox<String> coursesPaymentTabComboBox;
@@ -211,7 +211,7 @@ public class MainController implements Initializable {
 
 		List<String> studentNumberList = this.studentPaymentTableView.getItems().stream().map(x -> x.getStudentNumber())
 				.collect(Collectors.toList());
-		TextFields.bindAutoCompletion(npmPaymentTabTextField, studentNumberList);
+		TextFields.bindAutoCompletion(studentNumberPaymentTabTextField, studentNumberList);
 
 		this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
 
@@ -380,8 +380,8 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	public void handleTypingNpm() {
-		String studentNumber = this.npmPaymentTabTextField.getText();
+	public void handleTypingStudentNumberOnPaymentTab() {
+		String studentNumber = this.studentNumberPaymentTabTextField.getText();
 		if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
 			Configurator.doDBACtion(() -> {
 				List<String> courses = paymentTabUtil.getCourses(studentNumber);
@@ -395,7 +395,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleSubmitPaymentButton() {
-		final String studentNumber = this.npmPaymentTabTextField.getText();
+		final String studentNumber = this.studentNumberPaymentTabTextField.getText();
 		final ObservableList<CoursesTableModel> courseNames = this.coursesPaymentTabTableView.getItems();
 		final File paymentReceipt = this.choosenPaymentReceiptFile;
 		final String studentClass = this.classTabPaymentTextField.getText();
@@ -424,7 +424,7 @@ public class MainController implements Initializable {
 				this.coursesPaymentTabTableView.getItems().clear();
 				this.paymentReceiptPathTextField.clear();
 				this.paymentValueTabPaymentTextField.clear();
-				this.npmPaymentTabTextField.clear();
+				this.studentNumberPaymentTabTextField.clear();
 				this.coursesPaymentTabComboBox.getSelectionModel().clearSelection();
 				this.loadAllCourseNames(this.coursesPaymentTabComboBox);
 				this.loadAllStudentPayment(this.studentPaymentTableView);
@@ -459,7 +459,7 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	public void handleTypingNpmOnLabAsstTab() {
+	public void handleTypingStudentNumberOnLabAsstTab() {
 		final String selectedMode = this.filteredAndAddedComboBox.getSelectionModel().getSelectedItem();
 		final String studentNumber = this.studentNumberAsstTabTextField.getText();
 		if (selectedMode != null) {
