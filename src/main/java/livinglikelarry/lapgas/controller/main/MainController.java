@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -174,6 +175,8 @@ public class MainController implements Initializable {
 
 	private ArrayList<LabAssistantAttendanceTableModel> noFilteredLabAsstAttendance;
 
+	private LinkedList<List<StudentPaymentTableModel>> filteredStudentPaymentHistoryList;
+
 	private LapgasState lapgasState;
 
 	private String labAsstStudentNumber;
@@ -202,13 +205,14 @@ public class MainController implements Initializable {
 		this.labAssistantAttendanceTableView.getColumns().setAll(
 				Arrays.asList(this.studentNumberLabAssistantTableColumn, this.studentAttendanceLabAsstTableColumn));
 
+		this.filteredStudentPaymentHistoryList = new LinkedList<>();
 		loadAllStudentPayment(this.studentPaymentTableView);
 
 		this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
 
 		this.filteredStudentPaymentBySemesterComboBox.getItems().setAll(1, 2, 3, 4, 5, 6, 7, 8);
 
-		paymentTabUtil = new PaymentTabUtil();
+		this.paymentTabUtil = new PaymentTabUtil();
 
 		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
 	}
@@ -228,7 +232,9 @@ public class MainController implements Initializable {
 					.map(x -> x.getCourseName()).distinct().collect(Collectors.toList()));
 		});
 		this.noFilteredStudentPaymentList = new ArrayList<>(this.studentPaymentTableView.getItems());
-		System.out.println(noFilteredStudentPaymentList);
+		// this.filteredStudentPaymentHistoryList.push(new
+		// ArrayList<>(this.noFilteredStudentPaymentList));
+		// System.out.println(noFilteredStudentPaymentList);
 	}
 
 	private void loadAllCourseNames(ComboBox<String> coursesPaymentComboBox) {
@@ -270,10 +276,10 @@ public class MainController implements Initializable {
 			this.studentPaymentDatePickerModeButton.setText("Hingga ke");
 		}
 	}
-	
+
 	@FXML
 	public void handleStudentPaymentClearModeButton() {
-		this.studentPaymentTableView.getItems().setAll(this.noFilteredStudentPaymentList);
+		this.studentPaymentTableView.getItems().setAll(new ArrayList<>(this.noFilteredStudentPaymentList));
 		this.studentNumberFilteredTabStudent.clear();
 		this.filteredCourseNameComboBox.getSelectionModel().clearSelection();
 		this.filteredStudentPaymentBySemesterComboBox.getSelectionModel().clearSelection();
@@ -281,18 +287,22 @@ public class MainController implements Initializable {
 		this.studentPaymentUntilDatePicker.setValue(null);
 		this.studentClassTabStudentComboBox.getSelectionModel().clearSelection();
 	}
-	
 
 	@FXML
 	public void handleChoosingUntilPartStudentPaymentDP() {
-		this.studentPaymentTableView.getItems().setAll(this.noFilteredStudentPaymentList);
-		this.studentPaymentTableView.getItems().setAll(this.studentPaymentTableView.getItems().stream().filter(x -> {
-			LocalDate studentPaymentLocalDate = x.getPaymentDate().toLocalDate();
-			LocalDate fromLocalDate = this.filteredStudentPaymentDatePicker.getValue();
-			LocalDate toLocalDate = this.studentPaymentUntilDatePicker.getValue();
-			return ((studentPaymentLocalDate.isAfter(fromLocalDate) || studentPaymentLocalDate.isEqual(fromLocalDate))
-					&& (studentPaymentLocalDate.isBefore(toLocalDate) || studentPaymentLocalDate.isEqual(toLocalDate)));
-		}).collect(Collectors.toList()));
+		if (this.studentPaymentUntilDatePicker.getValue() != null
+				&& this.filteredStudentPaymentDatePicker.getValue() != null) {
+			this.studentPaymentTableView.getItems()
+					.setAll(this.studentPaymentTableView.getItems().stream().filter(x -> {
+						LocalDate studentPaymentLocalDate = x.getPaymentDate().toLocalDate();
+						LocalDate fromLocalDate = this.filteredStudentPaymentDatePicker.getValue();
+						LocalDate toLocalDate = this.studentPaymentUntilDatePicker.getValue();
+						return ((studentPaymentLocalDate.isAfter(fromLocalDate)
+								|| studentPaymentLocalDate.isEqual(fromLocalDate))
+								&& (studentPaymentLocalDate.isBefore(toLocalDate)
+										|| studentPaymentLocalDate.isEqual(toLocalDate)));
+					}).collect(Collectors.toList()));
+		}
 	}
 
 	@FXML
@@ -304,14 +314,15 @@ public class MainController implements Initializable {
 				.setAll(this.noFilteredStudentPaymentList.stream()
 						.filter(x -> x.getStudentNumber().matches(filteredStudentNumber + "\\d*"))
 						.collect(Collectors.toList()));
+		this.filteredStudentPaymentHistoryList.push(new ArrayList<>(this.studentPaymentTableView.getItems()));
 	}
 
 	@FXML
-	public void handleFilteringByDate() {
-		doFiltering(() -> {
-			filterBasedOn(x -> x.getPaymentDateTime().toLocalDateTime().toLocalDate()
-					.equals(this.filteredStudentPaymentDatePicker.getValue()));
-		});
+	public void handlePopFilteredHistory() {
+		if (!this.filteredStudentPaymentHistoryList.isEmpty()) {
+			this.studentPaymentTableView.getItems()
+					.setAll(new ArrayList<>(this.filteredStudentPaymentHistoryList.pop()));
+		}
 	}
 
 	private void filterBasedOn(Predicate<StudentPaymentTableModel> predicate) {
@@ -320,8 +331,10 @@ public class MainController implements Initializable {
 	}
 
 	private void doFiltering(Runnable filteringRunnable) {
-		this.studentPaymentTableView.getItems().setAll(new ArrayList<>(this.noFilteredStudentPaymentList));
+		this.filteredStudentPaymentHistoryList.push(new ArrayList<>(this.studentPaymentTableView.getItems()));
 		filteringRunnable.run();
+		System.out.println("last filtered item : " + this.filteredStudentPaymentHistoryList.peekLast().stream()
+				.map(x -> String.valueOf(x.getId())).collect(Collectors.joining()));
 	}
 
 	@FXML
