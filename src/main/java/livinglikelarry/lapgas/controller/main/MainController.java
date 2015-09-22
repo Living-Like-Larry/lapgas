@@ -232,9 +232,6 @@ public class MainController implements Initializable {
 					.map(x -> x.getCourseName()).distinct().collect(Collectors.toList()));
 		});
 		this.noFilteredStudentPaymentList = new ArrayList<>(this.studentPaymentTableView.getItems());
-		// this.filteredStudentPaymentHistoryList.push(new
-		// ArrayList<>(this.noFilteredStudentPaymentList));
-		// System.out.println(noFilteredStudentPaymentList);
 	}
 
 	private void loadAllCourseNames(ComboBox<String> coursesPaymentComboBox) {
@@ -334,7 +331,7 @@ public class MainController implements Initializable {
 		this.filteredStudentPaymentHistoryList.push(new ArrayList<>(this.studentPaymentTableView.getItems()));
 		filteringRunnable.run();
 		System.out.println("last filtered item : " + this.filteredStudentPaymentHistoryList.peekLast().stream()
-				.map(x -> String.valueOf(x.getId())).collect(Collectors.joining()));
+				.map(x -> String.valueOf(x.getId())).collect(Collectors.joining(" ")));
 	}
 
 	@FXML

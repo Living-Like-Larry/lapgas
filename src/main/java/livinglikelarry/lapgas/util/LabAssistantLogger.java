@@ -18,16 +18,18 @@ public class LabAssistantLogger {
 		String courseNames = courseTableModel.stream().map(x -> x.getCourse()).collect(Collectors.joining(","));
 		Configurator.doDBACtion(() -> {
 			LabAssistantLog labAssistantLog = new LabAssistantLog();
+			final LocalDateTime now = LocalDateTime.now();
 			labAssistantLog.set("student_number", (String) labAsstStudentNumber)
 					.set("log",
-							"Pada saat " + LocalDateTime.now().toString() + "\n"
+							"Pada tanggal " + now.getDayOfMonth() + "/" + now.getMonthValue() + "/" + now.getYear() + "\n"
+							+ "tepat pada pukul " + now.getHour() + ":" + now.getMinute() + ":" + now.getSecond() + "\n"
 							+ "aslab dengan npm " + labAsstStudentNumber + "\n"
-							+ "melakukan penambahan pembayaran mahasiswa dengan detail berikut => \n" 
-				            + "npm                 : " + studentNumber + "\n" 
-							+ "matakuliah           : " + courseNames + "\n"
-				            + "bukti pembayaran      : " + paymentReceipt.toString() + "\n" 
-							+ "kelas                  : " + studentClass + "\n"
-							+ "pembayaran sejumlah : " + paymentValue)
+							+ "melakukan penambahan pembayaran mahasiswa, " + "\n"
+							+ "dengan detail sebagai berikut : \n" 
+				            + "npm -> " + studentNumber + "\n" 
+							+ "matakuliah -> " + courseNames + "\n"
+							+ "kelas -> " + studentClass + "\n"
+							+ "pembayaran sejumlah -> " + paymentValue)
 					.saveIt();
 		});
 	}
