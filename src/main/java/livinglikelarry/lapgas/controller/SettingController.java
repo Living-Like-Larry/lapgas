@@ -237,6 +237,8 @@ public class SettingController implements Initializable {
 			labAssistantLogController.setLabAsstStudentNumber(
 					this.labAssistantTableView.getSelectionModel().getSelectedItem().getStudentNumber());
 			Stage stage = new Stage();
+			stage.setTitle("Log Aslab");
+			stage.setResizable(false);
 			stage.setScene(new Scene(root));
 			stage.showAndWait();
 		} catch (IOException e) {
