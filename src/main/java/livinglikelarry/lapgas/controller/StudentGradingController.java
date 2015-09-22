@@ -10,9 +10,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
-import livinglikelarry.lapgas.Configurator;
 import livinglikelarry.lapgas.model.sql.StudentPayment;
 import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
+import livinglikelarry.lapgas.util.Configurator;
 
 public class StudentGradingController implements Initializable {
 

@@ -4,18 +4,20 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 
 import javafx.collections.ObservableList;
-import livinglikelarry.lapgas.Configurator;
 import livinglikelarry.lapgas.model.sql.Course;
 import livinglikelarry.lapgas.model.sql.StudentPayment;
 import livinglikelarry.lapgas.model.table.CoursesTableModel;
+import livinglikelarry.lapgas.util.Configurator;
 
 /**
  * 
@@ -46,11 +48,34 @@ public class PaymentTabUtil {
 		return courseList;
 	}
 
-	private String saveToFS(File choosenPaymentReceiptFile, long id) throws IOException {
+	private String savePaymentReceipt(File choosenPaymentReceiptFile, long id) throws IOException {
+		return storePaymentReceipt(choosenPaymentReceiptFile, id, (x, y) -> {
+			try {
+				Files.copy(x, y);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+	}
+
+	private String storePaymentReceipt(File choosenPaymentReceiptFile, long id,
+			BiConsumer<Path, Path> receiptPaymentSaverConsumer) {
 		final String fileExtension = FilenameUtils.getExtension(choosenPaymentReceiptFile.toString());
 		String newPathString = Configurator.PIC_PATH + id + "." + fileExtension;
-		Files.copy(choosenPaymentReceiptFile.toPath(), Paths.get(newPathString));
+		receiptPaymentSaverConsumer.accept(choosenPaymentReceiptFile.toPath(), Paths.get(newPathString));
 		return newPathString;
+
+	}
+
+	public String updatePaymentReceipt(String oldFile, File choosenPaymentReceiptFile, long id) {
+		return storePaymentReceipt(choosenPaymentReceiptFile, id, (x, y) -> {
+			try {
+				Files.delete(Paths.get(oldFile));
+				Files.copy(x, y);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 
 	public String save(String studentNumber, String studentClass, BigDecimal paymentValue,
@@ -66,7 +91,7 @@ public class PaymentTabUtil {
 				final StudentPayment studentPayment = new StudentPayment();
 				studentPayment.set("student_number", studentNumber).set("course_number", x).set("class", studentClass)
 						.set("payment_value", paymentValue).set("grade", "T").saveIt();
-				String paymentReceipt = saveToFS(paymentReceiptFile, (long) studentPayment.getId());
+				String paymentReceipt = savePaymentReceipt(paymentReceiptFile, (long) studentPayment.getId());
 				studentPayment.set("payment_receipt", paymentReceipt).saveIt();
 			} catch (Exception e) {
 				e.printStackTrace();

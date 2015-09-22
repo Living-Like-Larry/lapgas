@@ -16,9 +16,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import livinglikelarry.lapgas.Configurator;
 import livinglikelarry.lapgas.model.sql.LabAssistantAttendance;
 import livinglikelarry.lapgas.model.table.LabAssistantAttendanceTableModel;
+import livinglikelarry.lapgas.util.Configurator;
 
 public class AddingNewAttendanceController implements Initializable {
 

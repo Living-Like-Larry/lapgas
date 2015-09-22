@@ -7,9 +7,10 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import livinglikelarry.lapgas.AdminAuth;
 import livinglikelarry.lapgas.model.Admin;
 import livinglikelarry.lapgas.model.sql.AdminSql;
+import livinglikelarry.lapgas.util.AdminAuth;
+import livinglikelarry.lapgas.util.Configurator;
 
 public class AdminAuthTest {
 

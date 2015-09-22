@@ -20,7 +20,7 @@
 		<TabPane prefHeight="200.0" prefWidth="200.0"
 			tabClosingPolicy="UNAVAILABLE">
 			<tabs>
-				<Tab text="Admin">
+				<Tab text="Password">
 					<content>
 						<AnchorPane prefHeight="155.0" prefWidth="430.0">
 							<children>
@@ -73,31 +73,37 @@
 						</AnchorPane>
 					</content>
 				</Tab>
-				<Tab text="Aslab">
+				<Tab fx:id="labAsstTab" text="Aslab">
 					<content>
 						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
 							prefWidth="200.0">
 							<children>
 								<TableView fx:id="labAssistantTableView" layoutX="38.0"
-									layoutY="14.0" prefHeight="200.0" prefWidth="384.0">
+									layoutY="14.0" prefHeight="200.0" prefWidth="382.0">
 									<columns>
 										<TableColumn fx:id="labAsstStudentNumberTableColumn"
-											prefWidth="383.0" text="NPM" />
+											prefWidth="200.0" text="NPM" />
+										<TableColumn fx:id="labAsstRoleTableColumn"
+											prefWidth="181.0" text="Role" />
 									</columns>
 									<contextMenu>
 										<ContextMenu>
 											<items>
 												<MenuItem mnemonicParsing="false"
 													onAction="#handleAddingNewAttendance" text="Tambah kehadiran" />
+												<MenuItem mnemonicParsing="false" text="Lihat log"  onAction="#handleSeeingLabAsstLogs"/>
 											</items>
 										</ContextMenu>
 									</contextMenu>
 								</TableView>
 								<TextField fx:id="labAsstStudentNumberTextField"
-									layoutX="38.0" layoutY="223.0" prefHeight="26.0" prefWidth="353.0" />
+									layoutX="38.0" layoutY="223.0" prefHeight="26.0" prefWidth="204.0"
+									promptText="NPM" />
 								<Button layoutX="391.0" layoutY="223.0" mnemonicParsing="false"
 									onAction="#handleAddingNewLabAssistant" prefHeight="26.0"
 									prefWidth="32.0" text="+" />
+								<ComboBox fx:id="labAssistantRoleComboBox" layoutX="241.0"
+									layoutY="223.0" prefWidth="150.0" promptText="Role" />
 							</children>
 						</AnchorPane>
 					</content>

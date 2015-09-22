@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -28,15 +30,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import livinglikelarry.lapgas.Configurator;
 import livinglikelarry.lapgas.controller.SettingController;
 import livinglikelarry.lapgas.controller.StudentGradingController;
 import livinglikelarry.lapgas.controller.StudentPaymentController;
@@ -48,7 +53,12 @@ import livinglikelarry.lapgas.model.table.CoursesTableModel;
 import livinglikelarry.lapgas.model.table.LabAssistantAttendanceTableModel;
 import livinglikelarry.lapgas.model.table.StudentPaymentTableModel;
 import livinglikelarry.lapgas.resource.view.Templates;
+import livinglikelarry.lapgas.state.LapgasState;
+import livinglikelarry.lapgas.util.Configurator;
+import livinglikelarry.lapgas.util.LabAssistantLogger;
 import net.sf.dynamicreports.report.builder.DynamicReports;
+import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
+import net.sf.dynamicreports.report.builder.subtotal.AggregationSubtotalBuilder;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
@@ -136,6 +146,27 @@ public class MainController implements Initializable {
 	@FXML
 	private DatePicker labAsstAttendanceDatePicker;
 
+	@FXML
+	private Tab paymentTab;
+
+	@FXML
+	private MenuItem settingMenuItem;
+
+	@FXML
+	private MenuItem studentPaymentUpdatingMenuItem;
+
+	@FXML
+	private MenuButton labAsstActionMenuButton;
+
+	@FXML
+	private Button studentPaymentDatePickerModeButton;
+
+	@FXML
+	private Text studentPaymentUntilText;
+
+	@FXML
+	private DatePicker studentPaymentUntilDatePicker;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
@@ -143,6 +174,12 @@ public class MainController implements Initializable {
 	private ArrayList<StudentPaymentTableModel> noFilteredStudentPaymentList;
 
 	private ArrayList<LabAssistantAttendanceTableModel> noFilteredLabAsstAttendance;
+
+	private LinkedList<List<StudentPaymentTableModel>> filteredStudentPaymentHistoryList;
+
+	private LapgasState lapgasState;
+
+	private String labAsstStudentNumber;
 
 	private static final String UNLA_IF_STUD_NUM_PATTERN = "4115505\\d{7}";
 
@@ -168,13 +205,14 @@ public class MainController implements Initializable {
 		this.labAssistantAttendanceTableView.getColumns().setAll(
 				Arrays.asList(this.studentNumberLabAssistantTableColumn, this.studentAttendanceLabAsstTableColumn));
 
+		this.filteredStudentPaymentHistoryList = new LinkedList<>();
 		loadAllStudentPayment(this.studentPaymentTableView);
 
 		this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
 
 		this.filteredStudentPaymentBySemesterComboBox.getItems().setAll(1, 2, 3, 4, 5, 6, 7, 8);
 
-		paymentTabUtil = new PaymentTabUtil();
+		this.paymentTabUtil = new PaymentTabUtil();
 
 		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
 	}
@@ -194,7 +232,6 @@ public class MainController implements Initializable {
 					.map(x -> x.getCourseName()).distinct().collect(Collectors.toList()));
 		});
 		this.noFilteredStudentPaymentList = new ArrayList<>(this.studentPaymentTableView.getItems());
-		System.out.println(noFilteredStudentPaymentList);
 	}
 
 	private void loadAllCourseNames(ComboBox<String> coursesPaymentComboBox) {
@@ -225,6 +262,47 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
+	public void handleStudentPaymentDatePickerMode() {
+		if (this.studentPaymentDatePickerModeButton.getText().equalsIgnoreCase("hingga ke")) {
+			this.studentPaymentUntilText.setVisible(true);
+			this.studentPaymentUntilDatePicker.setVisible(true);
+			this.studentPaymentDatePickerModeButton.setText("tepat");
+		} else {
+			this.studentPaymentUntilText.setVisible(false);
+			this.studentPaymentUntilDatePicker.setVisible(false);
+			this.studentPaymentDatePickerModeButton.setText("Hingga ke");
+		}
+	}
+
+	@FXML
+	public void handleStudentPaymentClearModeButton() {
+		this.studentPaymentTableView.getItems().setAll(new ArrayList<>(this.noFilteredStudentPaymentList));
+		this.studentNumberFilteredTabStudent.clear();
+		this.filteredCourseNameComboBox.getSelectionModel().clearSelection();
+		this.filteredStudentPaymentBySemesterComboBox.getSelectionModel().clearSelection();
+		this.filteredStudentPaymentDatePicker.setValue(null);
+		this.studentPaymentUntilDatePicker.setValue(null);
+		this.studentClassTabStudentComboBox.getSelectionModel().clearSelection();
+	}
+
+	@FXML
+	public void handleChoosingUntilPartStudentPaymentDP() {
+		if (this.studentPaymentUntilDatePicker.getValue() != null
+				&& this.filteredStudentPaymentDatePicker.getValue() != null) {
+			this.studentPaymentTableView.getItems()
+					.setAll(this.studentPaymentTableView.getItems().stream().filter(x -> {
+						LocalDate studentPaymentLocalDate = x.getPaymentDate().toLocalDate();
+						LocalDate fromLocalDate = this.filteredStudentPaymentDatePicker.getValue();
+						LocalDate toLocalDate = this.studentPaymentUntilDatePicker.getValue();
+						return ((studentPaymentLocalDate.isAfter(fromLocalDate)
+								|| studentPaymentLocalDate.isEqual(fromLocalDate))
+								&& (studentPaymentLocalDate.isBefore(toLocalDate)
+										|| studentPaymentLocalDate.isEqual(toLocalDate)));
+					}).collect(Collectors.toList()));
+		}
+	}
+
+	@FXML
 	public void handleFilteringByStudentNumber() {
 		final String filteredStudentNumber = this.studentNumberFilteredTabStudent.getText();
 
@@ -233,14 +311,15 @@ public class MainController implements Initializable {
 				.setAll(this.noFilteredStudentPaymentList.stream()
 						.filter(x -> x.getStudentNumber().matches(filteredStudentNumber + "\\d*"))
 						.collect(Collectors.toList()));
+		this.filteredStudentPaymentHistoryList.push(new ArrayList<>(this.studentPaymentTableView.getItems()));
 	}
 
 	@FXML
-	public void handleFilteringByDate() {
-		doFiltering(() -> {
-			filterBasedOn(x -> x.getPaymentDateTime().toLocalDateTime().toLocalDate()
-					.equals(this.filteredStudentPaymentDatePicker.getValue()));
-		});
+	public void handlePopFilteredHistory() {
+		if (!this.filteredStudentPaymentHistoryList.isEmpty()) {
+			this.studentPaymentTableView.getItems()
+					.setAll(new ArrayList<>(this.filteredStudentPaymentHistoryList.pop()));
+		}
 	}
 
 	private void filterBasedOn(Predicate<StudentPaymentTableModel> predicate) {
@@ -249,8 +328,10 @@ public class MainController implements Initializable {
 	}
 
 	private void doFiltering(Runnable filteringRunnable) {
-		this.studentPaymentTableView.getItems().setAll(new ArrayList<>(this.noFilteredStudentPaymentList));
+		this.filteredStudentPaymentHistoryList.push(new ArrayList<>(this.studentPaymentTableView.getItems()));
 		filteringRunnable.run();
+		System.out.println("last filtered item : " + this.filteredStudentPaymentHistoryList.peekLast().stream()
+				.map(x -> String.valueOf(x.getId())).collect(Collectors.joining(" ")));
 	}
 
 	@FXML
@@ -281,6 +362,7 @@ public class MainController implements Initializable {
 			settingController.setLabAsstAttendanceTableView(this.labAssistantAttendanceTableView,
 					this::loadAllLabAsstAttendances);
 			settingController.setCoursesComboBox(this.coursesPaymentTabComboBox, this::loadAllCourseNames);
+			settingController.setLapgasState(this.lapgasState);
 			Stage stage = new Stage();
 			stage.setTitle("Setting");
 			stage.setScene(new Scene(root));
@@ -323,6 +405,10 @@ public class MainController implements Initializable {
 						e.printStackTrace();
 					}
 				});
+				if (this.labAsstStudentNumber != null) {
+					LabAssistantLogger.logNewStudentPayment(this.labAsstStudentNumber, studentNumber, courseNames,
+							paymentReceipt, studentClass, paymentValue);
+				}
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Disimpan");
 				alert.setHeaderText("Data di simpan");
@@ -387,11 +473,11 @@ public class MainController implements Initializable {
 				if (result.get().getText().equalsIgnoreCase("ok")) {
 					this.studentNumberAsstTabTextField.clear();
 					if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
-						Configurator.doDBACtion(() -> {
+						Configurator.doRawDBActionWithDBConsumer((x) -> {
 							Model labAssistant = LabAssistant.findById((String) studentNumber);
 							if (labAssistant != null) {
-								LabAssistantAttendance labAssistantAttendance = new LabAssistantAttendance();
-								labAssistantAttendance.set("student_number", studentNumber).saveIt();
+								x.close();
+								makeLabAsstAttendance(studentNumber);
 							} else {
 								Alert alertNotLabAsst = new Alert(AlertType.WARNING);
 								alertNotLabAsst.setContentText("npm ini tidak terdaftar sebagai ASLAB!");
@@ -409,6 +495,16 @@ public class MainController implements Initializable {
 			alert.setContentText("pilih salah satu Mode!");
 			alert.showAndWait();
 		}
+	}
+
+	private void makeLabAsstAttendance(final String studentNumber) {
+		Configurator.doDBACtion(() -> {
+			LabAssistantAttendance labAssistantAttendance = new LabAssistantAttendance();
+			labAssistantAttendance.set("student_number", studentNumber).saveIt();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setContentText("berhasil melakukan absensi!");
+			alert.showAndWait();
+		});
 	}
 
 	private void loadAllLabAsstAttendances(
@@ -436,21 +532,27 @@ public class MainController implements Initializable {
 							x.getPaymentReceiptFilePath(), x.getStudentGrade(), studentSemester, courseName);
 				}).collect(Collectors.toList());
 
+				final TextColumnBuilder<BigDecimal> paymentAmountColumn = DynamicReports.col
+						.column("jumlah bayar", "paymentValue", DynamicReports.type.bigDecimalType())
+						.setValueFormatter(Templates.createCurrencyValueFormatter(""));
+				AggregationSubtotalBuilder<BigDecimal> paymentAmountSum = DynamicReports.sbt.sum(paymentAmountColumn)
+						.setLabel("total ").setValueFormatter(Templates.createCurrencyValueFormatter(""));
+
 				showReport(DynamicReports.report().setTemplate(Templates.reportTemplate)
 						.title(Templates.createTitleComponent("Praktek Mahasiswa"))
 						.pageFooter(Templates.footerComponent)
 						.columns(DynamicReports.col.column("npm", "studentNumber", DynamicReports.type.stringType()),
 								DynamicReports.col.column("matakuliah", "courseName", DynamicReports.type.stringType()),
 								DynamicReports.col.column("nilai", "studentGrade", DynamicReports.type.stringType()),
+								paymentAmountColumn,
 								DynamicReports.col
-										.column("jumlah bayar", "paymentValue", DynamicReports.type.bigDecimalType())
-										.setValueFormatter(Templates.createCurrencyValueFormatter("")),
-								DynamicReports.col.column("waktu membayar", "paymentDate",
-										DynamicReports.type.dateType()),
+										.column("waktu membayar", "paymentDate", DynamicReports.type.dateType())
+										.setPattern("dd/MM/yyyy"),
 								DynamicReports.col.column("Kelas", "studentClass", DynamicReports.type.stringType()),
 								DynamicReports.col.column("semester", "studentSemester",
 										DynamicReports.type.integerType()))
-						.setDataSource(studentPayment).toJasperPrint(), "Pembayaran Praktek");
+						.subtotalsAtSummary(paymentAmountSum).setDataSource(studentPayment).toJasperPrint(),
+						"Pembayaran Praktek");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -464,7 +566,6 @@ public class MainController implements Initializable {
 		if (selectedIndex != -1) {
 			this.coursesPaymentTabTableView.getItems().remove(selectedIndex);
 		}
-
 	}
 
 	@FXML
@@ -500,11 +601,14 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleReportingLabAsstAttendance() {
 		try {
-			showReport(DynamicReports.report().setTemplate(Templates.reportTemplate)
-					.title(Templates.createTitleComponent("Absensi Asisten Lab")).pageFooter(Templates.footerComponent)
-					.columns(DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
-							DynamicReports.col.column("tgl hadir", "studentAttendanceDate",
-									DynamicReports.type.dateType()))
+			showReport(
+					DynamicReports.report().setTemplate(Templates.reportTemplate)
+							.title(Templates.createTitleComponent("Absensi Asisten Lab"))
+							.pageFooter(Templates.footerComponent)
+							.columns(
+									DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
+									DynamicReports.col.column("tgl hadir", "studentAttendanceDate",
+											DynamicReports.type.dateType()).setPattern("dd/MM/yyyy"))
 					.setDataSource(
 							this.labAssistantAttendanceTableView.getItems().stream().collect(Collectors.toList()))
 					.toJasperPrint(), "Absensi Aslab");
@@ -543,10 +647,48 @@ public class MainController implements Initializable {
 		}
 	}
 
+	@FXML
+	public void handleUpdatingStudentPayment() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			AnchorPane root = (AnchorPane) fxmlLoader.load(Configurator.view("StudentPaymentUpdater"));
+			StudentPaymentUpdaterController studentPaymentUpdaterController = (StudentPaymentUpdaterController) fxmlLoader
+					.getController();
+			studentPaymentUpdaterController
+					.setStudentPayment(this.studentPaymentTableView.getSelectionModel().getSelectedItem());
+			Stage stage = new Stage();
+			studentPaymentUpdaterController.setStage(stage);
+			stage.setScene(new Scene(root));
+			stage.setTitle("Perbaharui Pembayaran Mahasiswa");
+			stage.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	public void handleAddLabAsstAttendance() {
+		makeLabAsstAttendance(this.labAsstStudentNumber);
+		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
+	}
+
 	private void showReport(JasperPrint jasperPrint, String title) {
 		JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
 		jasperViewer.setTitle(title);
 		jasperViewer.setVisible(true);
+	}
+
+	public void setLapgasState(LapgasState lapgasState) {
+		this.lapgasState = lapgasState;
+		this.lapgasState.setPaymentTabState(this.paymentTab);
+		this.lapgasState.setSettingMenuItemState(this.settingMenuItem);
+		this.lapgasState.setUpdatingStudentPaymentStateMI(this.studentPaymentUpdatingMenuItem);
+		this.lapgasState.setLabAsstComboBoxMode(this.filteredAndAddedComboBox);
+		this.lapgasState.setLabAsstActionMenuButton(this.labAsstActionMenuButton);
+	}
+
+	public void setLabAsstStudentNumber(String labAsstStudentNumber) {
+		this.labAsstStudentNumber = labAsstStudentNumber;
 	}
 
 }

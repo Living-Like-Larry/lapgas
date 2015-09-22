@@ -10,7 +10,7 @@
 
 <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="344.0"
-	prefWidth="852.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="livinglikelarry.lapgas.controller.main.MainController">
 	<columnConstraints>
 		<ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308"
@@ -27,7 +27,7 @@
 		<TabPane prefHeight="200.0" prefWidth="200.0"
 			tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1">
 			<tabs>
-				<Tab text="Pembayaran">
+				<Tab fx:id="paymentTab" text="Pembayaran">
 					<content>
 						<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
 							prefHeight="293.0" prefWidth="622.0">
@@ -63,7 +63,7 @@
 											prefHeight="121.0" prefWidth="231.0" GridPane.columnIndex="1">
 											<columns>
 												<TableColumn fx:id="coursePaymentTabTableColumn"
-													prefWidth="299.0" text="Pelajaran" />
+													prefWidth="413.0" text="Pelajaran" />
 											</columns>
 											<GridPane.margin>
 												<Insets right="10.0" />
@@ -206,7 +206,9 @@
 								<RowConstraints maxHeight="1.7976931348623157E308"
 									minHeight="2.0" prefHeight="57.0" vgrow="ALWAYS" />
 								<RowConstraints maxHeight="1.7976931348623157E308"
-									minHeight="10.0" prefHeight="27.0" vgrow="ALWAYS" />
+									minHeight="10.0" prefHeight="29.0" vgrow="ALWAYS" />
+								<RowConstraints maxHeight="1.7976931348623157E308"
+									minHeight="8.0" prefHeight="16.0" vgrow="ALWAYS" />
 							</rowConstraints>
 							<children>
 								<TableView fx:id="studentPaymentTableView" maxHeight="1.7976931348623157E308"
@@ -229,8 +231,9 @@
 											<items>
 												<MenuItem mnemonicParsing="false"
 													onAction="#handleDisplayingPaymentReceipt" text="lihat struk" />
-												<MenuItem mnemonicParsing="false" onAction="#handleUpdatingGrade"
-													text="perbaharui nilai" />
+												<MenuItem fx:id="studentPaymentUpdatingMenuItem"
+													mnemonicParsing="false" onAction="#handleUpdatingStudentPayment"
+													text="perbaharui" />
 											</items>
 										</ContextMenu>
 									</contextMenu>
@@ -261,9 +264,9 @@
 										<ColumnConstraints hgrow="ALWAYS"
 											maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="174.0" />
 										<ColumnConstraints hgrow="ALWAYS"
-											maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="205.0" />
+											maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="193.0" />
 										<ColumnConstraints hgrow="ALWAYS"
-											maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="219.0" />
+											maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="281.0" />
 										<ColumnConstraints hgrow="ALWAYS"
 											maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="140.0" />
 									</columnConstraints>
@@ -292,21 +295,51 @@
 													maxWidth="1.7976931348623157E308" minWidth="10.0" />
 											</columnConstraints>
 											<rowConstraints>
+												<RowConstraints />
 												<RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
 											</rowConstraints>
 											<children>
 												<ComboBox fx:id="filteredStudentPaymentBySemesterComboBox"
 													onAction="#handleFilteringBySemester" prefHeight="26.0"
-													prefWidth="191.0" promptText="semester">
+													prefWidth="191.0" promptText="semester" GridPane.rowIndex="1">
 													<padding>
 														<Insets right="10.0" />
 													</padding>
+													<GridPane.margin>
+														<Insets left="10.0" right="10.0" />
+													</GridPane.margin>
 												</ComboBox>
 											</children>
 										</GridPane>
-										<DatePicker fx:id="filteredStudentPaymentDatePicker"
-											onAction="#handleFilteringByDate" prefHeight="26.0"
-											prefWidth="184.0" GridPane.columnIndex="2" />
+										<GridPane GridPane.columnIndex="2">
+											<columnConstraints>
+												<ColumnConstraints />
+												<ColumnConstraints hgrow="SOMETIMES"
+													maxWidth="139.0" minWidth="10.0" prefWidth="132.0" />
+												<ColumnConstraints hgrow="SOMETIMES"
+													maxWidth="93.0" minWidth="10.0" prefWidth="48.0" />
+												<ColumnConstraints hgrow="SOMETIMES"
+													maxWidth="138.0" minWidth="10.0" prefWidth="117.0" />
+											</columnConstraints>
+											<rowConstraints>
+												<RowConstraints minHeight="10.0" prefHeight="30.0"
+													vgrow="SOMETIMES" />
+											</rowConstraints>
+											<children>
+												<DatePicker fx:id="studentPaymentUntilDatePicker"
+													onAction="#handleChoosingUntilPartStudentPaymentDP"
+													GridPane.columnIndex="3" />
+												<Text fx:id="studentPaymentUntilText" strokeType="OUTSIDE"
+													strokeWidth="0.0" text=":" wrappingWidth="17.0"
+													GridPane.columnIndex="2">
+													<GridPane.margin>
+														<Insets left="20.0" />
+													</GridPane.margin>
+												</Text>
+												<DatePicker fx:id="filteredStudentPaymentDatePicker"
+													prefHeight="26.0" prefWidth="184.0" GridPane.columnIndex="1" />
+											</children>
+										</GridPane>
 									</children>
 								</GridPane>
 								<Button mnemonicParsing="false" onAction="#handleReportingButton"
@@ -316,6 +349,34 @@
 										<Insets left="10.0" />
 									</GridPane.margin>
 								</Button>
+								<GridPane prefHeight="53.0" prefWidth="861.0"
+									GridPane.rowIndex="4">
+									<columnConstraints>
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="420.0" minWidth="10.0" prefWidth="391.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="464.0" minWidth="10.0" prefWidth="461.0" />
+									</columnConstraints>
+									<rowConstraints>
+										<RowConstraints minHeight="10.0" prefHeight="30.0"
+											vgrow="SOMETIMES" />
+									</rowConstraints>
+									<children>
+										<Button mnemonicParsing="false" onAction="#handlePopFilteredHistory"
+											text="kembali">
+											<GridPane.margin>
+												<Insets left="10.0" />
+											</GridPane.margin>
+										</Button>
+										<Button mnemonicParsing="false"
+											onAction="#handleStudentPaymentClearModeButton" text="Clear filter !"
+											GridPane.columnIndex="1">
+											<GridPane.margin>
+												<Insets left="10.0" />
+											</GridPane.margin>
+										</Button>
+									</children>
+								</GridPane>
 							</children>
 						</GridPane>
 					</content>
@@ -350,13 +411,6 @@
 										<Insets left="10.0" right="10.0" />
 									</GridPane.margin>
 								</TableView>
-								<Button mnemonicParsing="false"
-									onAction="#handleReportingLabAsstAttendance" prefHeight="26.0"
-									prefWidth="157.0" text="Lapor" GridPane.rowIndex="2">
-									<GridPane.margin>
-										<Insets left="10.0" />
-									</GridPane.margin>
-								</Button>
 								<GridPane>
 									<columnConstraints>
 										<ColumnConstraints hgrow="SOMETIMES"
@@ -404,6 +458,36 @@
 										</GridPane>
 									</children>
 								</GridPane>
+								<GridPane GridPane.rowIndex="2">
+									<columnConstraints>
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="731.0" minWidth="10.0" prefWidth="700.0" />
+										<ColumnConstraints hgrow="SOMETIMES"
+											maxWidth="420.0" minWidth="10.0" prefWidth="152.0" />
+									</columnConstraints>
+									<rowConstraints>
+										<RowConstraints minHeight="10.0" prefHeight="30.0"
+											vgrow="SOMETIMES" />
+									</rowConstraints>
+									<children>
+										<Button mnemonicParsing="false"
+											onAction="#handleReportingLabAsstAttendance" prefHeight="26.0"
+											prefWidth="157.0" text="Lapor">
+											<GridPane.margin>
+												<Insets left="10.0" />
+											</GridPane.margin>
+										</Button>
+										<MenuButton fx:id="labAsstActionMenuButton"
+											alignment="CENTER" mnemonicParsing="false" prefHeight="25.0"
+											prefWidth="142.0" text="Aksi" GridPane.columnIndex="1">
+											<items>
+												<MenuItem mnemonicParsing="false"
+													onAction="#handleAddLabAsstAttendance" text="Absen !" />
+												<MenuItem mnemonicParsing="false" text="Lihat Jadwal" />
+											</items>
+										</MenuButton>
+									</children>
+								</GridPane>
 							</children>
 						</GridPane>
 					</content>
@@ -415,8 +499,8 @@
 			<menus>
 				<Menu mnemonicParsing="false" text="Edit">
 					<items>
-						<MenuItem mnemonicParsing="false" onAction="#handleSettingMenu"
-							text="Setting" />
+						<MenuItem fx:id="settingMenuItem" mnemonicParsing="false"
+							onAction="#handleSettingMenu" text="Setting" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Help">

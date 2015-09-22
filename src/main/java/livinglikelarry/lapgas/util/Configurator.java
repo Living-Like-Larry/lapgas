@@ -1,4 +1,4 @@
-package livinglikelarry.lapgas;
+package livinglikelarry.lapgas.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.javalite.activejdbc.DB;
-
 
 /**
  * Class that is represented as a wide configurator for lapgas system
@@ -31,6 +30,7 @@ public final class Configurator {
 	private static final String IMAGE_BASE_PATH = "livinglikelarry/lapgas/resource/image/";
 	private static final String TEXT_BASE_PATH = "livinglikelarry/lapgas/resource/text/";
 	private static Properties properties;
+	private static String role = "";
 
 	static {
 		try {
@@ -135,6 +135,33 @@ public final class Configurator {
 				Configurator.properties("admin.username"), Configurator.properties("admin.password"));
 		adminAction.run();
 		adminDB.close();
+	}
+
+	public static void doRawAdminDBActionConsumer(Consumer<DB> adminAction) throws IOException {
+		DB adminDB = new DB("admin");
+		adminDB.open(Configurator.properties("admin.driver"),
+				Configurator.properties("admin.url") + Configurator.properties("admin.dbname"),
+				Configurator.properties("admin.username"), Configurator.properties("admin.password"));
+		adminAction.accept(adminDB);
+		if (adminDB.hasConnection()) {
+			adminDB.close();
+		}
+	}
+
+	public static void setRole(String role) {
+		Configurator.role = role;
+	}
+
+	public static String getRole() {
+		return Configurator.role;
+	}
+
+	public static void doRawDBActionWithDBConsumer(Consumer<DB> actionConsumer) {
+		DB lapgasDB = new DB("lapgas");
+		lapgasDB.open(Configurator.properties("main.driver"), Configurator.properties("main.url") + "lapgas",
+				Configurator.properties("main.username"), Configurator.properties("main.password"));
+		actionConsumer.accept(lapgasDB);
+		lapgasDB.close();
 	}
 
 }

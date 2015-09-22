@@ -7,15 +7,21 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
-	minHeight="-Infinity" minWidth="-Infinity" prefHeight="296.0"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="364.0"
 	prefWidth="461.0" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="livinglikelarry.lapgas.controller.LoginController">
 	<children>
 		<PasswordField fx:id="passwordTextField" alignment="CENTER"
-			layoutX="57.0" layoutY="215.0" onKeyPressed="#handlePressingEnter"
+			layoutX="56.0" layoutY="301.0" onKeyPressed="#handlePressingEnter"
 			prefHeight="26.0" prefWidth="349.0" promptText="password admin" />
 		<ImageView fx:id="loginImageView" fitHeight="150.0"
 			fitWidth="256.0" layoutX="140.0" layoutY="42.0" pickOnBounds="true"
 			preserveRatio="true" />
+		<ComboBox fx:id="roleComboBox" layoutX="106.0" layoutY="215.0"
+			onAction="#handleChoosingRole" prefHeight="26.0" prefWidth="249.0"
+			promptText="Role" />
+		<TextField fx:id="studentNumberTextField" alignment="CENTER"
+			layoutX="55.0" layoutY="261.0" prefHeight="26.0" prefWidth="349.0"
+			promptText="npm" visible="false" />
 	</children>
 </AnchorPane>

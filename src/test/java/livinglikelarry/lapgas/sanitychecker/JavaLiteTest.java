@@ -9,7 +9,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import livinglikelarry.lapgas.Configurator;
+import livinglikelarry.lapgas.util.Configurator;
 
 /**
  * 

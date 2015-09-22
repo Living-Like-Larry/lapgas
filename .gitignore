@@ -1,1 +1,4 @@
 /target/
+.lapgas-config/pic/*
+*.log
+*.db
