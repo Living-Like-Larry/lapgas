@@ -195,7 +195,6 @@ public class MainController implements Initializable {
 		this.filteredStudentPaymentHistoryList = new LinkedList<>();
 		initStudentPaymentTableView();
 		loadAllStudentPayment(this.studentPaymentTableView);
-		implementAutoCompleteOnPaymentFeature();
 
 		this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
 
@@ -203,8 +202,6 @@ public class MainController implements Initializable {
 
 		initLabAsstAttendanceTableView();
 		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
-		TextFields.bindAutoCompletion(this.studentNumberAsstTabTextField, this.noFilteredLabAsstAttendance.stream()
-				.map(x -> x.getStudentNumber()).distinct().collect(Collectors.toList()));
 
 	}
 
@@ -259,6 +256,7 @@ public class MainController implements Initializable {
 					.map(x -> x.getCourseName()).distinct().collect(Collectors.toList()));
 		});
 		this.noFilteredStudentPaymentList = new ArrayList<>(this.studentPaymentTableView.getItems());
+		implementAutoCompleteOnPaymentFeature();
 	}
 
 	private void loadAllCourseNames(ComboBox<String> coursesPaymentComboBox) {
@@ -545,6 +543,8 @@ public class MainController implements Initializable {
 							.collect(Collectors.toList()));
 		});
 		this.noFilteredLabAsstAttendance = new ArrayList<>(this.labAssistantAttendanceTableView.getItems());
+		TextFields.bindAutoCompletion(this.studentNumberAsstTabTextField, this.noFilteredLabAsstAttendance.stream()
+				.map(x -> x.getStudentNumber()).distinct().collect(Collectors.toList()));
 	}
 
 	@FXML
