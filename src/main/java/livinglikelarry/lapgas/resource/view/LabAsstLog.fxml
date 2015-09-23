@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-	prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
+	prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="livinglikelarry.lapgas.controller.LabAssistantLogController">
 	<children>
 		<TextArea fx:id="labAsstLogTextArea" layoutX="26.0" layoutY="14.0"
-			prefHeight="306.0" prefWidth="552.0" />
-		<DatePicker layoutX="26.0" layoutY="344.0" />
+			prefHeight="306.0" prefWidth="552.0" editable="false"/>
+		<DatePicker fx:id="fromDatePicker" layoutX="26.0" layoutY="344.0"
+			onAction="#handleFilteringLogByDate" prefHeight="25.0" prefWidth="176.0" />
 		<Button layoutX="421.0" layoutY="344.0" mnemonicParsing="false"
-			prefHeight="26.0" prefWidth="157.0" text="Clear" />
+			prefHeight="26.0" prefWidth="157.0" text="Clear" onAction="#handleClearingFiltering"/>
+		<Text layoutX="213.0" layoutY="362.0" strokeType="OUTSIDE"
+			strokeWidth="0.0" text=":" />
+		<DatePicker fx:id="toDatePicker" layoutX="223.0" layoutY="344.0"
+			onAction="#handleFilteringLogByDate" prefHeight="25.0" prefWidth="149.0" />
 	</children>
 </AnchorPane>
