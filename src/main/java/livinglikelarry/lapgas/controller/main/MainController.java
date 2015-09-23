@@ -401,6 +401,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleTypingStudentNumberOnPaymentTab() {
+		implementAutoCompleteOnPaymentFeature();
 		String studentNumber = this.studentNumberPaymentTabTextField.getText();
 		if (studentNumber.matches(MainController.UNLA_IF_STUD_NUM_PATTERN)) {
 			Configurator.doDBACtion(() -> {
@@ -480,6 +481,10 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleTypingStudentNumberOnLabAsstTab() {
+		Configurator.doDBACtion(() -> {
+			TextFields.bindAutoCompletion(this.studentNumberAsstTabTextField,
+					LabAssistant.findAll().stream().map(x -> x.get("student_number")).collect(Collectors.toList()));
+		});
 		final String selectedMode = this.filteredAndAddedComboBox.getSelectionModel().getSelectedItem();
 		final String studentNumber = this.studentNumberAsstTabTextField.getText();
 		if (selectedMode != null) {
@@ -543,8 +548,7 @@ public class MainController implements Initializable {
 							.collect(Collectors.toList()));
 		});
 		this.noFilteredLabAsstAttendance = new ArrayList<>(this.labAssistantAttendanceTableView.getItems());
-		TextFields.bindAutoCompletion(this.studentNumberAsstTabTextField, this.noFilteredLabAsstAttendance.stream()
-				.map(x -> x.getStudentNumber()).distinct().collect(Collectors.toList()));
+
 	}
 
 	@FXML
