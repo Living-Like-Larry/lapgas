@@ -169,6 +169,9 @@ public class MainController implements Initializable {
 	@FXML
 	private DatePicker studentPaymentUntilDatePicker;
 
+	@FXML
+	private DatePicker labAsstUntilPartDatePicker;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
@@ -283,19 +286,6 @@ public class MainController implements Initializable {
 			stage.showAndWait();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-	}
-
-	@FXML
-	public void handleStudentPaymentDatePickerMode() {
-		if (this.studentPaymentDatePickerModeButton.getText().equalsIgnoreCase("hingga ke")) {
-			this.studentPaymentUntilText.setVisible(true);
-			this.studentPaymentUntilDatePicker.setVisible(true);
-			this.studentPaymentDatePickerModeButton.setText("tepat");
-		} else {
-			this.studentPaymentUntilText.setVisible(false);
-			this.studentPaymentUntilDatePicker.setVisible(false);
-			this.studentPaymentDatePickerModeButton.setText("Hingga ke");
 		}
 	}
 
@@ -473,10 +463,32 @@ public class MainController implements Initializable {
 	@FXML
 	public void handleFilteringLabAsstByAttendance() {
 		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
-		this.labAssistantAttendanceTableView.getItems()
-				.setAll(this.labAssistantAttendanceTableView.getItems().stream().filter(x -> x.getStudentAttendance()
-						.toLocalDateTime().toLocalDate().equals(this.labAsstAttendanceDatePicker.getValue()))
-				.collect(Collectors.toList()));
+		if (this.labAsstAttendanceDatePicker.getValue() != null && this.labAsstUntilPartDatePicker.getValue() != null) {
+			System.out.println("filtering attendance");
+			final List<LabAssistantAttendanceTableModel> filteredAttendance = this.labAssistantAttendanceTableView
+					.getItems().stream().filter(x -> {
+						final LocalDate labAssistantAttendance = x.getStudentAttendanceDate().toLocalDate();
+						final LocalDate fromLabAsstAttendanceFiltering = this.labAsstAttendanceDatePicker.getValue();
+						final LocalDate toLabAsstAttendanceFiltering = this.labAsstUntilPartDatePicker.getValue();
+						return (labAssistantAttendance.isEqual(fromLabAsstAttendanceFiltering)
+								|| labAssistantAttendance.isAfter(fromLabAsstAttendanceFiltering))
+								&& 
+							   (labAssistantAttendance.isEqual(toLabAsstAttendanceFiltering)
+								|| labAssistantAttendance.isBefore(toLabAsstAttendanceFiltering));
+
+					}).collect(Collectors.toList());
+			this.labAssistantAttendanceTableView.getItems().setAll(filteredAttendance);
+
+		}
+	}
+	
+	@FXML
+	public void handleClearingFilteringLabAsstAtt() {
+		this.labAssistantAttendanceTableView.getItems().setAll(this.noFilteredLabAsstAttendance);
+		this.labAsstAttendanceDatePicker.setValue(null);
+		this.labAsstUntilPartDatePicker.setValue(null);
+		this.studentNumberAsstTabTextField.clear();
+		System.out.println("clearing");
 	}
 
 	@FXML
@@ -566,23 +578,25 @@ public class MainController implements Initializable {
 
 				final TextColumnBuilder<BigDecimal> paymentAmountColumn = DynamicReports.col
 						.column("jumlah bayar", "paymentValue", DynamicReports.type.bigDecimalType())
-						.setValueFormatter(Templates.createCurrencyValueFormatter(""));
+						.setValueFormatter(Templates.createCurrencyValueFormatter("")).setWidth(20);
 				AggregationSubtotalBuilder<BigDecimal> paymentAmountSum = DynamicReports.sbt.sum(paymentAmountColumn)
 						.setLabel("total ").setValueFormatter(Templates.createCurrencyValueFormatter(""));
 
 				showReport(DynamicReports.report().setTemplate(Templates.reportTemplate)
 						.title(Templates.createTitleComponent("Praktek Mahasiswa"))
 						.pageFooter(Templates.footerComponent)
-						.columns(DynamicReports.col.column("npm", "studentNumber", DynamicReports.type.stringType()),
-								DynamicReports.col.column("matakuliah", "courseName", DynamicReports.type.stringType()),
-								DynamicReports.col.column("nilai", "studentGrade", DynamicReports.type.stringType()),
+						.columns(
+								DynamicReports.col.reportRowNumberColumn("No.").setWidth(12),
+								DynamicReports.col.column("npm", "studentNumber", DynamicReports.type.stringType()).setWidth(20),
+								DynamicReports.col.column("matakuliah", "courseName", DynamicReports.type.stringType()).setWidth(15),
+								DynamicReports.col.column("nilai", "studentGrade", DynamicReports.type.stringType()).setWidth(8),
 								paymentAmountColumn,
 								DynamicReports.col
 										.column("waktu membayar", "paymentDate", DynamicReports.type.dateType())
-										.setPattern("dd/MM/yyyy"),
-								DynamicReports.col.column("Kelas", "studentClass", DynamicReports.type.stringType()),
-								DynamicReports.col.column("semester", "studentSemester",
-										DynamicReports.type.integerType()))
+										.setPattern("dd/MM/yyyy").setWidth(15),
+								DynamicReports.col.column("Kel", "studentClass", DynamicReports.type.stringType()).setWidth(5),
+								DynamicReports.col.column("sem", "studentSemester",
+										DynamicReports.type.integerType()).setWidth(5))
 						.subtotalsAtSummary(paymentAmountSum).setDataSource(studentPayment).toJasperPrint(),
 						"Pembayaran Praktek");
 			} catch (Exception e) {
@@ -637,7 +651,7 @@ public class MainController implements Initializable {
 					DynamicReports.report().setTemplate(Templates.reportTemplate)
 							.title(Templates.createTitleComponent("Absensi Asisten Lab"))
 							.pageFooter(Templates.footerComponent)
-							.columns(
+							.columns(DynamicReports.col.reportRowNumberColumn("No."),
 									DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
 									DynamicReports.col.column("tgl hadir", "studentAttendanceDate",
 											DynamicReports.type.dateType()).setPattern("dd/MM/yyyy"))

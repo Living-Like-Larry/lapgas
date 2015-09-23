@@ -42,12 +42,12 @@ public class Lapgas extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
+
 	private void initDB() throws IOException, SQLException {
 		makeAdminDB();
 		makeLapgasDB();
 	}
-	
+
 	private static void makeAdminDB() throws IOException {
 		Configurator.doRawAdminDBActionConsumer((x) -> {
 			try {
@@ -55,9 +55,10 @@ public class Lapgas extends Application {
 					x.exec(Configurator.table("admins"));
 					new AdminSql().set("password", "livinglikelarry").saveIt();
 				}
-				x.close();
 			} catch (Exception e) {
 				e.printStackTrace();
+			} finally {
+				x.close();
 			}
 
 		});
