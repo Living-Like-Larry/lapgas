@@ -2,8 +2,13 @@ package livinglikelarry.lapgas.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.controlsfx.control.textfield.TextFields;
 import org.javalite.activejdbc.Model;
 
 import javafx.fxml.FXML;
@@ -153,17 +158,29 @@ public class LoginController implements Initializable {
 	@FXML
 	public void handleChoosingRole() {
 		final String selectedRole = this.roleComboBox.getSelectionModel().getSelectedItem();
-		Configurator.setRole(selectedRole);
 		if (!selectedRole.equalsIgnoreCase("root")) {
-			this.studentNumberTextField.setVisible(true);
-			System.out.println("my role is not root");
-			if (selectedRole.equalsIgnoreCase("aslab")) {
-				System.out.println("i'm labasst");
-				this.lapgasState = new LabAsstLapgasState();
-			} else {
-				System.out.println("i'm special labasst");
-				this.lapgasState = new SpecialLabAsstLapgasState();
-			}
+			Configurator.doDBACtion(() -> {
+				Stream<Model> labAssistantStream = LabAssistant.findAll().stream();
+				this.studentNumberTextField.setVisible(true);
+				Function<String, List<?>> mapStudentNumberBasedOnRole = x -> labAssistantStream.filter(p -> {
+					String role = (String) p.get("role");
+					return role.equalsIgnoreCase(x);
+				}).map(y -> y.get("student_number")).collect(Collectors.toList());
+				;
+				System.out.println("my role is not root");
+				if (selectedRole.equalsIgnoreCase("aslab")) {
+					System.out.println("i'm labasst");
+					this.lapgasState = new LabAsstLapgasState();
+					TextFields.bindAutoCompletion(this.studentNumberTextField,
+							mapStudentNumberBasedOnRole.apply("aslab"));
+				} else {
+					System.out.println("i'm special labasst");
+					this.lapgasState = new SpecialLabAsstLapgasState();
+					TextFields.bindAutoCompletion(this.studentNumberTextField,
+							mapStudentNumberBasedOnRole.apply("aslab khusus"));
+				}
+
+			});
 		} else {
 			System.out.println("my role is root");
 			this.studentNumberTextField.setVisible(false);

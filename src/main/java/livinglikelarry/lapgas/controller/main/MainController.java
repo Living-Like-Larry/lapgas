@@ -190,20 +190,22 @@ public class MainController implements Initializable {
 
 		initCourseNameTableViewPaymentTab();
 		loadAllCourseNames(this.coursesPaymentTabComboBox);
-		initStudentPaymentTableView();
-		initLabAsstAttendanceTableView();
 
+		this.paymentTabUtil = new PaymentTabUtil();
 		this.filteredStudentPaymentHistoryList = new LinkedList<>();
+		initStudentPaymentTableView();
 		loadAllStudentPayment(this.studentPaymentTableView);
-		implementAutoCompletePaymentTab();
+		implementAutoCompleteOnPaymentFeature();
 
 		this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
 
 		this.filteredStudentPaymentBySemesterComboBox.getItems().setAll(1, 2, 3, 4, 5, 6, 7, 8);
 
-		this.paymentTabUtil = new PaymentTabUtil();
-
+		initLabAsstAttendanceTableView();
 		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
+		TextFields.bindAutoCompletion(this.studentNumberAsstTabTextField, this.noFilteredLabAsstAttendance.stream()
+				.map(x -> x.getStudentNumber()).distinct().collect(Collectors.toList()));
+
 	}
 
 	private void initLabAsstAttendanceTableView() {
@@ -230,15 +232,15 @@ public class MainController implements Initializable {
 		this.coursesPaymentTabTableView.getColumns().setAll(Arrays.asList(this.coursePaymentTabTableColumn));
 	}
 
-	private void implementAutoCompletePaymentTab() {
+	private void implementAutoCompleteOnPaymentFeature() {
 		final ObservableList<StudentPaymentTableModel> studentPayment = this.studentPaymentTableView.getItems();
-		final Function<Function<StudentPaymentTableModel, ?>, List<?>> studentPaymentsMapper = x -> studentPayment.stream()
-				.map(x).distinct().collect(Collectors.toList());
-		TextFields.bindAutoCompletion(studentNumberPaymentTabTextField,
-				studentPaymentsMapper.apply(x -> x.getStudentNumber()));
-		TextFields.bindAutoCompletion(classTabPaymentTextField, 
-				studentPaymentsMapper.apply(x -> x.getStudentClass()));
-		TextFields.bindAutoCompletion(paymentValueTabPaymentTextField, 
+		final Function<Function<StudentPaymentTableModel, ?>, List<?>> studentPaymentsMapper = x -> studentPayment
+				.stream().map(x).distinct().collect(Collectors.toList());
+		final List<?> mapToStudentNumber = studentPaymentsMapper.apply(x -> x.getStudentNumber());
+		TextFields.bindAutoCompletion(studentNumberPaymentTabTextField, mapToStudentNumber);
+		TextFields.bindAutoCompletion(this.studentNumberFilteredTabStudent, mapToStudentNumber);
+		TextFields.bindAutoCompletion(classTabPaymentTextField, studentPaymentsMapper.apply(x -> x.getStudentClass()));
+		TextFields.bindAutoCompletion(paymentValueTabPaymentTextField,
 				studentPaymentsMapper.apply(x -> x.getPaymentValue().toString()));
 	}
 
