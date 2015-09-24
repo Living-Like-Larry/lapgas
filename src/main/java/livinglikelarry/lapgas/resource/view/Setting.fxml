@@ -79,7 +79,8 @@
 							prefWidth="200.0">
 							<children>
 								<TableView fx:id="labAssistantTableView" layoutX="38.0"
-									layoutY="14.0" prefHeight="200.0" prefWidth="382.0">
+									layoutY="14.0" prefHeight="200.0" prefWidth="382.0"
+									onContextMenuRequested="#handleLabAssistantTViewContextMenuReq">
 									<columns>
 										<TableColumn fx:id="labAsstStudentNumberTableColumn"
 											prefWidth="200.0" text="NPM" />
@@ -90,9 +91,11 @@
 										<ContextMenu>
 											<items>
 												<MenuItem mnemonicParsing="false"
-													onAction="#handleAddingNewAttendance" text="Tambah kehadiran" />
+													onAction="#handleAddingNewAttendance" text="Tambah kehadiran"
+													fx:id="addingAttendanceMenuItem" />
 												<MenuItem mnemonicParsing="false"
-													onAction="#handleSeeingLabAsstLogs" text="Lihat log" />
+													onAction="#handleSeeingLabAsstLogs" text="Lihat log"
+													fx:id="seeingLogMenuItem" />
 											</items>
 										</ContextMenu>
 									</contextMenu>

@@ -34,6 +34,7 @@ import livinglikelarry.lapgas.model.table.LabAssistantTableModel;
 import livinglikelarry.lapgas.state.LapgasState;
 import livinglikelarry.lapgas.util.Configurator;
 import livinglikelarry.lapgas.util.GuiUtil;
+import javafx.scene.control.MenuItem;
 
 public class SettingController implements Initializable {
 	@FXML
@@ -99,6 +100,12 @@ public class SettingController implements Initializable {
 	private LapgasState lapgasState;
 
 	private String labAsstStudentNumber;
+
+	@FXML
+	MenuItem addingAttendanceMenuItem;
+
+	@FXML
+	MenuItem seeingLogMenuItem;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -305,6 +312,23 @@ public class SettingController implements Initializable {
 
 	public void setLabAsstStudentNumber(String labAsstStudentNumber) {
 		this.labAsstStudentNumber = labAsstStudentNumber;
+	}
+
+	@FXML
+	public void handleLabAssistantTViewContextMenuReq() {
+		if (this.labAssistantTableView.getItems().size() != 0) {
+			if (this.labAssistantTableView.getSelectionModel().getSelectedItem().getRole()
+					.equalsIgnoreCase("aslab khusus")) {
+				this.seeingLogMenuItem.setVisible(true);
+			} else {
+				this.seeingLogMenuItem.setVisible(false);
+			}
+			this.addingAttendanceMenuItem.setVisible(true);
+
+		} else {
+			this.addingAttendanceMenuItem.setVisible(false);
+			this.seeingLogMenuItem.setVisible(false);
+		}
 	}
 
 }
