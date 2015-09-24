@@ -58,12 +58,10 @@ import livinglikelarry.lapgas.resource.view.Templates;
 import livinglikelarry.lapgas.state.LapgasState;
 import livinglikelarry.lapgas.util.Configurator;
 import livinglikelarry.lapgas.util.LabAssistantLogger;
+import livinglikelarry.lapgas.util.GuiUtil;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.subtotal.AggregationSubtotalBuilder;
-import net.sf.dynamicreports.report.exception.DRException;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.view.JasperViewer;
 import javafx.stage.Stage;
 
 /**
@@ -472,16 +470,15 @@ public class MainController implements Initializable {
 						final LocalDate toLabAsstAttendanceFiltering = this.labAsstUntilPartDatePicker.getValue();
 						return (labAssistantAttendance.isEqual(fromLabAsstAttendanceFiltering)
 								|| labAssistantAttendance.isAfter(fromLabAsstAttendanceFiltering))
-								&& 
-							   (labAssistantAttendance.isEqual(toLabAsstAttendanceFiltering)
-								|| labAssistantAttendance.isBefore(toLabAsstAttendanceFiltering));
+								&& (labAssistantAttendance.isEqual(toLabAsstAttendanceFiltering)
+										|| labAssistantAttendance.isBefore(toLabAsstAttendanceFiltering));
 
 					}).collect(Collectors.toList());
 			this.labAssistantAttendanceTableView.getItems().setAll(filteredAttendance);
 
 		}
 	}
-	
+
 	@FXML
 	public void handleClearingFilteringLabAsstAtt() {
 		this.labAssistantAttendanceTableView.getItems().setAll(this.noFilteredLabAsstAttendance);
@@ -565,45 +562,60 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleReportingButton() {
-		Configurator.doDBACtion(() -> {
-			try {
-				Collection<?> studentPayment = this.studentPaymentTableView.getItems().stream().map(x -> {
-					Model course = Course.findById(x.getCourseNumber());
-					int studentSemester = (int) course.get("semester");
-					String courseName = (String) course.get("name");
-					return new StudentPaymentTableModel(x.getId(), x.getStudentNumber(), x.getCourseNumber(),
-							x.getStudentClass(), x.getPaymentDateTime(), x.getPaymentValue(),
-							x.getPaymentReceiptFilePath(), x.getStudentGrade(), studentSemester, courseName);
-				}).collect(Collectors.toList());
+		GuiUtil.showProgress(() -> {
+			Configurator.doDBACtion(() -> {
+				try {
+					Collection<?> studentPayment = studentPaymentTableView.getItems().stream().map(x -> {
+						Model course = Course.findById(x.getCourseNumber());
+						int studentSemester = (int) course.get("semester");
+						String courseName = (String) course.get("name");
+						return new StudentPaymentTableModel(x.getId(), x.getStudentNumber(), x.getCourseNumber(),
+								x.getStudentClass(), x.getPaymentDateTime(), x.getPaymentValue(),
+								x.getPaymentReceiptFilePath(), x.getStudentGrade(), studentSemester, courseName);
+					}).collect(Collectors.toList());
 
-				final TextColumnBuilder<BigDecimal> paymentAmountColumn = DynamicReports.col
-						.column("jumlah bayar", "paymentValue", DynamicReports.type.bigDecimalType())
-						.setValueFormatter(Templates.createCurrencyValueFormatter("")).setWidth(20);
-				AggregationSubtotalBuilder<BigDecimal> paymentAmountSum = DynamicReports.sbt.sum(paymentAmountColumn)
-						.setLabel("total ").setValueFormatter(Templates.createCurrencyValueFormatter(""));
+					final TextColumnBuilder<BigDecimal> paymentAmountColumn = DynamicReports.col
+							.column("jumlah bayar", "paymentValue", DynamicReports.type.bigDecimalType())
+							.setValueFormatter(Templates.createCurrencyValueFormatter("")).setWidth(20);
+					AggregationSubtotalBuilder<BigDecimal> paymentAmountSum = DynamicReports.sbt
+							.sum(paymentAmountColumn).setLabel("total ")
+							.setValueFormatter(Templates.createCurrencyValueFormatter(""));
 
-				showReport(DynamicReports.report().setTemplate(Templates.reportTemplate)
-						.title(Templates.createTitleComponent("Praktek Mahasiswa"))
-						.pageFooter(Templates.footerComponent)
-						.columns(
-								DynamicReports.col.reportRowNumberColumn("No.").setWidth(12),
-								DynamicReports.col.column("npm", "studentNumber", DynamicReports.type.stringType()).setWidth(20),
-								DynamicReports.col.column("matakuliah", "courseName", DynamicReports.type.stringType()).setWidth(15),
-								DynamicReports.col.column("nilai", "studentGrade", DynamicReports.type.stringType()).setWidth(8),
-								paymentAmountColumn,
-								DynamicReports.col
-										.column("waktu membayar", "paymentDate", DynamicReports.type.dateType())
-										.setPattern("dd/MM/yyyy").setWidth(15),
-								DynamicReports.col.column("Kel", "studentClass", DynamicReports.type.stringType()).setWidth(5),
-								DynamicReports.col.column("sem", "studentSemester",
-										DynamicReports.type.integerType()).setWidth(5))
-						.subtotalsAtSummary(paymentAmountSum).setDataSource(studentPayment).toJasperPrint(),
-						"Pembayaran Praktek");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
+					GuiUtil.showReport(
+							DynamicReports.report().setTemplate(Templates.reportTemplate)
+									.title(Templates.createTitleComponent("Praktek Mahasiswa"))
+									.pageFooter(Templates.footerComponent)
+									.columns(DynamicReports.col.reportRowNumberColumn("No.").setWidth(12),
+											DynamicReports.col
+													.column("npm", "studentNumber", DynamicReports.type.stringType())
+													.setWidth(20),
+											DynamicReports.col
+													.column("matakuliah", "courseName",
+															DynamicReports.type.stringType())
+													.setWidth(
+															15),
+											DynamicReports.col
+													.column("nilai", "studentGrade", DynamicReports.type.stringType())
+													.setWidth(
+															8),
+											paymentAmountColumn,
+											DynamicReports.col.column("waktu membayar", "paymentDate",
+													DynamicReports.type.dateType()).setPattern("dd/MM/yyyy").setWidth(
+															15),
+											DynamicReports.col
+													.column("Kel", "studentClass", DynamicReports.type.stringType())
+													.setWidth(5),
+									DynamicReports.col
+											.column("sem", "studentSemester", DynamicReports.type.integerType())
+											.setWidth(5))
+									.subtotalsAtSummary(paymentAmountSum).setDataSource(studentPayment).toJasperPrint(),
+							"Laporan Pembayaran Praktek");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
 		});
+
 	}
 
 	@FXML
@@ -646,21 +658,24 @@ public class MainController implements Initializable {
 
 	@FXML
 	public void handleReportingLabAsstAttendance() {
-		try {
-			showReport(
-					DynamicReports.report().setTemplate(Templates.reportTemplate)
-							.title(Templates.createTitleComponent("Absensi Asisten Lab"))
-							.pageFooter(Templates.footerComponent)
-							.columns(DynamicReports.col.reportRowNumberColumn("No."),
-									DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
-									DynamicReports.col.column("tgl hadir", "studentAttendanceDate",
-											DynamicReports.type.dateType()).setPattern("dd/MM/yyyy"))
-					.setDataSource(
-							this.labAssistantAttendanceTableView.getItems().stream().collect(Collectors.toList()))
-					.toJasperPrint(), "Absensi Aslab");
-		} catch (DRException e) {
-			e.printStackTrace();
-		}
+		GuiUtil.showProgress(() -> {
+			try {
+				GuiUtil.showReport(DynamicReports.report().setTemplate(Templates.reportTemplate)
+						.title(Templates.createTitleComponent("Absensi Asisten Lab"))
+						.pageFooter(Templates.footerComponent)
+						.columns(DynamicReports.col.reportRowNumberColumn("No."),
+								DynamicReports.col.column("NPM", "studentNumber", DynamicReports.type.stringType()),
+								DynamicReports.col
+										.column("tgl hadir", "studentAttendanceDate", DynamicReports.type.dateType())
+										.setPattern("dd/MM/yyyy"))
+						.setDataSource(
+								this.labAssistantAttendanceTableView.getItems().stream().collect(Collectors.toList()))
+						.toJasperPrint(), "Absensi Aslab");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		});
 	}
 
 	@FXML
@@ -716,12 +731,6 @@ public class MainController implements Initializable {
 	public void handleAddLabAsstAttendance() {
 		makeLabAsstAttendance(this.labAsstStudentNumber);
 		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
-	}
-
-	private void showReport(JasperPrint jasperPrint, String title) {
-		JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
-		jasperViewer.setTitle(title);
-		jasperViewer.setVisible(true);
 	}
 
 	public void setLapgasState(LapgasState lapgasState) {
