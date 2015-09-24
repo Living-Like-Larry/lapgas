@@ -170,6 +170,9 @@ public class MainController implements Initializable {
 	@FXML
 	private DatePicker labAsstUntilPartDatePicker;
 
+	@FXML
+	MenuItem seeingPaymentReceipt;
+
 	private Stage stage;
 	private File choosenPaymentReceiptFile;
 	private PaymentTabUtil paymentTabUtil;
@@ -745,6 +748,17 @@ public class MainController implements Initializable {
 
 	public void setLabAsstStudentNumber(String labAsstStudentNumber) {
 		this.labAsstStudentNumber = labAsstStudentNumber;
+	}
+
+	@FXML
+	public void handleStudentPaymentTViewContextMenuReq() {
+		if (this.studentPaymentTableView.getItems().size() != 0) {
+			this.lapgasState.setUpdatingStudentPaymentStateMI(this.studentPaymentUpdatingMenuItem);
+			this.seeingPaymentReceipt.setDisable(false);
+		} else {
+			this.studentPaymentUpdatingMenuItem.setDisable(true);
+			this.seeingPaymentReceipt.setDisable(true);
+		}
 	}
 
 }

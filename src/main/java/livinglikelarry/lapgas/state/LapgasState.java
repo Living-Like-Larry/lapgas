@@ -19,5 +19,6 @@ public interface LapgasState {
 	public void setScannerTabSetting(Tab scannerTab);
 
 	public void setCourseTabSetting(Tab courseTab);
+	
 
 }
