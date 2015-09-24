@@ -716,10 +716,13 @@ public class MainController implements Initializable {
 					.getController();
 			studentPaymentUpdaterController
 					.setStudentPayment(this.studentPaymentTableView.getSelectionModel().getSelectedItem());
+			studentPaymentUpdaterController
+					.setStudentPaymentList(new ArrayList<>(this.studentPaymentTableView.getItems()));
 			Stage stage = new Stage();
 			studentPaymentUpdaterController.setStage(stage);
 			stage.setScene(new Scene(root));
 			stage.setTitle("Perbaharui Pembayaran Mahasiswa");
+			stage.setResizable(false);
 			stage.showAndWait();
 		} catch (IOException e) {
 			e.printStackTrace();

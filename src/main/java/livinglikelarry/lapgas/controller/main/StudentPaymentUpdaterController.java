@@ -6,9 +6,12 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.controlsfx.control.textfield.TextFields;
 import org.javalite.activejdbc.Model;
 
 import javafx.fxml.FXML;
@@ -124,5 +127,13 @@ public class StudentPaymentUpdaterController implements Initializable {
 				e.printStackTrace();
 			}
 		});
+	}
+
+	public void setStudentPaymentList(List<StudentPaymentTableModel> studentPaymentTableModelList) {
+		Function<Function<? super StudentPaymentTableModel, ?>, List<?>> studentPaymentMapper = x -> studentPaymentTableModelList
+				.stream().map(x).distinct().collect(Collectors.toList());
+		TextFields.bindAutoCompletion(this.classTextField, studentPaymentMapper.apply((x -> x.getStudentClass())));
+		TextFields.bindAutoCompletion(this.amountOfPaymentTextField,
+				studentPaymentMapper.apply(x -> x.getPaymentValue()));
 	}
 }
