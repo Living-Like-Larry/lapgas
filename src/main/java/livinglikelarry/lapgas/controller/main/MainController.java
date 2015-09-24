@@ -203,7 +203,6 @@ public class MainController implements Initializable {
 
 		initLabAsstAttendanceTableView();
 		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
-
 	}
 
 	private void initLabAsstAttendanceTableView() {

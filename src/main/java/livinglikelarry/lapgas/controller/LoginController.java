@@ -143,16 +143,17 @@ public class LoginController implements Initializable {
 	}
 
 	private void showMain() throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Main"));
-		MainController mainController = (MainController) fxmlLoader.getController();
-		mainController.setLapgasState(lapgasState);
-		Stage stage = new Stage();
-		stage.setTitle("Lapgas");
-		stage.setScene(new Scene(root));
-		mainController.setStage(stage);
-		primaryStage.close();
-		stage.show();
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			GridPane root = (GridPane) fxmlLoader.load(Configurator.view("Main"));
+
+			MainController mainController = (MainController) fxmlLoader.getController();
+			mainController.setLapgasState(lapgasState);
+			Stage stage = new Stage();
+			stage.setTitle("Lapgas");
+			stage.setScene(new Scene(root));
+			mainController.setStage(stage);
+			primaryStage.close();
+			stage.show();
 	}
 
 	@FXML

@@ -33,6 +33,7 @@ import livinglikelarry.lapgas.model.table.LabAssistantAttendanceTableModel;
 import livinglikelarry.lapgas.model.table.LabAssistantTableModel;
 import livinglikelarry.lapgas.state.LapgasState;
 import livinglikelarry.lapgas.util.Configurator;
+import livinglikelarry.lapgas.util.GuiUtil;
 
 public class SettingController implements Initializable {
 	@FXML
@@ -145,16 +146,23 @@ public class SettingController implements Initializable {
 		final String name = this.courseTextField.getText();
 		final Integer semester = this.semesterComboBox.getValue();
 		if (courseNumber != null && name != null && semester != null) {
-			Configurator.doDBACtion(() -> {
-				Course course = new Course();
-				course.set("course_number", courseNumber).set("name", name).set("semester", semester).insert();
-			});
-			this.courseTableView.getItems().add(new CoursesTableModel(courseNumber, name, semester));
-			this.courseNumberTextField.clear();
-			this.courseTextField.clear();
-			this.semesterComboBox.getSelectionModel().clearSelection();
-			loadAllCourses();
-			this.coursePaymentComboBoxConsumer.accept(this.coursesPaymentComboBox);
+			if (!courseNumber.equals("") && !name.equals("")) {
+				Configurator.doRawDBActionWithDBConsumer((x) -> {
+					try {
+						Course course = new Course();
+						course.set("course_number", courseNumber).set("name", name).set("semester", semester).insert();
+					} catch (Exception e) {
+						GuiUtil.showException(e);
+						x.close();
+					}
+				});
+				this.courseTableView.getItems().add(new CoursesTableModel(courseNumber, name, semester));
+				this.courseNumberTextField.clear();
+				this.courseTextField.clear();
+				this.semesterComboBox.getSelectionModel().clearSelection();
+				loadAllCourses();
+				this.coursePaymentComboBoxConsumer.accept(this.coursesPaymentComboBox);
+			}
 		}
 	}
 
@@ -175,14 +183,25 @@ public class SettingController implements Initializable {
 
 	@FXML
 	public void handleAddingNewLabAssistant() {
-		Configurator.doDBACtion(() -> {
-			new LabAssistant().set("student_number", (String) this.labAsstStudentNumberTextField.getText())
-					.set("password", (String) "livinglikelarry")
-					.set("role", (String) this.labAssistantRoleComboBox.getSelectionModel().getSelectedItem()).insert();
-		});
-		this.labAssistantRoleComboBox.getSelectionModel().clearSelection();
-		this.labAsstStudentNumberTextField.clear();
-		loadAllLabAssistant();
+		final String selectedItem = this.labAssistantRoleComboBox.getSelectionModel().getSelectedItem();
+		final String studentNumber = this.labAsstStudentNumberTextField.getText();
+		if (studentNumber != null && selectedItem != null) {
+			if (!studentNumber.equals("")) {
+				Configurator.doRawDBActionWithDBConsumer(x -> {
+					try {
+						new LabAssistant().set("student_number", (String) studentNumber)
+								.set("password", (String) "livinglikelarry").set("role", (String) selectedItem)
+								.insert();
+					} catch (Exception e) {
+						GuiUtil.showException(e);
+						x.close();
+					}
+				});
+				this.labAssistantRoleComboBox.getSelectionModel().clearSelection();
+				this.labAsstStudentNumberTextField.clear();
+				loadAllLabAssistant();
+			}
+		}
 	}
 
 	private void editAdminPassword(Runnable runnable) {

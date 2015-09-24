@@ -161,7 +161,9 @@ public final class Configurator {
 		lapgasDB.open(Configurator.properties("main.driver"), Configurator.properties("main.url") + "lapgas",
 				Configurator.properties("main.username"), Configurator.properties("main.password"));
 		actionConsumer.accept(lapgasDB);
-		lapgasDB.close();
+		if (lapgasDB.hasConnection()) {
+			lapgasDB.close();
+		}
 	}
 
 }
