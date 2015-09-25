@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="279.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TableView layoutX="9.0" layoutY="7.0" prefHeight="207.0" prefWidth="578.0">
+        <columns>
+          <TableColumn prefWidth="264.0" text="Pelajaran" />
+          <TableColumn prefWidth="124.0" text="Hari" />
+            <TableColumn minWidth="8.0" prefWidth="189.0" text="Jam" />
+        </columns>
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                <MenuItem mnemonicParsing="false" text="Hapus" />
+                  <MenuItem mnemonicParsing="false" text="Perbaharui" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
+      </TableView>
+      <TextField layoutX="9.0" layoutY="230.0" promptText="pelajaran" />
+      <ComboBox layoutX="185.0" layoutY="230.0" prefWidth="150.0" />
+      <Button layoutX="561.0" layoutY="230.0" mnemonicParsing="false" text="+" />
+      <ComboBox layoutX="413.0" layoutY="230.0" prefHeight="25.0" prefWidth="50.0" promptText="J" />
+      <ComboBox layoutX="480.0" layoutY="230.0" prefHeight="25.0" prefWidth="58.0" promptText="M" />
+      <Label layoutX="473.0" layoutY="234.0" text=":" />
+   </children>
+</AnchorPane>
