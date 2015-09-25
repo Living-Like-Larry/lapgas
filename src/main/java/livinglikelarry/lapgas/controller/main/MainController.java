@@ -245,14 +245,12 @@ public class MainController implements Initializable {
 		final Function<Function<StudentPaymentTableModel, ?>, List<?>> studentPaymentsMapper = x -> studentPayment
 				.stream().map(x).distinct().collect(Collectors.toList());
 		final List<?> mapToStudentNumber = studentPaymentsMapper.apply(x -> x.getStudentNumber());
-		// TextFields.bindAutoCompletion(studentNumberPaymentTabTextField,
-		// mapToStudentNumber);
-		// TextFields.bindAutoCompletion(this.studentNumberFilteredTabStudent,
-		// mapToStudentNumber);
-		// TextFields.bindAutoCompletion(this.classTabPaymentTextField,
-		// studentPaymentsMapper.apply(x -> x.getStudentClass()));
-		// TextFields.bindAutoCompletion(this.coursePaymentValue,
-		// studentPaymentsMapper.apply(x -> x.getPaymentValue().toString()));
+		TextFields.bindAutoCompletion(studentNumberPaymentTabTextField, mapToStudentNumber);
+		TextFields.bindAutoCompletion(this.studentNumberFilteredTabStudent, mapToStudentNumber);
+		TextFields.bindAutoCompletion(this.classTabPaymentTextField,
+				studentPaymentsMapper.apply(x -> x.getStudentClass()));
+		TextFields.bindAutoCompletion(this.coursePaymentValue,
+				studentPaymentsMapper.apply(x -> x.getPaymentValue().toString()));
 	}
 
 	private void loadAllStudentPayment(TableView<StudentPaymentTableModel> studentPaymentTableView) {
@@ -444,6 +442,7 @@ public class MainController implements Initializable {
 			this.classTabPaymentTextField.clear();
 			this.coursesPaymentTabTableView.getItems().clear();
 			this.paymentReceiptPathTextField.clear();
+			this.coursePaymentValue.clear();
 			// this.paymentValueTabPaymentTextField.clear();
 			this.studentNumberPaymentTabTextField.clear();
 			this.coursesPaymentTabComboBox.getSelectionModel().clearSelection();
