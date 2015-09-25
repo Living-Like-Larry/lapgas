@@ -374,7 +374,7 @@
 										<MenuButton fx:id="labAsstActionMenuButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="142.0" text="Aksi" GridPane.columnIndex="2">
 											<items>
 												<MenuItem mnemonicParsing="false" onAction="#handleAddLabAsstAttendance" text="Absen !" />
-												<MenuItem mnemonicParsing="false" text="Lihat Jadwal" />
+												<MenuItem disable="true" mnemonicParsing="false" text="Lihat Jadwal" />
 											</items>
 										</MenuButton>
 										<Button mnemonicParsing="false" onAction="#handleClearingFilteringLabAsstAtt" prefHeight="26.0" prefWidth="105.0" text="Clear filter !" GridPane.columnIndex="1" />
