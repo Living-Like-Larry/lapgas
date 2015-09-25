@@ -1,13 +1,17 @@
 package livinglikelarry.lapgas.model.table;
 
+import java.math.BigDecimal;
+
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class CoursesTableModel {
+
 	private SimpleStringProperty course;
 	private SimpleStringProperty courseNumber;
 	private SimpleObjectProperty<Integer> semester;
-
+	private SimpleObjectProperty<BigDecimal> paymentValue;
+	
 	public CoursesTableModel(String course) {
 		this.course = new SimpleStringProperty(course);
 	}
@@ -16,6 +20,11 @@ public class CoursesTableModel {
 		this.course = new SimpleStringProperty(course);
 		this.courseNumber = new SimpleStringProperty(courseNumber);
 		this.semester = new SimpleObjectProperty<>(semester);
+	}
+
+	public CoursesTableModel(String course, BigDecimal paymentValue) {
+		this.course = new SimpleStringProperty(course);
+		this.paymentValue = new SimpleObjectProperty<>(paymentValue);
 	}
 
 	public final SimpleStringProperty courseProperty() {
@@ -53,5 +62,20 @@ public class CoursesTableModel {
 	public final void setSemester(final int semester) {
 		this.semesterProperty().set(semester);
 	}
+
+	public final SimpleObjectProperty<BigDecimal> paymentValueProperty() {
+		return this.paymentValue;
+	}
+	
+
+	public final java.math.BigDecimal getPaymentValue() {
+		return this.paymentValueProperty().get();
+	}
+	
+
+	public final void setPaymentValue(final java.math.BigDecimal paymentValue) {
+		this.paymentValueProperty().set(paymentValue);
+	}
+	
 
 }

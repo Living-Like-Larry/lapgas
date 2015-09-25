@@ -78,6 +78,9 @@ public class MainController implements Initializable {
 	private TableColumn<CoursesTableModel, String> coursePaymentTabTableColumn;
 
 	@FXML
+	private TableColumn<CoursesTableModel, String> paymentValueTableColumn;
+
+	@FXML
 	private TextField studentNumberPaymentTabTextField;
 
 	@FXML
@@ -91,6 +94,9 @@ public class MainController implements Initializable {
 
 	@FXML
 	private TextField classTabPaymentTextField;
+
+	@FXML
+	private TextField coursePaymentValue;
 
 	@FXML
 	private TextField paymentValueTabPaymentTextField;
@@ -229,7 +235,9 @@ public class MainController implements Initializable {
 
 	private void initCourseNameTableViewPaymentTab() {
 		this.coursePaymentTabTableColumn.setCellValueFactory(new PropertyValueFactory<>("course"));
-		this.coursesPaymentTabTableView.getColumns().setAll(Arrays.asList(this.coursePaymentTabTableColumn));
+		this.paymentValueTableColumn.setCellValueFactory(new PropertyValueFactory<>("paymentValue"));
+		this.coursesPaymentTabTableView.getColumns()
+				.setAll(Arrays.asList(this.coursePaymentTabTableColumn, this.paymentValueTableColumn));
 	}
 
 	private void implementAutoCompleteOnPaymentFeature() {
@@ -237,11 +245,14 @@ public class MainController implements Initializable {
 		final Function<Function<StudentPaymentTableModel, ?>, List<?>> studentPaymentsMapper = x -> studentPayment
 				.stream().map(x).distinct().collect(Collectors.toList());
 		final List<?> mapToStudentNumber = studentPaymentsMapper.apply(x -> x.getStudentNumber());
-		TextFields.bindAutoCompletion(studentNumberPaymentTabTextField, mapToStudentNumber);
-		TextFields.bindAutoCompletion(this.studentNumberFilteredTabStudent, mapToStudentNumber);
-		TextFields.bindAutoCompletion(classTabPaymentTextField, studentPaymentsMapper.apply(x -> x.getStudentClass()));
-		TextFields.bindAutoCompletion(paymentValueTabPaymentTextField,
-				studentPaymentsMapper.apply(x -> x.getPaymentValue().toString()));
+		// TextFields.bindAutoCompletion(studentNumberPaymentTabTextField,
+		// mapToStudentNumber);
+		// TextFields.bindAutoCompletion(this.studentNumberFilteredTabStudent,
+		// mapToStudentNumber);
+		// TextFields.bindAutoCompletion(this.classTabPaymentTextField,
+		// studentPaymentsMapper.apply(x -> x.getStudentClass()));
+		// TextFields.bindAutoCompletion(this.coursePaymentValue,
+		// studentPaymentsMapper.apply(x -> x.getPaymentValue().toString()));
 	}
 
 	private void loadAllStudentPayment(TableView<StudentPaymentTableModel> studentPaymentTableView) {
@@ -410,42 +421,42 @@ public class MainController implements Initializable {
 		final ObservableList<CoursesTableModel> courseNames = this.coursesPaymentTabTableView.getItems();
 		final File paymentReceipt = this.choosenPaymentReceiptFile;
 		final String studentClass = this.classTabPaymentTextField.getText().toUpperCase();
-		final String paymentValue = this.paymentValueTabPaymentTextField.getText();
-		if (studentNumber != null && courseNames.size() != 0 && paymentReceipt != null && studentClass != null
-				&& paymentValue != null) {
-			if (paymentValue.matches("\\d+")) {
-				Configurator.doDBACtion(() -> {
-					try {
-						this.paymentTabUtil.save(studentNumber, studentClass, new BigDecimal(paymentValue), courseNames,
-								paymentReceipt);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				});
-				if (this.labAsstStudentNumber != null) {
-					LabAssistantLogger.logNewStudentPayment(this.labAsstStudentNumber, studentNumber, courseNames,
-							paymentReceipt, studentClass, paymentValue);
+		// final String paymentValue =
+		// this.paymentValueTabPaymentTextField.getText();
+		if (studentNumber != null && courseNames.size() != 0 && paymentReceipt != null && studentClass != null) {
+			// if (paymentValue.matches("\\d+")) {
+			Configurator.doDBACtion(() -> {
+				try {
+					this.paymentTabUtil.save(studentNumber, studentClass, courseNames, paymentReceipt);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Disimpan");
-				alert.setHeaderText("Data di simpan");
-				alert.setContentText("Data pembayaran berhasil di simpan");
-				alert.showAndWait();
-				this.classTabPaymentTextField.clear();
-				this.coursesPaymentTabTableView.getItems().clear();
-				this.paymentReceiptPathTextField.clear();
-				this.paymentValueTabPaymentTextField.clear();
-				this.studentNumberPaymentTabTextField.clear();
-				this.coursesPaymentTabComboBox.getSelectionModel().clearSelection();
-				this.loadAllCourseNames(this.coursesPaymentTabComboBox);
-				this.loadAllStudentPayment(this.studentPaymentTableView);
-			} else {
-				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Kesalahan !");
-				alert.setHeaderText("Nilai pembayaran tidak valid!");
-				alert.setContentText("Perhatian ! Harap isikan kolom pembayaran dengan data yang valid !");
-				alert.showAndWait();
+			});
+			if (this.labAsstStudentNumber != null) {
+				LabAssistantLogger.logNewStudentPayment(this.labAsstStudentNumber, studentNumber, courseNames,
+						paymentReceipt, studentClass);
 			}
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Disimpan");
+			alert.setHeaderText("Data di simpan");
+			alert.setContentText("Data pembayaran berhasil di simpan");
+			alert.showAndWait();
+			this.classTabPaymentTextField.clear();
+			this.coursesPaymentTabTableView.getItems().clear();
+			this.paymentReceiptPathTextField.clear();
+			// this.paymentValueTabPaymentTextField.clear();
+			this.studentNumberPaymentTabTextField.clear();
+			this.coursesPaymentTabComboBox.getSelectionModel().clearSelection();
+			this.loadAllCourseNames(this.coursesPaymentTabComboBox);
+			this.loadAllStudentPayment(this.studentPaymentTableView);
+			// } else {
+			// Alert alert = new Alert(AlertType.ERROR);
+			// alert.setTitle("Kesalahan !");
+			// alert.setHeaderText("Nilai pembayaran tidak valid!");
+			// alert.setContentText("Perhatian ! Harap isikan kolom pembayaran
+			// dengan data yang valid !");
+			// alert.showAndWait();
+			// }
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Kesalahan !");
@@ -681,10 +692,12 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	public void handleChoosingCoursesComboBox() {
+	public void handleChoosingCourses() {
 		String selectedCourse = this.coursesPaymentTabComboBox.getSelectionModel().getSelectedItem();
-		if (selectedCourse != null) {
-			this.coursesPaymentTabTableView.getItems().add(new CoursesTableModel(selectedCourse));
+		String coursePayment = this.coursePaymentValue.getText();
+		if (selectedCourse != null && coursePayment != null) {
+			this.coursesPaymentTabTableView.getItems()
+					.add(new CoursesTableModel(selectedCourse, new BigDecimal(coursePayment)));
 			this.coursesPaymentTabComboBox.getItems().remove(selectedCourse);
 		}
 	}

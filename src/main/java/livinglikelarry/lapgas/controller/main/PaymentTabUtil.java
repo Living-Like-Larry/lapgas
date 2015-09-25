@@ -7,11 +7,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
+import org.javalite.activejdbc.Model;
 
 import javafx.collections.ObservableList;
 import livinglikelarry.lapgas.model.sql.Course;
@@ -78,19 +81,19 @@ public class PaymentTabUtil {
 		});
 	}
 
-	public String save(String studentNumber, String studentClass, BigDecimal paymentValue,
-			ObservableList<CoursesTableModel> courseNames, File paymentReceiptFile) {
-		List<String> courseNumberList = new ArrayList<>();
+	public String save(String studentNumber, String studentClass, ObservableList<CoursesTableModel> courseNames,
+			File paymentReceiptFile) {
+		Map<String, BigDecimal> coursePair = new HashMap<>();
 		courseNames.forEach(x -> {
-			String course = (String) x.getCourse();
-			courseNumberList.add((String) Course.findFirst("name = ? ", course).get("course_number"));
+			Model course = Course.first("name = ?", (String) x.getCourse());
+			// BigDecimal paymentValue = x.getPaymentValue();
+			coursePair.put((String) course.get("course_number"), x.getPaymentValue());
 		});
-		courseNumberList.forEach(x -> {
-
+		coursePair.forEach((k, v) -> {
 			try {
 				final StudentPayment studentPayment = new StudentPayment();
-				studentPayment.set("student_number", studentNumber).set("course_number", x).set("class", studentClass)
-						.set("payment_value", paymentValue).set("grade", "T").saveIt();
+				studentPayment.set("student_number", studentNumber).set("course_number", k).set("class", studentClass)
+						.set("payment_value", (BigDecimal) v).set("grade", "T").saveIt();
 				String paymentReceipt = savePaymentReceipt(paymentReceiptFile, (long) studentPayment.getId());
 				studentPayment.set("payment_receipt", paymentReceipt).saveIt();
 			} catch (Exception e) {

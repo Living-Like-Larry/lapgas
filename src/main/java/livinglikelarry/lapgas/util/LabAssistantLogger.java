@@ -15,9 +15,10 @@ import livinglikelarry.lapgas.model.table.CoursesTableModel;
 public class LabAssistantLogger {
 
 	public static void logNewStudentPayment(String labAsstStudentNumber, String studentNumber,
-			ObservableList<CoursesTableModel> courseTableModel, File paymentReceipt, String studentClass,
-			String paymentValue) {
+			ObservableList<CoursesTableModel> courseTableModel, File paymentReceipt, String studentClass) {
 		String courseNames = courseTableModel.stream().map(x -> x.getCourse()).collect(Collectors.joining(","));
+		String paymentValue = courseTableModel.stream().map(x -> x.getPaymentValue().toString())
+				.collect(Collectors.joining(","));
 		Configurator.doDBACtion(() -> {
 			LabAssistantLog labAssistantLog = new LabAssistantLog();
 			final LocalDateTime now = LocalDateTime.now();
