@@ -67,6 +67,7 @@
 											<items>
 												<MenuItem fx:id="addingAttendanceMenuItem" mnemonicParsing="false" onAction="#handleAddingNewAttendance" text="Tambah kehadiran" />
 												<MenuItem fx:id="seeingLogMenuItem" mnemonicParsing="false" onAction="#handleSeeingLabAsstLogs" text="Lihat log" />
+                                    <MenuItem mnemonicParsing="false" text="Tambah Jadwal" />
 											</items>
 										</ContextMenu>
 									</contextMenu>
@@ -78,25 +79,6 @@
 						</AnchorPane>
 					</content>
 				</Tab>
-            <Tab text="Jadwal">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TableView layoutX="24.0" layoutY="14.0" prefHeight="200.0" prefWidth="416.0">
-                          <columns>
-                            <TableColumn text="Matakuliah" />
-                            <TableColumn minWidth="0.0" prefWidth="156.0" text="Hari" />
-                              <TableColumn prefWidth="75.0" text="NPM asleb" />
-                          </columns>
-                        </TableView>
-                        <TextField layoutX="25.0" layoutY="214.0" prefHeight="25.0" prefWidth="128.0" promptText="Matakuliah" />
-                        <ComboBox layoutX="169.0" layoutY="214.0" prefHeight="25.0" prefWidth="99.0" promptText="Hari" />
-                        <TextField layoutX="275.0" layoutY="214.0" prefHeight="25.0" prefWidth="124.0" promptText="NPM Aslab" />
-                        <Button layoutX="405.0" layoutY="214.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" text="+" />
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
 			</tabs>
 		</TabPane>
 	</children>
