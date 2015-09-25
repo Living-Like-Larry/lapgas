@@ -4,22 +4,31 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="296.0" prefWidth="460.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="livinglikelarry.lapgas.controller.SettingController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+	minWidth="-Infinity" prefHeight="296.0" prefWidth="460.0"
+	xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="livinglikelarry.lapgas.controller.SettingController">
 	<columnConstraints>
-		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+			prefWidth="100.0" />
 	</columnConstraints>
 	<rowConstraints>
-		<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+		<RowConstraints minHeight="10.0" prefHeight="30.0"
+			vgrow="SOMETIMES" />
 	</rowConstraints>
 	<children>
-		<TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+		<TabPane prefHeight="200.0" prefWidth="200.0"
+			tabClosingPolicy="UNAVAILABLE">
 			<tabs>
 				<Tab text="Password">
 					<content>
 						<AnchorPane prefHeight="155.0" prefWidth="430.0">
 							<children>
-								<PasswordField fx:id="adminPasswdField" disable="true" layoutX="110.0" layoutY="108.0" prefHeight="25.0" prefWidth="196.0" />
-								<Button fx:id="adminPasswdButton" layoutX="306.0" layoutY="107.0" mnemonicParsing="false" onAction="#handleEditingAdminPasswd" prefHeight="26.0" prefWidth="94.0" text="Ganti" />
+								<PasswordField fx:id="adminPasswdField" disable="true"
+									layoutX="110.0" layoutY="108.0" prefHeight="25.0" prefWidth="196.0" />
+								<Button fx:id="adminPasswdButton" layoutX="306.0"
+									layoutY="107.0" mnemonicParsing="false" onAction="#handleEditingAdminPasswd"
+									prefHeight="26.0" prefWidth="94.0" text="Ganti" />
 							</children>
 						</AnchorPane>
 					</content>
@@ -28,53 +37,79 @@
 					<content>
 						<AnchorPane prefHeight="163.0" prefWidth="300.0">
 							<children>
-								<TextField disable="true" layoutX="85.0" layoutY="107.0" prefHeight="26.0" prefWidth="226.0" />
-								<Button layoutX="311.0" layoutY="107.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="Ganti" />
+								<TextField disable="true" layoutX="85.0" layoutY="107.0"
+									prefHeight="26.0" prefWidth="226.0" />
+								<Button layoutX="311.0" layoutY="107.0" mnemonicParsing="false"
+									prefHeight="26.0" prefWidth="96.0" text="Ganti" />
 							</children>
 						</AnchorPane>
 					</content>
 				</Tab>
 				<Tab fx:id="courseTab" text="Matakuliah">
 					<content>
-						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
+							prefWidth="200.0">
 							<children>
-								<TextField fx:id="courseTextField" layoutX="149.0" layoutY="178.0" prefHeight="26.0" prefWidth="165.0" promptText="nama" />
-								<Button layoutX="401.0" layoutY="178.0" mnemonicParsing="false" onAction="#handleAddingButton" text="+" />
-								<TableView fx:id="courseTableView" layoutX="36.0" layoutY="14.0" prefHeight="158.0" prefWidth="394.0">
+								<TextField fx:id="courseTextField" layoutX="149.0"
+									layoutY="178.0" prefHeight="26.0" prefWidth="165.0" promptText="nama" />
+								<Button layoutX="401.0" layoutY="178.0" mnemonicParsing="false"
+									onAction="#handleAddingButton" text="+" />
+								<TableView fx:id="courseTableView" layoutX="36.0"
+									layoutY="14.0" prefHeight="158.0" prefWidth="394.0">
 									<columns>
-										<TableColumn fx:id="courseNumberTableColumn" prefWidth="88.0" text="Kode " />
-										<TableColumn fx:id="courseTableColumn" prefWidth="210.0" text="Nama" />
-										<TableColumn fx:id="semesterTableColumn" prefWidth="95.0" text="Sem" />
+										<TableColumn fx:id="courseNumberTableColumn"
+											prefWidth="88.0" text="Kode " />
+										<TableColumn fx:id="courseTableColumn" prefWidth="210.0"
+											text="Nama" />
+										<TableColumn fx:id="semesterTableColumn"
+											prefWidth="95.0" text="Sem" />
 									</columns>
 								</TableView>
-								<TextField fx:id="courseNumberTextField" layoutX="34.0" layoutY="178.0" prefHeight="26.0" prefWidth="115.0" promptText="Kode MK" />
-								<ComboBox fx:id="semesterComboBox" layoutX="311.0" layoutY="178.0" prefHeight="26.0" prefWidth="90.0" promptText="sem" />
+								<TextField fx:id="courseNumberTextField" layoutX="34.0"
+									layoutY="178.0" prefHeight="26.0" prefWidth="115.0" promptText="Kode MK" />
+								<ComboBox fx:id="semesterComboBox" layoutX="311.0"
+									layoutY="178.0" prefHeight="26.0" prefWidth="90.0" promptText="sem" />
 							</children>
 						</AnchorPane>
 					</content>
 				</Tab>
 				<Tab fx:id="labAsstTab" text="Aslab">
 					<content>
-						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
+							prefWidth="200.0">
 							<children>
-								<TableView fx:id="labAssistantTableView" layoutX="38.0" layoutY="14.0" onContextMenuRequested="#handleLabAssistantTViewContextMenuReq" prefHeight="200.0" prefWidth="382.0">
+								<TableView fx:id="labAssistantTableView" layoutX="38.0"
+									layoutY="14.0" onContextMenuRequested="#handleLabAssistantTViewContextMenuReq"
+									prefHeight="200.0" prefWidth="382.0">
 									<columns>
-										<TableColumn fx:id="labAsstStudentNumberTableColumn" prefWidth="200.0" text="NPM" />
-										<TableColumn fx:id="labAsstRoleTableColumn" prefWidth="181.0" text="Role" />
+										<TableColumn fx:id="labAsstStudentNumberTableColumn"
+											prefWidth="200.0" text="NPM" />
+										<TableColumn fx:id="labAsstRoleTableColumn"
+											prefWidth="181.0" text="Role" />
 									</columns>
 									<contextMenu>
 										<ContextMenu>
 											<items>
-												<MenuItem fx:id="addingAttendanceMenuItem" mnemonicParsing="false" onAction="#handleAddingNewAttendance" text="Tambah kehadiran" />
-												<MenuItem fx:id="seeingLogMenuItem" mnemonicParsing="false" onAction="#handleSeeingLabAsstLogs" text="Lihat log" />
-                                    <MenuItem mnemonicParsing="false" text="Tambah Jadwal" />
+												<MenuItem fx:id="addingAttendanceMenuItem"
+													mnemonicParsing="false" onAction="#handleAddingNewAttendance"
+													text="Tambah kehadiran" />
+												<MenuItem fx:id="seeingLogMenuItem"
+													mnemonicParsing="false" onAction="#handleSeeingLabAsstLogs"
+													text="Lihat log" />
+												<MenuItem mnemonicParsing="false" text="Tambah Jadwal"
+													disable="true" />
 											</items>
 										</ContextMenu>
 									</contextMenu>
 								</TableView>
-								<TextField fx:id="labAsstStudentNumberTextField" layoutX="38.0" layoutY="223.0" prefHeight="26.0" prefWidth="204.0" promptText="NPM" />
-								<Button layoutX="391.0" layoutY="223.0" mnemonicParsing="false" onAction="#handleAddingNewLabAssistant" prefHeight="26.0" prefWidth="32.0" text="+" />
-								<ComboBox fx:id="labAssistantRoleComboBox" layoutX="241.0" layoutY="223.0" prefWidth="150.0" promptText="Role" />
+								<TextField fx:id="labAsstStudentNumberTextField"
+									layoutX="38.0" layoutY="223.0" prefHeight="26.0" prefWidth="204.0"
+									promptText="NPM" />
+								<Button layoutX="391.0" layoutY="223.0" mnemonicParsing="false"
+									onAction="#handleAddingNewLabAssistant" prefHeight="26.0"
+									prefWidth="32.0" text="+" />
+								<ComboBox fx:id="labAssistantRoleComboBox" layoutX="241.0"
+									layoutY="223.0" prefWidth="150.0" promptText="Role" />
 							</children>
 						</AnchorPane>
 					</content>
