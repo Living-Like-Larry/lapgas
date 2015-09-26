@@ -5,6 +5,12 @@ import org.javalite.activejdbc.annotations.BelongsTo;
 import org.javalite.activejdbc.annotations.DbName;
 import org.javalite.activejdbc.annotations.Table;
 
+
+/**
+ * 
+ * @author Moch Deden (https://github.com/selesdepselesnul)
+ *
+ */
 @DbName("lapgas")
 @Table("lab_assistant_logs")
 @BelongsTo(parent = LabAssistant.class, foreignKeyName = "student_number")

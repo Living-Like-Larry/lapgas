@@ -5,6 +5,11 @@ import java.math.BigDecimal;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * 
+ * @author Moch Deden (https://github.com/selesdepselesnul)
+ *
+ */
 public class CoursesTableModel {
 
 	private SimpleStringProperty course;

@@ -7,6 +7,11 @@ import java.sql.Timestamp;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * 
+ * @author Moch Deden (https://github.com/selesdepselesnul)
+ *
+ */
 public class StudentPaymentTableModel {
 	private SimpleStringProperty studentNumber;
 	private SimpleStringProperty studentClass;
@@ -20,7 +25,8 @@ public class StudentPaymentTableModel {
 	private String courseName;
 
 	public StudentPaymentTableModel(long id, String studentNumber, String courseNumber, String studentClass,
-			Timestamp timestamp, BigDecimal paymentValue, String paymentReceiptFilePath, String grade, String courseName) {
+			Timestamp timestamp, BigDecimal paymentValue, String paymentReceiptFilePath, String grade,
+			String courseName) {
 
 		this.setId(id);
 		this.studentNumber = new SimpleStringProperty(studentNumber);

@@ -45,7 +45,6 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import livinglikelarry.lapgas.controller.SettingController;
-import livinglikelarry.lapgas.controller.StudentGradingController;
 import livinglikelarry.lapgas.controller.StudentPaymentController;
 import livinglikelarry.lapgas.model.sql.Course;
 import livinglikelarry.lapgas.model.sql.LabAssistant;
@@ -66,7 +65,7 @@ import javafx.stage.Stage;
 
 /**
  * 
- * @author Moch Deden (http://github.com/selesdepselesnul)
+ * @author Moch Deden (https://github.com/selesdepselesnul)
  *
  */
 public class MainController implements Initializable {
@@ -697,27 +696,7 @@ public class MainController implements Initializable {
 		}
 	}
 
-	@FXML
-	public void handleUpdatingGrade() {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			AnchorPane root = (AnchorPane) fxmlLoader.load(Configurator.view("StudentGrading"));
-			StudentGradingController studentGradingController = (StudentGradingController) fxmlLoader.getController();
-			final StudentPaymentTableModel selectedStudentPayment = this.studentPaymentTableView.getSelectionModel()
-					.getSelectedItem();
-			studentGradingController.setGrade(selectedStudentPayment.getId(), selectedStudentPayment.getStudentGrade());
-			studentGradingController.setStudentPaymentTableView(this.studentPaymentTableView,
-					this::loadAllStudentPayment);
-			Stage stage = new Stage();
-			stage.setTitle("Perbaharui nilai");
-			stage.setScene(new Scene(root));
-			stage.setResizable(false);
-			stage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 	@FXML
 	public void handleUpdatingStudentPayment() {
 		try {
@@ -768,5 +747,4 @@ public class MainController implements Initializable {
 			this.seeingPaymentReceipt.setDisable(true);
 		}
 	}
-
 }

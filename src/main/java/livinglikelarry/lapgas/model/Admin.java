@@ -3,7 +3,7 @@ package livinglikelarry.lapgas.model;
 /**
  * 
  * Abstact Admin
- * @author Moch Deden (http://github.com/selesdepselesnul)
+ * @author Moch Deden (https://github.com/selesdepselesnul)
  *
  */
 public interface Admin {

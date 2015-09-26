@@ -10,7 +10,7 @@ import livinglikelarry.lapgas.model.Admin;
  * 
  * Admin implementation specific for sql
  * 
- * @author Moch Deden (http://gihub.com/selesdepselesnul)
+ * @author Moch Deden (https://gihub.com/selesdepselesnul)
  *
  */
 @DbName("admin")

@@ -36,6 +36,11 @@ import livinglikelarry.lapgas.util.Configurator;
 import livinglikelarry.lapgas.util.GuiUtil;
 import javafx.scene.control.MenuItem;
 
+/**
+ * 
+ * @author Moch Deden (https://github.com/selesdepselesnul)
+ *
+ */
 public class SettingController implements Initializable {
 	@FXML
 	private TableView<CoursesTableModel> courseTableView;

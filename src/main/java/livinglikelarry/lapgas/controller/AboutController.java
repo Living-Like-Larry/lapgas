@@ -11,6 +11,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import livinglikelarry.lapgas.util.Configurator;
 
+/**
+ * 
+ * @author Moch Deden (https://github.com/selesdepselesnul)
+ *
+ */
 public class AboutController implements Initializable {
 	@FXML
 	private ImageView logoImageView;

@@ -6,6 +6,11 @@ import java.sql.Timestamp;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * 
+ * @author Moch Deden (https://github.com/selesdepselesnul)
+ *
+ */
 public class LabAssistantAttendanceTableModel {
 
 	private SimpleStringProperty studentNumber;

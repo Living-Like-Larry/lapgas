@@ -9,6 +9,11 @@ import livinglikelarry.lapgas.model.sql.LabAssistantLog;
 import livinglikelarry.lapgas.util.Configurator;
 import livinglikelarry.lapgas.util.LabAssistantLogger;
 
+/**
+ * 
+ * @author Moch Deden (https://github.com/selesdepselesnul)
+ *
+ */
 public class LabAssistantLogController {
 
 	@FXML

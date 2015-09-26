@@ -8,6 +8,11 @@ import javafx.concurrent.Task;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
+/**
+ * 
+ * @author Moch Deden (https://github.com/selesdepselesnul)
+ *
+ */
 public class GuiUtil {
 
 	public static void showProgress(Runnable runnable) {

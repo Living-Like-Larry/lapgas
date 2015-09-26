@@ -41,7 +41,7 @@ import livinglikelarry.lapgas.util.Configurator;
  * 
  * Controller for LoginView
  * 
- * @author Moch Deden (http://github.com/selesdepselesnul)
+ * @author Moch Deden (https://github.com/selesdepselesnul)
  *
  */
 public class LoginController implements Initializable {

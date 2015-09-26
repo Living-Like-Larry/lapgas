@@ -12,6 +12,11 @@ import javafx.collections.ObservableList;
 import livinglikelarry.lapgas.model.sql.LabAssistantLog;
 import livinglikelarry.lapgas.model.table.CoursesTableModel;
 
+/**
+ * 
+ * @author Moch Deden (https://github.com/selesdepselesnul)
+ *
+ */
 public class LabAssistantLogger {
 
 	public static void logNewStudentPayment(String labAsstStudentNumber, String studentNumber,

@@ -1,3 +1,4 @@
+/* author : Rabani (https://github.com/fsckgrep3) */
 CREATE TABLE student_payments (
     id BIGINT AUTO_INCREMENT,
     student_number CHAR(14),    

@@ -10,6 +10,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
+/**
+ * 
+ * @author Moch Deden (https://gihub.com/selesdepselesnul)
+ *
+ */
 public class StudentPaymentController {
 
 	@FXML

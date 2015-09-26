@@ -2,6 +2,11 @@ package livinglikelarry.lapgas.model.table;
 
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * 
+ * @author Moch Deden (https://github.com/selesdepselesnul)
+ *
+ */
 public class LabAssistantTableModel {
 	private SimpleStringProperty studentNumber;
 	private SimpleStringProperty role;

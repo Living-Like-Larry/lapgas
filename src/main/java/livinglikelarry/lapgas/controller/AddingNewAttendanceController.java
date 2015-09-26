@@ -20,6 +20,11 @@ import livinglikelarry.lapgas.model.sql.LabAssistantAttendance;
 import livinglikelarry.lapgas.model.table.LabAssistantAttendanceTableModel;
 import livinglikelarry.lapgas.util.Configurator;
 
+/**
+ * 
+ * @author Moch Deden (https://github.com/selesdepselesnul)
+ *
+ */
 public class AddingNewAttendanceController implements Initializable {
 
 	@FXML
