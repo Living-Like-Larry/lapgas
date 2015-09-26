@@ -419,10 +419,7 @@ public class MainController implements Initializable {
 		final ObservableList<CoursesTableModel> courseNames = this.coursesPaymentTabTableView.getItems();
 		final File paymentReceipt = this.choosenPaymentReceiptFile;
 		final String studentClass = this.classTabPaymentTextField.getText().toUpperCase();
-		// final String paymentValue =
-		// this.paymentValueTabPaymentTextField.getText();
 		if (studentNumber != null && courseNames.size() != 0 && paymentReceipt != null && studentClass != null) {
-			// if (paymentValue.matches("\\d+")) {
 			Configurator.doDBACtion(() -> {
 				try {
 					this.paymentTabUtil.save(studentNumber, studentClass, courseNames, paymentReceipt);
@@ -443,19 +440,10 @@ public class MainController implements Initializable {
 			this.coursesPaymentTabTableView.getItems().clear();
 			this.paymentReceiptPathTextField.clear();
 			this.coursePaymentValue.clear();
-			// this.paymentValueTabPaymentTextField.clear();
 			this.studentNumberPaymentTabTextField.clear();
 			this.coursesPaymentTabComboBox.getSelectionModel().clearSelection();
 			this.loadAllCourseNames(this.coursesPaymentTabComboBox);
 			this.loadAllStudentPayment(this.studentPaymentTableView);
-			// } else {
-			// Alert alert = new Alert(AlertType.ERROR);
-			// alert.setTitle("Kesalahan !");
-			// alert.setHeaderText("Nilai pembayaran tidak valid!");
-			// alert.setContentText("Perhatian ! Harap isikan kolom pembayaran
-			// dengan data yang valid !");
-			// alert.showAndWait();
-			// }
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Kesalahan !");
@@ -695,9 +683,17 @@ public class MainController implements Initializable {
 		String selectedCourse = this.coursesPaymentTabComboBox.getSelectionModel().getSelectedItem();
 		String coursePayment = this.coursePaymentValue.getText();
 		if (selectedCourse != null && coursePayment != null) {
-			this.coursesPaymentTabTableView.getItems()
-					.add(new CoursesTableModel(selectedCourse, new BigDecimal(coursePayment)));
-			this.coursesPaymentTabComboBox.getItems().remove(selectedCourse);
+			if (coursePayment.matches("\\d+")) {
+				this.coursesPaymentTabTableView.getItems()
+						.add(new CoursesTableModel(selectedCourse, new BigDecimal(coursePayment)));
+				this.coursesPaymentTabComboBox.getItems().remove(selectedCourse);
+			} else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Bukan angka !");
+				alert.setContentText("Yang anda masukan bukan angka !");
+				alert.showAndWait();
+				this.coursePaymentValue.clear();
+			}
 		}
 	}
 
