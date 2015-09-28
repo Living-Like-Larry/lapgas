@@ -159,7 +159,7 @@ public class SettingController implements Initializable {
 		final String name = this.courseTextField.getText();
 		final Integer semester = this.semesterComboBox.getValue();
 		if (courseNumber != null && name != null && semester != null) {
-			if (!courseNumber.equals("") && !name.equals("")) {
+			if (!courseNumber.equals("") && !name.equals("") && courseNumber.matches(LapgasPattern.COURSE_NUMBER)) {
 				Configurator.doRawDBActionWithDBConsumer((x) -> {
 					try {
 						Course course = new Course();
@@ -175,6 +175,8 @@ public class SettingController implements Initializable {
 				this.semesterComboBox.getSelectionModel().clearSelection();
 				loadAllCourses();
 				this.coursePaymentComboBoxConsumer.accept(this.coursesPaymentComboBox);
+			} else {
+				GuiUtil.alertPattern("kode matakuliah", LapgasPattern.COURSE_NUMBER);
 			}
 		}
 	}
@@ -214,11 +216,7 @@ public class SettingController implements Initializable {
 				this.labAsstStudentNumberTextField.clear();
 				loadAllLabAssistant();
 			} else {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setContentText("Pola npm yang dimasukan tidak valid!");
-				alert.setTitle("npm tidak valid!");
-				alert.showAndWait();
-				this.labAsstStudentNumberTextField.clear();
+				GuiUtil.alertPattern("npm", LapgasPattern.STUDENT_NUMBER);
 			}
 		}
 	}

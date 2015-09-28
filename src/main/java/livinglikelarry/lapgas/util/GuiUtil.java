@@ -5,6 +5,8 @@ import org.controlsfx.dialog.ProgressDialog;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
@@ -50,6 +52,13 @@ public class GuiUtil {
 		exceptionDialog.setTitle("Kesalahan");
 		exceptionDialog.setHeaderText("Telah terjadi kesalahan");
 		exceptionDialog.showAndWait();
+	}
+
+	public static void alertPattern(String patternKind, String pattern) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Pola invalid");
+		alert.setContentText("Pola " + patternKind + " yang dimasukan tidak cocok,\npola yang seharusnya " + pattern);
+		alert.showAndWait();
 	}
 
 }
