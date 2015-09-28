@@ -34,6 +34,7 @@ import livinglikelarry.lapgas.model.table.LabAssistantTableModel;
 import livinglikelarry.lapgas.state.LapgasState;
 import livinglikelarry.lapgas.util.Configurator;
 import livinglikelarry.lapgas.util.GuiUtil;
+import livinglikelarry.lapgas.util.LapgasPattern;
 import javafx.scene.control.MenuItem;
 
 /**
@@ -198,7 +199,7 @@ public class SettingController implements Initializable {
 		final String selectedItem = this.labAssistantRoleComboBox.getSelectionModel().getSelectedItem();
 		final String studentNumber = this.labAsstStudentNumberTextField.getText();
 		if (studentNumber != null && selectedItem != null) {
-			if (!studentNumber.equals("") && studentNumber.matches("4115505\\d{7}")) {
+			if (!studentNumber.equals("") && studentNumber.matches(LapgasPattern.STUDENT_NUMBER)) {
 				Configurator.doRawDBActionWithDBConsumer(x -> {
 					try {
 						new LabAssistant().set("student_number", (String) studentNumber)
