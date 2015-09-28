@@ -198,7 +198,7 @@ public class SettingController implements Initializable {
 		final String selectedItem = this.labAssistantRoleComboBox.getSelectionModel().getSelectedItem();
 		final String studentNumber = this.labAsstStudentNumberTextField.getText();
 		if (studentNumber != null && selectedItem != null) {
-			if (!studentNumber.equals("")) {
+			if (!studentNumber.equals("") && studentNumber.matches("4115505\\d{7}")) {
 				Configurator.doRawDBActionWithDBConsumer(x -> {
 					try {
 						new LabAssistant().set("student_number", (String) studentNumber)
@@ -212,6 +212,12 @@ public class SettingController implements Initializable {
 				this.labAssistantRoleComboBox.getSelectionModel().clearSelection();
 				this.labAsstStudentNumberTextField.clear();
 				loadAllLabAssistant();
+			} else {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setContentText("Pola npm yang dimasukan tidak valid!");
+				alert.setTitle("npm tidak valid!");
+				alert.showAndWait();
+				this.labAsstStudentNumberTextField.clear();
 			}
 		}
 	}
