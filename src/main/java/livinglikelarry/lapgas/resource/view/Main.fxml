@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--@author : Riki (https://github.com/riki49) -->
 
+<!--@author : Riki (https://github.com/riki49) -->
 
 <?import javafx.scene.*?>
 <?import javafx.scene.chart.*?>
@@ -63,6 +63,8 @@
 											maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="179.0" />
 										<ColumnConstraints hgrow="NEVER"
 											maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="143.0" />
+										<ColumnConstraints hgrow="NEVER"
+											maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="143.0" />
 									</columnConstraints>
 									<rowConstraints>
 										<RowConstraints minHeight="10.0" prefHeight="30.0"
@@ -85,6 +87,8 @@
 										</Button>
 										<Button mnemonicParsing="false" onAction="#handleChoosingImageButton"
 											prefHeight="26.0" prefWidth="93.0" text="..." />
+										<Button mnemonicParsing="false" text="Lihat struk"
+											GridPane.columnIndex="3" onAction="#handlePreviewReceiptPayment" />
 									</children>
 								</GridPane>
 								<TableView fx:id="coursesPaymentTabTableView"

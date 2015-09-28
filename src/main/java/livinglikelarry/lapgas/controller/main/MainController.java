@@ -18,6 +18,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.controlsfx.control.textfield.TextFields;
 import org.javalite.activejdbc.Model;
 
@@ -44,6 +45,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import livinglikelarry.lapgas.controller.ReceiptPaymentReviewerController;
 import livinglikelarry.lapgas.controller.SettingController;
 import livinglikelarry.lapgas.controller.StudentPaymentController;
 import livinglikelarry.lapgas.model.sql.Course;
@@ -696,7 +698,6 @@ public class MainController implements Initializable {
 		}
 	}
 
-	
 	@FXML
 	public void handleUpdatingStudentPayment() {
 		try {
@@ -747,4 +748,28 @@ public class MainController implements Initializable {
 			this.seeingPaymentReceipt.setDisable(true);
 		}
 	}
+
+	@FXML
+	public void handlePreviewReceiptPayment() {
+		try {
+			if (this.choosenPaymentReceiptFile != null) {
+				FXMLLoader fxmLoader = new FXMLLoader();
+				AnchorPane root = (AnchorPane) fxmLoader.load(Configurator.view("ReceiptPaymentReviewer"));
+				ReceiptPaymentReviewerController receiptPaymentReviewerController = (ReceiptPaymentReviewerController) fxmLoader
+						.getController();
+				receiptPaymentReviewerController.setReceiptPaymentFile(this.choosenPaymentReceiptFile);
+				Stage stage = new Stage();
+				stage.setScene(new Scene(root));
+				stage.showAndWait();
+			} else {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Struk Kosong");
+				alert.setContentText("Gambar struk belum ada");
+				alert.showAndWait();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.function.Consumer;
@@ -31,6 +32,11 @@ public final class Configurator {
 	private static final String TEXT_BASE_PATH = "livinglikelarry/lapgas/resource/text/";
 	private static Properties properties;
 	private static String role = "";
+	private static Path scannerPath;
+
+	public static Path getScannerPath() {
+		return scannerPath;
+	}
 
 	static {
 		try {
@@ -164,6 +170,10 @@ public final class Configurator {
 		if (lapgasDB.hasConnection()) {
 			lapgasDB.close();
 		}
+	}
+	
+	public static void setScannerPath(Path scannerPath) {
+		Configurator.scannerPath = scannerPath;
 	}
 
 }
