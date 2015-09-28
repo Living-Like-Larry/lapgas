@@ -154,7 +154,7 @@ public class SettingController implements Initializable {
 
 	@FXML
 	public void handleAddingButton() {
-		final String courseNumber = this.courseNumberTextField.getText();
+		final String courseNumber = this.courseNumberTextField.getText().toUpperCase();
 		final String name = this.courseTextField.getText();
 		final Integer semester = this.semesterComboBox.getValue();
 		if (courseNumber != null && name != null && semester != null) {
