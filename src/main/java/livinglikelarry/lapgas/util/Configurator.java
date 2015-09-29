@@ -17,6 +17,7 @@ import org.javalite.activejdbc.DB;
 import org.javalite.activejdbc.Model;
 
 import livinglikelarry.lapgas.model.sql.AdminSql;
+import livinglikelarry.lapgas.model.sql.Scanner;
 
 /**
  * Class that is represented as a wide configurator for lapgas system
@@ -40,10 +41,12 @@ public final class Configurator {
 	public static String getScannerPath() throws IOException {
 		List<String> scannerPathList = new ArrayList<>();
 		doAdminDBAction(() -> {
-			Model admin = AdminSql.findFirst("id = ?", (int) 1);
-			final String scannerPath = (String) admin.get("scanner_path");
-			if (scannerPath != null) {
-				scannerPathList.add(scannerPath);
+			Model scanner = Scanner.findFirst("id = ?", (int) 1);
+			if (scanner != null) {
+				final String scannerPath = (String) scanner.get("scanner_path");
+				if (scannerPath != null) {
+					scannerPathList.add(scannerPath);
+				}
 			}
 		});
 		if (scannerPathList.isEmpty()) {
@@ -189,9 +192,9 @@ public final class Configurator {
 
 	public static void setScannerPath(String path) throws IOException {
 		Configurator.doAdminDBAction(() -> {
-			Model admin = AdminSql.findFirst("id = ?", (int) 1);
-			admin.set("scanner_path", (String) path);
-			admin.saveIt();
+			Model scanner = Scanner.findFirst("id = ?", (int) 1);
+			scanner.set("scanner_path", (String) path);
+			scanner.saveIt();
 		});
 
 	}

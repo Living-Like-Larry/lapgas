@@ -11,6 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import livinglikelarry.lapgas.controller.LoginController;
 import livinglikelarry.lapgas.model.sql.AdminSql;
+import livinglikelarry.lapgas.model.sql.Scanner;
 import livinglikelarry.lapgas.util.Configurator;
 
 /**
@@ -53,7 +54,9 @@ public class Lapgas extends Application {
 			try {
 				if (x.exec("SELECT name FROM sqlite_master WHERE name='admins'") == 0) {
 					x.exec(Configurator.table("admins"));
+					x.exec(Configurator.table("scanners"));
 					new AdminSql().set("password", "livinglikelarry").saveIt();
+					new Scanner().set("scanner_path", null).saveIt();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
