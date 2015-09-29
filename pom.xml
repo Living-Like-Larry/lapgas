@@ -4,7 +4,7 @@
 
 	<groupId>livinglikelarry</groupId>
 	<artifactId>lapgas</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>lapgas</name>
