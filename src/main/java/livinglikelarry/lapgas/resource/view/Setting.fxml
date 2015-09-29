@@ -40,9 +40,10 @@
 						<AnchorPane prefHeight="163.0" prefWidth="300.0">
 							<children>
 								<TextField disable="true" layoutX="85.0" layoutY="107.0"
-									prefHeight="26.0" prefWidth="226.0" />
+									prefHeight="26.0" prefWidth="226.0" fx:id="scannerPathTextField" />
 								<Button layoutX="311.0" layoutY="107.0" mnemonicParsing="false"
-									prefHeight="26.0" prefWidth="96.0" text="Ganti" />
+									prefHeight="26.0" prefWidth="96.0" text="Ganti" fx:id="scannerPathButton"
+									onAction="#handleEditingScannerPath" />
 							</children>
 						</AnchorPane>
 					</content>

@@ -6,13 +6,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.javalite.activejdbc.DB;
+import org.javalite.activejdbc.Model;
+
+import livinglikelarry.lapgas.model.sql.AdminSql;
 
 /**
  * Class that is represented as a wide configurator for lapgas system
@@ -32,10 +36,21 @@ public final class Configurator {
 	private static final String TEXT_BASE_PATH = "livinglikelarry/lapgas/resource/text/";
 	private static Properties properties;
 	private static String role = "";
-	private static Path scannerPath;
 
-	public static Path getScannerPath() {
-		return scannerPath;
+	public static String getScannerPath() throws IOException {
+		List<String> scannerPathList = new ArrayList<>();
+		doAdminDBAction(() -> {
+			Model admin = AdminSql.findFirst("id = ?", (int) 1);
+			final String scannerPath = (String) admin.get("scanner_path");
+			if (scannerPath != null) {
+				scannerPathList.add(scannerPath);
+			}
+		});
+		if (scannerPathList.isEmpty()) {
+			return null;
+		} else {
+			return scannerPathList.get(0);
+		}
 	}
 
 	static {
@@ -171,9 +186,14 @@ public final class Configurator {
 			lapgasDB.close();
 		}
 	}
-	
-	public static void setScannerPath(Path scannerPath) {
-		Configurator.scannerPath = scannerPath;
+
+	public static void setScannerPath(String path) throws IOException {
+		Configurator.doAdminDBAction(() -> {
+			Model admin = AdminSql.findFirst("id = ?", (int) 1);
+			admin.set("scanner_path", (String) path);
+			admin.saveIt();
+		});
+
 	}
 
 }

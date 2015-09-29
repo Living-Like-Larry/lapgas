@@ -18,6 +18,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.io.monitor.FileAlterationListener;
 import org.apache.commons.io.monitor.FileAlterationObserver;
 import org.controlsfx.control.textfield.TextFields;
 import org.javalite.activejdbc.Model;
@@ -194,25 +195,84 @@ public class MainController implements Initializable {
 
 	private String labAsstStudentNumber;
 
+	private FileAlterationObserver fileAlterationObserver;
+
 	private static final String UNLA_IF_STUD_NUM_PATTERN = "4115505\\d{7}";
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		initCourseNameTableViewPaymentTab();
-		loadAllCourseNames(this.coursesPaymentTabComboBox);
+		try {
+			initCourseNameTableViewPaymentTab();
+			loadAllCourseNames(this.coursesPaymentTabComboBox);
 
-		this.paymentTabUtil = new PaymentTabUtil();
-		this.filteredStudentPaymentHistoryList = new LinkedList<>();
-		initStudentPaymentTableView();
-		loadAllStudentPayment(this.studentPaymentTableView);
+			this.paymentTabUtil = new PaymentTabUtil();
+			this.filteredStudentPaymentHistoryList = new LinkedList<>();
+			initStudentPaymentTableView();
+			loadAllStudentPayment(this.studentPaymentTableView);
 
-		this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
+			this.filteredAndAddedComboBox.getItems().setAll("absen!", "filter");
 
-		this.filteredStudentPaymentBySemesterComboBox.getItems().setAll(1, 2, 3, 4, 5, 6, 7, 8);
+			this.filteredStudentPaymentBySemesterComboBox.getItems().setAll(1, 2, 3, 4, 5, 6, 7, 8);
 
-		initLabAsstAttendanceTableView();
-		loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
+			initLabAsstAttendanceTableView();
+			loadAllLabAsstAttendances(this.labAssistantAttendanceTableView);
+
+			String scannerPath = Configurator.getScannerPath();
+
+			if (scannerPath != null) {
+				fileAlterationObserver = new FileAlterationObserver(new File(scannerPath));
+				fileAlterationObserver.addListener(new FileAlterationListener() {
+
+					@Override
+					public void onStop(FileAlterationObserver arg0) {
+					}
+
+					@Override
+					public void onStart(FileAlterationObserver arg0) {
+					}
+
+					@Override
+					public void onFileDelete(File arg0) {
+					}
+
+					@Override
+					public void onFileCreate(File choosenReceiptPayment) {
+						choosenPaymentReceiptFile = choosenReceiptPayment;
+					}
+
+					@Override
+					public void onFileChange(File arg0) {
+					}
+
+					@Override
+					public void onDirectoryDelete(File arg0) {
+					}
+
+					@Override
+					public void onDirectoryCreate(File arg0) {
+					}
+
+					@Override
+					public void onDirectoryChange(File arg0) {
+					}
+				});
+				try {
+					fileAlterationObserver.initialize();
+					new Thread(() -> {
+						while (true) {
+							fileAlterationObserver.checkAndNotify();
+						}
+					}).start();
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	private void initLabAsstAttendanceTableView() {
@@ -767,7 +827,7 @@ public class MainController implements Initializable {
 				alert.setContentText("Gambar struk belum ada");
 				alert.showAndWait();
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

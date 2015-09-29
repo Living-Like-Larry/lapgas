@@ -47,6 +47,12 @@ public class SettingController implements Initializable {
 	private TableView<CoursesTableModel> courseTableView;
 
 	@FXML
+	private Button scannerPathButton;
+
+	@FXML
+	private TextField scannerPathTextField;
+
+	@FXML
 	private TableColumn<CoursesTableModel, String> courseNumberTableColumn;
 
 	@FXML
@@ -133,6 +139,9 @@ public class SettingController implements Initializable {
 
 			loadAllCourses();
 			loadAllLabAssistant();
+			if (Configurator.getScannerPath() != null) {
+				this.scannerPathTextField.setText(Configurator.getScannerPath());
+			}
 
 			Configurator.doAdminDBAction(() -> {
 				Model admin = AdminSql.findById(1L);
@@ -219,6 +228,34 @@ public class SettingController implements Initializable {
 				GuiUtil.alertPattern("npm", LapgasPattern.STUDENT_NUMBER);
 			}
 		}
+	}
+
+	@FXML
+	public void handleEditingScannerPath() {
+
+		try {
+			if (this.scannerPathButton.getText().equals("Ganti")) {
+				this.scannerPathTextField.setDisable(false);
+				this.scannerPathButton.setText("Simpan");
+			} else {
+				String scannerPath = this.scannerPathTextField.getText();
+				if (scannerPath != null) {
+					if (!scannerPath.equals("")) {
+						Configurator.setScannerPath(scannerPath);
+						Alert alert = new Alert(AlertType.WARNING);
+						alert.setTitle("Lakukan Restart!");
+						alert.setContentText(
+								"Harap lakukan restart pada program,\nuntuk merasakan efek perubahan path");
+						alert.showAndWait();
+					}
+				}
+				this.scannerPathButton.setText("Ganti");
+				this.scannerPathTextField.setDisable(true);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private void editAdminPassword(Runnable runnable) {

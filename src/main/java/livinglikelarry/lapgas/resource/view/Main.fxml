@@ -87,8 +87,8 @@
 										</Button>
 										<Button mnemonicParsing="false" onAction="#handleChoosingImageButton"
 											prefHeight="26.0" prefWidth="93.0" text="..." />
-										<Button mnemonicParsing="false" text="Lihat struk"
-											GridPane.columnIndex="3" onAction="#handlePreviewReceiptPayment" />
+										<Button mnemonicParsing="false" onAction="#handlePreviewReceiptPayment"
+											text="lihat struk" GridPane.columnIndex="3" />
 									</children>
 								</GridPane>
 								<TableView fx:id="coursesPaymentTabTableView"
