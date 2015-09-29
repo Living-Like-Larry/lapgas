@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 import org.javalite.activejdbc.DB;
 import org.javalite.activejdbc.Model;
 
-import livinglikelarry.lapgas.model.sql.AdminSql;
 import livinglikelarry.lapgas.model.sql.Scanner;
 
 /**

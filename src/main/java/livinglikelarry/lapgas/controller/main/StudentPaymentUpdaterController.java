@@ -89,8 +89,18 @@ public class StudentPaymentUpdaterController implements Initializable {
 
 	@FXML
 	public void handleChoosingNewReceiptPayment() {
-		FileChooser fileChooser = new FileChooser();
-		this.choosenPaymentReceiptFile = fileChooser.showOpenDialog(stage);
+		try {
+			FileChooser fileChooser = new FileChooser();
+			this.choosenPaymentReceiptFile = fileChooser.showOpenDialog(stage);
+			if (this.choosenPaymentReceiptFile != null) {
+				this.paymentReceiptTextField.setText(this.choosenPaymentReceiptFile.toString());
+				this.paymentReceiptImageView
+						.setImage(new Image(Files.newInputStream(this.choosenPaymentReceiptFile.toPath())));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void setStage(Stage stage) {

@@ -40,7 +40,7 @@ public class SpecialLabAsstLapgasState implements LapgasState {
 
 	@Override
 	public void setScannerTabSetting(Tab scannerTab) {
-		scannerTab.setDisable(true);
+		scannerTab.setDisable(false);
 	}
 
 	@Override

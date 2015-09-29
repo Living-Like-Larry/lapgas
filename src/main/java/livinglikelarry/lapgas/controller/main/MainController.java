@@ -820,6 +820,8 @@ public class MainController implements Initializable {
 				receiptPaymentReviewerController.setReceiptPaymentFile(this.choosenPaymentReceiptFile);
 				Stage stage = new Stage();
 				stage.setScene(new Scene(root));
+				stage.setResizable(false);
+				stage.setTitle("Preview Struk");
 				stage.showAndWait();
 			} else {
 				Alert alert = new Alert(AlertType.INFORMATION);
