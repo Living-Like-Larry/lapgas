@@ -52,7 +52,16 @@ public class Lapgas extends Application {
 	private static void makeAdminDB() throws IOException {
 		Configurator.doRawAdminDBActionConsumer((x) -> {
 			try {
-				if (x.exec("SELECT name FROM sqlite_master WHERE name='admins'") == 0) {
+				boolean isExist = false;
+				ResultSet resultSet = x.getConnection().createStatement()
+						.executeQuery("SELECT name FROM sqlite_master WHERE name='admins'");
+				while (resultSet.next()) {
+					if (resultSet.getString(1).equals("admins")) {
+						isExist = true;
+						break;
+					}
+				}
+				if (!isExist) {
 					x.exec(Configurator.table("admins"));
 					x.exec(Configurator.table("scanners"));
 					new AdminSql().set("password", "livinglikelarry").saveIt();
