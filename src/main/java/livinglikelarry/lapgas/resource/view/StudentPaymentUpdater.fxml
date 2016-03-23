@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--@author : Riki (https://github.com/riki49) -->
 
+<!--@author : Riki (https://github.com/riki49) -->
 
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
@@ -8,28 +8,17 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
-	minHeight="-Infinity" minWidth="-Infinity" prefHeight="214.0"
-	prefWidth="453.0" xmlns="http://javafx.com/javafx/8.0.51" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="livinglikelarry.lapgas.controller.main.StudentPaymentUpdaterController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="267.0" prefWidth="548.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="livinglikelarry.lapgas.controller.main.StudentPaymentUpdaterController">
 	<children>
-		<TextField fx:id="classTextField" layoutX="55.0" layoutY="52.0"
-			prefHeight="25.0" prefWidth="81.0" promptText="Kelas" />
-		<ComboBox fx:id="gradeComboBox" layoutX="145.0" layoutY="52.0"
-			prefHeight="25.0" prefWidth="81.0" promptText="Nilai" />
-		<Button layoutX="55.0" layoutY="165.0" mnemonicParsing="false"
-			onAction="#handleUpdatingButton" prefHeight="25.0" prefWidth="171.0"
-			text="Update" />
-		<TextField fx:id="amountOfPaymentTextField" layoutX="55.0"
-			layoutY="84.0" promptText="Jumlah Pembayaran" />
-		<Button layoutX="55.0" layoutY="116.0" mnemonicParsing="false"
-			onAction="#handleChoosingNewReceiptPayment" text="..." />
-		<TextField disable="true" layoutX="86.0" layoutY="116.0"
-			prefHeight="25.0" prefWidth="140.0" fx:id="paymentReceiptTextField"/>
-		<ImageView fx:id="paymentReceiptImageView" fitHeight="173.0"
-			fitWidth="200.0" layoutX="232.0" layoutY="14.0" pickOnBounds="true"
-			preserveRatio="true" />
-		<ComboBox fx:id="courseNameComboBox" layoutX="55.0" layoutY="14.0"
-			prefHeight="25.0" prefWidth="171.0" promptText="Matakuliah" />
+		<TextField fx:id="classTextField" layoutX="177.0" layoutY="79.0" prefHeight="25.0" prefWidth="123.0" promptText="Kelas" />
+		<ComboBox fx:id="gradeComboBox" layoutX="177.0" layoutY="44.0" prefHeight="25.0" prefWidth="123.0" promptText="Nilai" />
+		<Button layoutX="90.0" layoutY="218.0" mnemonicParsing="false" onAction="#handleUpdatingButton" prefHeight="25.0" prefWidth="171.0" text="Update" />
+		<TextField fx:id="amountOfPaymentTextField" layoutX="29.0" layoutY="121.0" prefHeight="25.0" prefWidth="142.0" promptText="Jumlah Pembayaran" />
+		<Button layoutX="29.0" layoutY="166.0" mnemonicParsing="false" onAction="#handleChoosingNewReceiptPayment" text="..." />
+		<TextField fx:id="paymentReceiptTextField" disable="true" layoutX="61.0" layoutY="166.0" prefHeight="25.0" prefWidth="241.0" />
+		<ImageView fx:id="paymentReceiptImageView" fitHeight="208.0" fitWidth="220.0" layoutX="310.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" />
+		<ComboBox fx:id="courseNameComboBox" layoutX="29.0" layoutY="44.0" prefHeight="25.0" prefWidth="142.0" promptText="Matakuliah" />
+      <DatePicker layoutX="177.0" layoutY="121.0" prefHeight="25.0" prefWidth="123.0" />
+      <TextField layoutX="27.0" layoutY="79.0" prefHeight="25.0" prefWidth="142.0" promptText="angkatan" />
 	</children>
 </AnchorPane>
