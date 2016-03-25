@@ -740,7 +740,7 @@ public class MainController implements Initializable {
 	}
 
 	@FXML
-	public void handleChoosingCourses() {
+	public void handleChoosingCoursesComboBox() {
 		String selectedCourse = this.coursesPaymentTabComboBox.getSelectionModel().getSelectedItem();
 		String coursePayment = this.coursePaymentValue.getText();
 		if (selectedCourse != null && coursePayment != null) {

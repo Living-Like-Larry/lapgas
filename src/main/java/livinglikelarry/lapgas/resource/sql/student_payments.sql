@@ -7,8 +7,8 @@ CREATE TABLE student_payments (
     class CHAR(2),
     grade TEXT,
     payment_receipt TEXT,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP,
+    created_at DATETIME,
+    updated_at DATETIME,
     PRIMARY KEY(id),
     FOREIGN KEY (course_number) REFERENCES courses (course_number)
 );
